@@ -17,7 +17,7 @@ function AppContent() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [channelSelectRequiresAdmin, setChannelSelectRequiresAdmin] = useState(false);
-  const [sidebarView, setSidebarView] = useState<'channels' | 'chat'>('channels');
+  const [sidebarView, setSidebarView] = useState<'channels' | 'chat'>('chat');
   const [syncEnabled, setSyncEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [epgByChannel, setEpgByChannel] = useState<Record<number, ChannelEpg>>({});
@@ -231,16 +231,21 @@ function AppContent() {
 
         <aside className="player-sidebar">
           <div className="sidebar-tabs" role="tablist" aria-label="Player sidebar">
-            <button type="button" role="tab" aria-selected={sidebarView === 'channels'} onClick={() => setSidebarView('channels')} className={sidebarView === 'channels' ? 'sidebar-tab-active' : 'sidebar-tab'}>
-              <ListVideo className="h-4 w-4" /> Channels <span>{filteredChannels.length}</span>
-            </button>
-            <button type="button" role="tab" aria-selected={sidebarView === 'chat'} onClick={() => setSidebarView('chat')} className={sidebarView === 'chat' ? 'sidebar-tab-active' : 'sidebar-tab'}>
+            <button id="chat-tab" type="button" role="tab" aria-controls="chat-panel" aria-selected={sidebarView === 'chat'} onClick={() => setSidebarView('chat')} className={sidebarView === 'chat' ? 'sidebar-tab-active' : 'sidebar-tab'}>
               <MessageSquare className="h-4 w-4" /> Live chat
+            </button>
+            <button id="channels-tab" type="button" role="tab" aria-controls="channels-panel" aria-selected={sidebarView === 'channels'} onClick={() => setSidebarView('channels')} className={sidebarView === 'channels' ? 'sidebar-tab-active' : 'sidebar-tab'}>
+              <ListVideo className="h-4 w-4" /> Channels <span>{filteredChannels.length}</span>
             </button>
           </div>
 
-          {sidebarView === 'channels' ? (
-            <div className="flex min-h-0 flex-1 flex-col">
+          <div
+            id="channels-panel"
+            role="tabpanel"
+            aria-labelledby="channels-tab"
+            hidden={sidebarView !== 'channels'}
+            className={sidebarView === 'channels' ? 'flex min-h-0 flex-1 flex-col' : 'hidden'}
+          >
               <div className="border-b border-[#233242] p-4">
                 <div className="relative mb-3">
                   <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#617386]" />
@@ -306,10 +311,16 @@ function AppContent() {
                 }}
               />
             </div>
-            </div>
-          ) : (
-            <Chat />
-          )}
+          </div>
+          <div
+            id="chat-panel"
+            role="tabpanel"
+            aria-labelledby="chat-tab"
+            hidden={sidebarView !== 'chat'}
+            className={sidebarView === 'chat' ? 'flex min-h-0 flex-1 flex-col' : 'hidden'}
+          >
+            <Chat isActive={sidebarView === 'chat'} />
+          </div>
         </aside>
       </div>
 

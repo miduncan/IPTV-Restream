@@ -48,11 +48,13 @@ class SocketService {
     this.socket.on('disconnect', () => {
       console.log('Disconnected from WebSocket server');
       this.isConnecting = false;
+      this.notifyListeners('socket-disconnected');
     });
 
     this.socket.on('connect_error', (error) => {
       console.error('Connection error:', error);
       this.isConnecting = false;
+      this.notifyListeners('socket-connect-error');
       if (error.message === 'Authentication required.') {
         window.dispatchEvent(new Event('auth-expired'));
       }
@@ -86,6 +88,10 @@ class SocketService {
     }
   }
 
+  isConnected() {
+    return Boolean(this.socket?.connected);
+  }
+
   subscribeToEvent<T>(event: string, listener: (data: T) => void) {
     if (!this.listeners.has(event)) {
       this.listeners.set(event, []);
@@ -113,25 +119,27 @@ class SocketService {
   }
 
   // Send chat message
-  sendMessage(
-    userName: string,
-    userAvatar: string,
-    message: string,
-    timestamp: string
-  ) {
-    if (!this.socket || !this.socket.connected) {
-      this.connect();
-
-      if (!this.socket || !this.socket.connected) {
-        throw new Error('Socket is not connected.');
-      }
+  sendMessage(userName: string, message: string): Promise<string> {
+    if (!this.socket?.connected) {
+      return Promise.reject(new Error('Chat is reconnecting. Try again in a moment.'));
     }
 
-    this.socket.emit('send-message', {
-      userName,
-      userAvatar,
-      message,
-      timestamp,
+    return new Promise((resolve, reject) => {
+      this.socket?.timeout(5000).emit(
+        'send-message',
+        { userName, message },
+        (timeoutError: Error | null, response?: { ok: boolean; error?: string; messageId?: string }) => {
+          if (timeoutError) {
+            reject(new Error('The message timed out. Try again.'));
+          } else if (!response?.ok) {
+            reject(new Error(response?.error || 'Message could not be sent.'));
+          } else if (typeof response.messageId !== 'string') {
+            reject(new Error('The server returned an invalid message response.'));
+          } else {
+            resolve(response.messageId);
+          }
+        }
+      );
     });
   }
 

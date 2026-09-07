@@ -35,11 +35,6 @@ function isAllowedSocketOrigin(req) {
   }
 }
 
-function isAuthenticatedSocketRequest(req) {
-  const user = authService.userFromHeaders(req.headers);
-  return authService.hasRole(user, 'viewer');
-}
-
 // CORS middleware
 app.use((req, res, next) => {
   const allowedOrigin = process.env.CORS_ORIGIN;
@@ -121,7 +116,7 @@ const server = app.listen(PORT, () => {
 const io = new Server(server, {
   allowRequest: (req, callback) => callback(
     null,
-    isAllowedSocketOrigin(req) && isAuthenticatedSocketRequest(req)
+    isAllowedSocketOrigin(req)
   ),
   cors: {
     origin: process.env.CORS_ORIGIN || false,

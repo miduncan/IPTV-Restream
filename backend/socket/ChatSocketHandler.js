@@ -1,10 +1,15 @@
 const ChatService = require('../services/ChatService');
-const ChatMessage = require('../models/ChatMessage');
-
 module.exports = (io, socket) => {
-    socket.on('send-message', ({ userName, userAvatar, message, timestamp }) => {
+    socket.emit('chat-history', ChatService.getMessages());
 
-        const chatMessage = ChatService.addMessage(userName, userAvatar, message, timestamp);
-        socket.broadcast.emit('chat-message', chatMessage) // Broadcast to all clients except sender
+    socket.on('send-message', (payload = {}, acknowledge) => {
+        const respond = typeof acknowledge === 'function' ? acknowledge : () => {};
+        try {
+            const chatMessage = ChatService.addMessage(payload.userName, payload.message);
+            io.emit('chat-message', chatMessage);
+            respond({ ok: true, messageId: chatMessage.id });
+        } catch (error) {
+            respond({ ok: false, error: error.message });
+        }
     });
 };

@@ -1,19 +1,18 @@
-import { memo } from "react";
-import { ChatMessage } from "../../types";
+import { memo } from 'react';
+import { ChatMessage } from '../../types';
 
-export default memo(function SystemMessage({ msg }: { 
-    msg: ChatMessage 
+export default memo(function SystemMessage({ msg }: {
+  msg: ChatMessage;
 }) {
   return (
-    <div className="flex items-start space-x-3">
-      <div className="ml-11">
-        <div className="flex items-center space-x-2">
-          <span className="text-xs text-gray-400">
-            {new Date(msg.timestamp).toLocaleTimeString()}
-          </span>
-        </div>
-        <p className="text-blue-400">{msg.message}</p>
+    <article className="min-w-0" aria-label="System message">
+      <div className="flex items-baseline gap-2">
+        <span className="text-sm font-semibold text-[#8BC3FF]">System</span>
+        <time className="text-[0.6875rem] text-[#617386]" dateTime={msg.timestamp}>
+          {new Date(msg.timestamp).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}
+        </time>
       </div>
-    </div>
+      <p className="mt-0.5 break-words text-sm leading-5 text-[#91A0AF]">{msg.message}</p>
+    </article>
   );
 });

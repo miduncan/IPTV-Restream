@@ -14,7 +14,7 @@
 **Restream / Proxy** - Proxy your iptv streams through the backend. <br>
 **Synchronization** - The selection and playback of the stream is perfectly synchronized for all viewers. <br>
 **Channels** - Browse an Xtream provider's live-channel directory and choose the channels available in the player. <br>
-**Live chat** - chat with other viewers with a randomized profile.
+**Live chat** - chat with other viewers using a display name saved in your browser.
 
 ## 🚀 Run
 
