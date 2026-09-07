@@ -1,4 +1,5 @@
 export interface AdminSettings {
+  streamSynchronizationEnabled: boolean;
   transcodeAudioToAacLc: boolean;
   xtreamUrl: string;
   xtreamUsername: string;

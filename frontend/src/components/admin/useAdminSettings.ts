@@ -3,6 +3,7 @@ import apiService, { ApiError } from '../../services/ApiService';
 import { AdminPageState, AdminSettings } from './adminTypes';
 
 const DEFAULT_SETTINGS: AdminSettings = {
+  streamSynchronizationEnabled: false,
   transcodeAudioToAacLc: false,
   xtreamUrl: '',
   xtreamUsername: '',

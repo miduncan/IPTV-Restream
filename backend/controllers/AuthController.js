@@ -1,5 +1,6 @@
 require("dotenv").config();
 const authService = require("../services/auth/AuthService");
+const settingsService = require("../services/settings/SettingsService");
 
 module.exports = {
   adminLogin(req, res) {
@@ -38,6 +39,7 @@ module.exports = {
     res.json({
       enabled: authService.isAdminEnabled(),
       channelSelectionRequiresAdmin: authService.channelSelectionRequiresAdmin(),
+      streamSynchronizationEnabled: settingsService.shouldSynchronizePlayback(),
     });
   },
 

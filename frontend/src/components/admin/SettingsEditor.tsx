@@ -92,25 +92,29 @@ function SettingsEditor({
           <div className="mb-3 flex items-center gap-2 text-sm font-medium text-[#DCE6EF]">
             <Radio className="h-4 w-4 text-[#4EA1FF]" /> Stream processing
           </div>
-          <div className="admin-panel px-5 py-5 sm:flex sm:items-center sm:justify-between sm:gap-8 sm:px-6">
-            <div>
-              <h2 className="text-sm font-medium">Transcode audio to AAC-LC</h2>
-              <p className="mt-1 max-w-xl text-xs leading-5 text-[#738496]">
-                Copy the video stream and convert audio to stereo AAC-LC at 128 kbps. Leave this off to copy both streams unchanged.
-              </p>
+          <div className="admin-panel overflow-hidden">
+            <div className="flex items-center justify-between gap-8 border-b border-[#233242] px-5 py-5 sm:px-6">
+              <div>
+                <h2 className="text-sm font-medium">Synchronize playback</h2>
+                <p className="mt-1 max-w-xl text-xs leading-5 text-[#738496]">Keep playback aligned for everyone watching. Streams may take longer to start.</p>
+              </div>
+              <label className="inline-flex shrink-0 cursor-pointer items-center gap-3">
+                <span className="hidden text-xs text-[#91A0AF] sm:inline">{settings.streamSynchronizationEnabled ? 'Enabled' : 'Disabled'}</span>
+                <input type="checkbox" className="sr-only" checked={settings.streamSynchronizationEnabled} onChange={(event) => onUpdate('streamSynchronizationEnabled', event.target.checked)} />
+                <span className="admin-toggle relative block h-7 w-12 rounded-full" aria-hidden="true"><span className="absolute left-1 top-1 h-5 w-5 rounded-full bg-[#91A0AF] transition-transform" /></span>
+              </label>
             </div>
-            <label className="mt-4 inline-flex shrink-0 cursor-pointer items-center gap-3 sm:mt-0">
-              <span className="text-xs text-[#91A0AF]">{settings.transcodeAudioToAacLc ? 'Enabled' : 'Disabled'}</span>
-              <input
-                type="checkbox"
-                className="sr-only"
-                checked={settings.transcodeAudioToAacLc}
-                onChange={(event) => onUpdate('transcodeAudioToAacLc', event.target.checked)}
-              />
-              <span className="admin-toggle relative block h-7 w-12 rounded-full" aria-hidden="true">
-                <span className="absolute left-1 top-1 h-5 w-5 rounded-full bg-[#91A0AF] transition-transform" />
-              </span>
-            </label>
+            <div className="flex items-center justify-between gap-8 px-5 py-5 sm:px-6">
+              <div>
+                <h2 className="text-sm font-medium">Transcode audio to AAC-LC</h2>
+                <p className="mt-1 max-w-xl text-xs leading-5 text-[#738496]">Copy the video stream and convert audio to stereo AAC-LC at 128 kbps. Leave this off to copy both streams unchanged.</p>
+              </div>
+              <label className="inline-flex shrink-0 cursor-pointer items-center gap-3">
+                <span className="hidden text-xs text-[#91A0AF] sm:inline">{settings.transcodeAudioToAacLc ? 'Enabled' : 'Disabled'}</span>
+                <input type="checkbox" className="sr-only" checked={settings.transcodeAudioToAacLc} onChange={(event) => onUpdate('transcodeAudioToAacLc', event.target.checked)} />
+                <span className="admin-toggle relative block h-7 w-12 rounded-full" aria-hidden="true"><span className="absolute left-1 top-1 h-5 w-5 rounded-full bg-[#91A0AF] transition-transform" /></span>
+              </label>
+            </div>
           </div>
         </div>
 

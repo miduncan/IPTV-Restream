@@ -24,9 +24,9 @@ function ChannelList({
   };
 
   return (
-    <div className="flex space-x-3 hover:overflow-x-auto overflow-hidden pb-2 px-1 pt-1 scroll-container">
+    <div className="space-y-1">
       {channels.length === 0 && (
-        <div className="flex min-h-28 w-full items-center justify-center rounded-lg border border-dashed border-gray-700 px-5 text-center text-sm text-gray-400">
+        <div className="flex min-h-32 w-full items-center justify-center rounded-lg border border-dashed border-[#304254] px-5 text-center text-sm text-[#91A0AF]">
           No channels have been added. Add one from the admin panel.
         </div>
       )}
@@ -35,24 +35,24 @@ function ChannelList({
           key={channel.id}
           title={channel.name.length > 28 ? channel.name : ""}
           onClick={() => onSelectChannel(channel)}
-          className={`group relative p-2 rounded-lg transition-all ${
+          className={`channel-row group ${
             selectedChannel?.id === channel.id
-              ? "bg-blue-500 bg-opacity-20 ring-2 ring-blue-500"
-              : "hover:bg-gray-700"
+              ? "channel-row-active"
+              : ""
           }`}
         >
-          <div className="h-20 w-20 mb-2 flex items-center justify-center rounded-lg mx-auto">
+          <div className="flex h-11 w-14 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#0B1118]">
             <img
               src={channel.avatar}
               alt={channel.name}
-              className="w-full h-full object-contain rounded-lg transition-transform group-hover:scale-105"
+              className="h-full w-full object-contain"
             />
           </div>
-          <p className="text-sm font-medium truncate text-center">
-            {channel.name.length > 28
-              ? `${channel.name.substring(0, 28)}...`
-              : channel.name}
-          </p>
+          <div className="min-w-0 flex-1 text-left">
+            <p className="truncate text-sm font-medium text-[#DCE6EF]">{channel.name}</p>
+            <p className="mt-0.5 truncate text-xs text-[#617386]">{channel.group || channel.playlistName || 'Live channel'}</p>
+          </div>
+          {selectedChannel?.id === channel.id && <span className="status-light shrink-0 bg-[#44D492] text-[#44D492]" aria-label="Currently playing" />}
         </button>
       ))}
     </div>

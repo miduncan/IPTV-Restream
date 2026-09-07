@@ -13,6 +13,7 @@ const controller = require("../controllers/AdminSettingsController");
 const ffmpegService = require("../services/restream/FFmpegService");
 
 const configuredSettings = {
+  streamSynchronizationEnabled: true,
   transcodeAudioToAacLc: true,
   xtreamUrl: "https://provider.example.com:8080",
   xtreamUsername: "viewer",
@@ -40,18 +41,21 @@ test.beforeEach(() => {
 
 test("settings have typed defaults when SQLite contains no values", () => {
   assert.deepEqual(settingsService.getAll(), {
+    streamSynchronizationEnabled: false,
     transcodeAudioToAacLc: false,
     xtreamUrl: "",
     xtreamUsername: "",
     xtreamPassword: "",
   });
   assert.equal(settingsService.shouldTranscodeAudioToAacLc(), false);
+  assert.equal(settingsService.shouldSynchronizePlayback(), false);
 });
 
 test("settings are persisted in SQLite and exposed through typed accessors", () => {
   assert.deepEqual(settingsService.replace(configuredSettings), configuredSettings);
-  assert.equal(settingsStore.list().length, 4);
+  assert.equal(settingsStore.list().length, 5);
   assert.equal(settingsService.shouldTranscodeAudioToAacLc(), true);
+  assert.equal(settingsService.shouldSynchronizePlayback(), true);
   assert.deepEqual(settingsService.getXtreamCredentials(), {
     url: configuredSettings.xtreamUrl,
     username: configuredSettings.xtreamUsername,
@@ -66,6 +70,7 @@ test("settings endpoint accepts empty optional Xtream fields", () => {
     {
       body: {
         settings: {
+          streamSynchronizationEnabled: false,
           transcodeAudioToAacLc: false,
           xtreamUrl: "",
           xtreamUsername: "",

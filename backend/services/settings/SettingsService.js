@@ -1,6 +1,7 @@
 const settingsStore = require("./SettingsStore");
 
 const SETTING_KEYS = Object.freeze({
+  streamSynchronizationEnabled: "stream_synchronization_enabled",
   transcodeAudioToAacLc: "transcode_audio_to_aac_lc",
   xtreamUrl: "xtream_url",
   xtreamUsername: "xtream_username",
@@ -8,6 +9,7 @@ const SETTING_KEYS = Object.freeze({
 });
 
 const DEFAULT_SETTINGS = Object.freeze({
+  streamSynchronizationEnabled: false,
   transcodeAudioToAacLc: false,
   xtreamUrl: "",
   xtreamUsername: "",
@@ -21,6 +23,8 @@ function readString(name) {
 const settingsService = {
   getAll() {
     return {
+      streamSynchronizationEnabled:
+        settingsStore.get(SETTING_KEYS.streamSynchronizationEnabled) === "true",
       transcodeAudioToAacLc:
         settingsStore.get(SETTING_KEYS.transcodeAudioToAacLc) === "true",
       xtreamUrl: readString("xtreamUrl"),
@@ -31,6 +35,10 @@ const settingsService = {
 
   replace(settings) {
     settingsStore.replace([
+      {
+        key: SETTING_KEYS.streamSynchronizationEnabled,
+        value: String(settings.streamSynchronizationEnabled),
+      },
       {
         key: SETTING_KEYS.transcodeAudioToAacLc,
         value: String(settings.transcodeAudioToAacLc),
@@ -45,6 +53,10 @@ const settingsService = {
 
   shouldTranscodeAudioToAacLc() {
     return settingsStore.get(SETTING_KEYS.transcodeAudioToAacLc) === "true";
+  },
+
+  shouldSynchronizePlayback() {
+    return settingsStore.get(SETTING_KEYS.streamSynchronizationEnabled) === "true";
   },
 
   getXtreamCredentials() {

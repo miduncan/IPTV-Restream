@@ -74,13 +74,13 @@ function Chat() {
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg">
-      <div className="flex items-center space-x-2 p-4 border-b border-gray-700">
-        <MessageSquare className="w-5 h-5 text-blue-500" />
-        <h2 className="text-xl font-semibold">Live Chat</h2>
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex items-center gap-2 border-b border-[#233242] px-4 py-3 text-sm text-[#91A0AF]">
+        <MessageSquare className="h-4 w-4 text-[#4EA1FF]" />
+        Messages update live
       </div>
 
-      <div className="h-[calc(100vh-13rem)] overflow-y-auto p-4 space-y-4 scroll-container vertical-scroll-container">
+      <div className="min-h-[22rem] flex-1 space-y-4 overflow-y-auto p-4 scroll-container vertical-scroll-container lg:min-h-0">
         {messages.map((msg) => {
           if(msg.user.name === user?.name) {
             return <SendMessage key={msg.id} msg={msg}></SendMessage>;
@@ -92,16 +92,17 @@ function Chat() {
         })}
       </div>
 
-      <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-700">
+      <form onSubmit={handleSendMessage} className="border-t border-[#233242] p-4">
         <div className="relative">
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type a message..."
-            className="w-full bg-gray-700 rounded-lg pl-4 pr-12 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Write a message"
+            aria-label="Chat message"
+            className="admin-input w-full py-2.5 pl-3 pr-12 text-sm"
           />
-          <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-600 p-1.5 rounded-lg transition-colors">
+          <button type="submit" aria-label="Send message" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md bg-[#4EA1FF] p-1.5 text-[#07111B] transition-colors hover:bg-[#72B4FF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8BC3FF]">
             <Send className="w-4 h-4" />
           </button>
         </div>

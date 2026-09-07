@@ -229,24 +229,28 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
   };
 
   return (
-    <div className="relative bg-gray-800 rounded-lg overflow-hidden">
+    <div className="video-frame">
       <video
         ref={videoRef}
-        className="w-full aspect-video bg-black"
+        className="block h-auto max-h-[calc(100vh-7rem)] w-full bg-black object-contain aspect-video"
         muted
         autoPlay
         playsInline
         controls
         onClick={handleVideoClick}
       />
-      <div className="flex items-center p-4 bg-gray-900 text-white">
-        <img 
-          src={channel?.avatar} 
-          alt={`${channel?.name} avatar`} 
-          className="w-10 h-10 object-contain mr-3" 
-        />
-        <span className="font-medium">{channel?.name}</span>
-      </div>
+      {channel ? (
+        <div className="video-meta">
+          <img src={channel.avatar} alt="" className="h-9 w-9 rounded-md bg-[#0B1118] object-contain" />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-[#EAF0F6]">{channel.name}</p>
+            <p className="truncate text-xs text-[#91A0AF]">{channel.group || channel.playlistName || 'Live stream'}</p>
+          </div>
+          <span className="ml-auto flex items-center gap-2 text-xs text-[#91A0AF]"><span className="status-light bg-[#44D492] text-[#44D492]" /> Live</span>
+        </div>
+      ) : (
+        <div className="video-meta text-sm text-[#91A0AF]">Choose a channel from the sidebar to start watching.</div>
+      )}
     </div>
   );
 }

@@ -12,6 +12,10 @@ function validateSettings(settings) {
     return "Transcode audio to AAC-LC must be true or false";
   }
 
+  if (typeof settings.streamSynchronizationEnabled !== "boolean") {
+    return "Stream synchronization must be true or false";
+  }
+
   for (const field of STRING_FIELDS) {
     if (typeof settings[field] !== "string") {
       return `${field} must be a string`;
