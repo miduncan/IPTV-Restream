@@ -39,6 +39,9 @@ function startFFmpeg(nextChannel) {
         '-reconnect_at_eof', '1',
         '-reconnect_streamed', '1',
         '-reconnect_delay_max', '2',
+        // Some Xtream servers send an initial burst faster than real time.
+        // Pace it so HLS program timestamps do not run ahead of the player.
+        '-re',
         '-i', channelUrl,
         ...getCodecArguments(),
         '-f', 'hls',

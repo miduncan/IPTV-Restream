@@ -14,6 +14,7 @@ const authController = require('./controllers/AuthController');
 const adminSettingsController = require('./controllers/AdminSettingsController');
 const adminChannelController = require('./controllers/AdminChannelController');
 const streamController = require('./services/restream/StreamController');
+const RestreamIdleManager = require('./services/restream/RestreamIdleManager');
 const ChannelService = require('./services/ChannelService');
 const PlaylistUpdater = require('./services/PlaylistUpdater');
 
@@ -72,12 +73,14 @@ app.use('/proxy', proxyRouter);
 
 
 const PORT = 5000;
-const server = app.listen(PORT, async () => {
+const restreamIdleManager = new RestreamIdleManager({
+  getCurrentChannel: () => ChannelService.getCurrentChannel(),
+  streamController,
+});
+streamController.setStartAllowed(() => restreamIdleManager.isStreamingAllowed());
+
+const server = app.listen(PORT, () => {
   console.log(`Server listening on Port ${PORT}`);
-  const currentChannel = ChannelService.getCurrentChannel();
-  if (currentChannel && currentChannel.restream()) {
-    await streamController.start(currentChannel);
-  }
   PlaylistUpdater.startScheduler();
   PlaylistUpdater.registerChannelsPlaylist(ChannelService.getChannels());
 });
@@ -101,6 +104,7 @@ const connectedUsers = {};
 
 io.on('connection', socket => {
   console.log('New client connected');
+  restreamIdleManager.viewerConnected(socket.id);
 
   socket.on('new-user', userId => {
     connectedUsers[socket.id] = userId;
@@ -108,6 +112,7 @@ io.on('connection', socket => {
   })
 
   socket.on('disconnect', () => {
+    restreamIdleManager.viewerDisconnected(socket.id);
     socket.broadcast.emit('user-disconnected', connectedUsers[socket.id]);
     delete connectedUsers[socket.id];
   })

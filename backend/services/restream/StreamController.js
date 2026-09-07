@@ -2,7 +2,14 @@ const ffmpegService = require('./FFmpegService');
 const storageService = require('./StorageService');
 const SessionFactory = require('../session/SessionFactory');
 
+let startAllowed = () => true;
+
 async function start(nextChannel) {
+    if (!startAllowed()) {
+        console.log('Skipping restream start because there are no active viewers');
+        return false;
+    }
+
     console.log('Starting channel', nextChannel.id);
     storageService.createChannelStorage(nextChannel.id);
 
@@ -12,6 +19,7 @@ async function start(nextChannel) {
     }
 
     ffmpegService.startFFmpeg(nextChannel);
+    return true;
 }
 
 
@@ -26,7 +34,17 @@ async function stop(channel) {
     storageService.deleteChannelStorage(channel.id);
 }
 
+function isRunning() {
+    return ffmpegService.isFFmpegRunning();
+}
+
+function setStartAllowed(predicate) {
+    startAllowed = typeof predicate === 'function' ? predicate : () => true;
+}
+
 module.exports = {
     start,
-    stop
+    stop,
+    isRunning,
+    setStartAllowed
 };

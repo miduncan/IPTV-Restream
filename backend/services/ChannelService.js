@@ -8,6 +8,7 @@ class ChannelService {
     constructor() {
         this.channels = ChannelStorage.load();
         this.currentChannel = this.channels[0];
+        this.channelSwitchQueue = Promise.resolve();
     }
 
     clearChannels() {
@@ -51,7 +52,18 @@ class ChannelService {
         return newChannel;
     }
 
-    async setCurrentChannel(id) {
+    setCurrentChannel(id) {
+        const switchOperation = this.channelSwitchQueue.then(() =>
+            this.performChannelSwitch(id)
+        );
+
+        // Keep later switches moving even if one request fails, while still
+        // returning the original rejection to the caller.
+        this.channelSwitchQueue = switchOperation.catch(() => undefined);
+        return switchOperation;
+    }
+
+    async performChannelSwitch(id) {
         const nextChannel = this.channels.find(channel => channel.id === id);
         if (!nextChannel) {
             throw new Error('Channel does not exist');

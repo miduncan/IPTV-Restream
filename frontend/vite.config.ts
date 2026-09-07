@@ -7,8 +7,9 @@ const appendFrontendTrailingSlash: Plugin = {
     server.middlewares.use((request, response, next) => {
       const url = new URL(request.url || '/', 'http://localhost')
       const isBackendRoute = /^\/(api|socket\.io|proxy|streams)(\/|$)/.test(url.pathname)
+      const isViteInternalRoute = url.pathname.startsWith('/@')
       const lastSegment = url.pathname.split('/').pop() || ''
-      if (url.pathname !== '/' && !url.pathname.endsWith('/') && !lastSegment.includes('.') && !isBackendRoute) {
+      if (url.pathname !== '/' && !url.pathname.endsWith('/') && !lastSegment.includes('.') && !isBackendRoute && !isViteInternalRoute) {
         response.statusCode = 301
         response.setHeader('Location', `${url.pathname}/${url.search}`)
         response.end()
@@ -21,8 +22,9 @@ const appendFrontendTrailingSlash: Plugin = {
     server.middlewares.use((request, response, next) => {
       const url = new URL(request.url || '/', 'http://localhost')
       const isBackendRoute = /^\/(api|socket\.io|proxy|streams)(\/|$)/.test(url.pathname)
+      const isViteInternalRoute = url.pathname.startsWith('/@')
       const lastSegment = url.pathname.split('/').pop() || ''
-      if (url.pathname !== '/' && !url.pathname.endsWith('/') && !lastSegment.includes('.') && !isBackendRoute) {
+      if (url.pathname !== '/' && !url.pathname.endsWith('/') && !lastSegment.includes('.') && !isBackendRoute && !isViteInternalRoute) {
         response.statusCode = 301
         response.setHeader('Location', `${url.pathname}/${url.search}`)
         response.end()
