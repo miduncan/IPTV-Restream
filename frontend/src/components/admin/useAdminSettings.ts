@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import apiService, { ApiError } from '../../services/ApiService';
-import { AdminPageState, Setting } from './adminTypes';
+import { AdminPageState, AdminSettings } from './adminTypes';
 
-const KEY_PATTERN = /^[a-zA-Z][a-zA-Z0-9._-]{0,63}$/;
+const DEFAULT_SETTINGS: AdminSettings = {
+  transcodeAudioToAacLc: false,
+  xtreamUrl: '',
+  xtreamUsername: '',
+  xtreamPassword: '',
+};
 
-function validateSettings(settings: Setting[]) {
-  const keys = new Set<string>();
-
-  for (const setting of settings) {
-    const key = setting.key.trim();
-    if (!KEY_PATTERN.test(key)) {
-      return key ? `Invalid setting key: ${key}` : 'Every setting needs a key';
+function validateSettings(settings: AdminSettings) {
+  if (settings.xtreamUrl) {
+    try {
+      const url = new URL(settings.xtreamUrl.trim());
+      if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
+    } catch {
+      return 'Xtream URL must be a valid HTTP or HTTPS URL';
     }
-    if (setting.value.length > 4096) return `The value for ${key} is too long`;
-    if (keys.has(key.toLowerCase())) return `Duplicate setting key: ${key}`;
-    keys.add(key.toLowerCase());
   }
 
   return '';
@@ -22,8 +24,8 @@ function validateSettings(settings: Setting[]) {
 
 export function useAdminSettings() {
   const [pageState, setPageState] = useState<AdminPageState>('loading');
-  const [settings, setSettings] = useState<Setting[]>([]);
-  const [savedSettings, setSavedSettings] = useState<Setting[]>([]);
+  const [settings, setSettings] = useState<AdminSettings>(DEFAULT_SETTINGS);
+  const [savedSettings, setSavedSettings] = useState<AdminSettings>(DEFAULT_SETTINGS);
   const [message, setMessage] = useState('');
   const [isSaving, setIsSaving] = useState(false);
   const [authRequired, setAuthRequired] = useState(true);
@@ -35,7 +37,7 @@ export function useAdminSettings() {
     try {
       const status = await apiService.request<{ enabled: boolean }>('/auth/admin-status');
       setAuthRequired(status.enabled);
-      const response = await apiService.request<{ settings: Setting[] }>('/admin/settings');
+      const response = await apiService.request<{ settings: AdminSettings }>('/admin/settings');
       setSettings(response.settings);
       setSavedSettings(response.settings);
       setPageState('ready');
@@ -84,11 +86,11 @@ export function useAdminSettings() {
     setMessage('');
 
     try {
-      const response = await apiService.request<{ settings: Setting[] }>(
+      const response = await apiService.request<{ settings: AdminSettings }>(
         '/admin/settings',
         'PUT',
         undefined,
-        { settings: settings.map(({ key, value }) => ({ key: key.trim(), value })) }
+        { settings }
       );
       setSettings(response.settings);
       setSavedSettings(response.settings);
@@ -106,28 +108,14 @@ export function useAdminSettings() {
 
   const signOut = () => {
     localStorage.removeItem('admin_token');
-    setSettings([]);
-    setSavedSettings([]);
+    setSettings(DEFAULT_SETTINGS);
+    setSavedSettings(DEFAULT_SETTINGS);
     setPageState('login');
     setMessage('');
   };
 
-  const updateSetting = (index: number, field: 'key' | 'value', value: string) => {
-    setSettings((current) =>
-      current.map((setting, settingIndex) =>
-        settingIndex === index ? { ...setting, [field]: value } : setting
-      )
-    );
-    setMessage('');
-  };
-
-  const removeSetting = (index: number) => {
-    setSettings((current) => current.filter((_, settingIndex) => settingIndex !== index));
-    setMessage('');
-  };
-
-  const addSetting = () => {
-    setSettings((current) => [...current, { key: '', value: '' }]);
+  const updateSetting = <Key extends keyof AdminSettings>(key: Key, value: AdminSettings[Key]) => {
+    setSettings((current) => ({ ...current, [key]: value }));
     setMessage('');
   };
 
@@ -144,7 +132,5 @@ export function useAdminSettings() {
     saveSettings,
     signOut,
     updateSetting,
-    removeSetting,
-    addSetting,
   };
 }

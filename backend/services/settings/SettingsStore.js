@@ -21,6 +21,11 @@ const listStatement = database.prepare(`
   FROM settings
   ORDER BY key COLLATE NOCASE
 `);
+const getStatement = database.prepare(`
+  SELECT value
+  FROM settings
+  WHERE key = ?
+`);
 const deleteStatement = database.prepare("DELETE FROM settings");
 const insertStatement = database.prepare(`
   INSERT INTO settings (key, value, updated_at)
@@ -37,6 +42,10 @@ const replaceTransaction = database.transaction((settings) => {
 });
 
 module.exports = {
+  get(key) {
+    return getStatement.get(key)?.value;
+  },
+
   list() {
     return listStatement.all();
   },

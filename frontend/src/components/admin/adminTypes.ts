@@ -1,7 +1,8 @@
-export interface Setting {
-  key: string;
-  value: string;
-  updatedAt?: string;
+export interface AdminSettings {
+  transcodeAudioToAacLc: boolean;
+  xtreamUrl: string;
+  xtreamUsername: string;
+  xtreamPassword: string;
 }
 
 export type AdminPageState = 'loading' | 'login' | 'ready' | 'error';

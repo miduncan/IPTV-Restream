@@ -1,9 +1,24 @@
 const { spawn } = require('child_process');
+const settingsService = require('../settings/SettingsService');
 require('dotenv').config();
 
 let currentFFmpegProcess = null;
 let currentChannelId = null;
 const STORAGE_PATH = process.env.STORAGE_PATH;
+
+function getCodecArguments() {
+    if (!settingsService.shouldTranscodeAudioToAacLc()) {
+        return ['-c', 'copy'];
+    }
+
+    return [
+        '-c:v', 'copy',
+        '-c:a', 'aac',
+        '-profile:a', 'aac_low',
+        '-b:a', '128k',
+        '-ac', '2'
+    ];
+}
 
 function startFFmpeg(nextChannel) {
     console.log('Starting FFmpeg process with channel:', nextChannel.id);
@@ -25,7 +40,7 @@ function startFFmpeg(nextChannel) {
         '-reconnect_streamed', '1',
         '-reconnect_delay_max', '2',
         '-i', channelUrl,
-        '-c', 'copy',
+        ...getCodecArguments(),
         '-f', 'hls',
         '-hls_time', '6',
         '-hls_list_size', '5',
@@ -81,5 +96,6 @@ function isFFmpegRunning() {
 module.exports = {
     startFFmpeg,
     stopFFmpeg,
-    isFFmpegRunning
+    isFFmpegRunning,
+    getCodecArguments
 };

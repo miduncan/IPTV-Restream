@@ -44,8 +44,6 @@ function AdminPage() {
         isSaving={adminSettings.isSaving}
         hasChanges={adminSettings.hasChanges}
         validationMessage={adminSettings.validationMessage}
-        onAdd={adminSettings.addSetting}
-        onRemove={adminSettings.removeSetting}
         onSave={adminSettings.saveSettings}
         onUpdate={adminSettings.updateSetting}
       />

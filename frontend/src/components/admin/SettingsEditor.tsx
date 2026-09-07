@@ -1,59 +1,68 @@
-import { Activity, Check, Loader, Plus, Save, Settings2, Trash2 } from 'lucide-react';
-import { Setting } from './adminTypes';
+import { Activity, Check, Eye, EyeOff, Loader, Radio, Save } from 'lucide-react';
+import { useState } from 'react';
+import { AdminSettings } from './adminTypes';
 
 interface SettingsEditorProps {
   hasChanges: boolean;
   isSaving: boolean;
   message: string;
-  settings: Setting[];
+  settings: AdminSettings;
   validationMessage: string;
-  onAdd: () => void;
-  onRemove: (index: number) => void;
   onSave: () => void;
-  onUpdate: (index: number, field: 'key' | 'value', value: string) => void;
+  onUpdate: <Key extends keyof AdminSettings>(key: Key, value: AdminSettings[Key]) => void;
 }
 
-interface SettingRowProps {
-  index: number;
-  setting: Setting;
-  onRemove: (index: number) => void;
-  onUpdate: (index: number, field: 'key' | 'value', value: string) => void;
+interface TextSettingProps {
+  autoComplete?: string;
+  description: string;
+  label: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  type?: 'text' | 'password';
+  value: string;
 }
 
-function SettingRow({ index, setting, onRemove, onUpdate }: SettingRowProps) {
+function TextSetting({
+  autoComplete,
+  description,
+  label,
+  onChange,
+  placeholder,
+  type = 'text',
+  value,
+}: TextSettingProps) {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPassword = type === 'password';
+  const inputType = isPassword && !showPassword ? 'password' : 'text';
+
   return (
-    <div className="admin-setting-row grid gap-3 p-3 sm:grid-cols-[minmax(180px,0.8fr)_minmax(240px,1.4fr)_44px]">
-      <label className="block">
-        <span className="mb-1.5 block text-xs text-[#738496] sm:sr-only">Key</span>
+    <label className="block border-b border-[#233242] px-5 py-5 last:border-b-0 sm:grid sm:grid-cols-[minmax(180px,0.75fr)_minmax(260px,1.25fr)] sm:items-center sm:gap-8 sm:px-6">
+      <span>
+        <span className="block text-sm font-medium text-[#EAF0F6]">{label}</span>
+        <span className="mt-1 block max-w-sm text-xs leading-5 text-[#738496]">{description}</span>
+      </span>
+      <span className="relative mt-3 block sm:mt-0">
         <input
-          value={setting.key}
-          onChange={(event) => onUpdate(index, 'key', event.target.value)}
-          className="admin-input w-full px-3 py-2.5"
-          placeholder="setting.key"
-          maxLength={64}
-          aria-label={`Setting ${index + 1} key`}
-        />
-      </label>
-      <label className="block">
-        <span className="mb-1.5 block text-xs text-[#738496] sm:sr-only">Value</span>
-        <input
-          value={setting.value}
-          onChange={(event) => onUpdate(index, 'value', event.target.value)}
-          className="admin-input w-full px-3 py-2.5"
-          placeholder="Value"
+          type={inputType}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          className={`admin-input w-full px-3 py-2.5 ${isPassword ? 'pr-11' : ''}`}
+          placeholder={placeholder}
           maxLength={4096}
-          aria-label={`Setting ${index + 1} value`}
+          autoComplete={autoComplete}
         />
-      </label>
-      <button
-        type="button"
-        onClick={() => onRemove(index)}
-        className="admin-icon-button flex h-11 items-center justify-center self-end sm:self-auto"
-        aria-label={`Remove ${setting.key || `setting ${index + 1}`}`}
-      >
-        <Trash2 className="h-4 w-4" />
-      </button>
-    </div>
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShowPassword((current) => !current)}
+            className="admin-password-toggle absolute inset-y-0 right-0 flex w-11 items-center justify-center text-[#738496]"
+            aria-label={showPassword ? 'Hide Xtream password' : 'Show Xtream password'}
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </button>
+        )}
+      </span>
+    </label>
   );
 }
 
@@ -63,64 +72,79 @@ function SettingsEditor({
   message,
   settings,
   validationMessage,
-  onAdd,
-  onRemove,
   onSave,
   onUpdate,
 }: SettingsEditorProps) {
   return (
     <section className="min-w-0 px-5 py-8 sm:px-8 lg:px-12 lg:py-12">
       <div className="mx-auto max-w-4xl">
-        <div className="flex flex-col gap-5 border-b border-[#233242] pb-7 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <div className="mb-3 flex items-center gap-2 text-sm text-[#44D492]">
-              <Activity className="h-4 w-4" /> Server configuration
-            </div>
-            <h1 className="text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">Settings</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#91A0AF]">
-              Values saved here are shared by the server. Keys may contain letters, numbers, periods, underscores, and hyphens.
-            </p>
+        <div className="border-b border-[#233242] pb-7">
+          <div className="mb-3 flex items-center gap-2 text-sm text-[#44D492]">
+            <Activity className="h-4 w-4" /> Server configuration
           </div>
-          <button
-            type="button"
-            onClick={onAdd}
-            className="admin-secondary flex shrink-0 items-center justify-center gap-2 px-4 py-2.5 text-sm"
-          >
-            <Plus className="h-4 w-4" /> Add setting
-          </button>
+          <h1 className="text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">Settings</h1>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-[#91A0AF]">
+            Configure stream processing and the Xtream account used by the server.
+          </p>
         </div>
 
-        <div className="mt-7">
-          <div className="hidden grid-cols-[minmax(180px,0.8fr)_minmax(240px,1.4fr)_44px] gap-3 px-3 pb-2 text-xs text-[#738496] sm:grid">
-            <span>Key</span><span>Value</span><span className="sr-only">Actions</span>
+        <div className="mt-8">
+          <div className="mb-3 flex items-center gap-2 text-sm font-medium text-[#DCE6EF]">
+            <Radio className="h-4 w-4 text-[#4EA1FF]" /> Stream processing
           </div>
+          <div className="admin-panel px-5 py-5 sm:flex sm:items-center sm:justify-between sm:gap-8 sm:px-6">
+            <div>
+              <h2 className="text-sm font-medium">Transcode audio to AAC-LC</h2>
+              <p className="mt-1 max-w-xl text-xs leading-5 text-[#738496]">
+                Copy the video stream and convert audio to stereo AAC-LC at 128 kbps. Leave this off to copy both streams unchanged.
+              </p>
+            </div>
+            <label className="mt-4 inline-flex shrink-0 cursor-pointer items-center gap-3 sm:mt-0">
+              <span className="text-xs text-[#91A0AF]">{settings.transcodeAudioToAacLc ? 'Enabled' : 'Disabled'}</span>
+              <input
+                type="checkbox"
+                className="sr-only"
+                checked={settings.transcodeAudioToAacLc}
+                onChange={(event) => onUpdate('transcodeAudioToAacLc', event.target.checked)}
+              />
+              <span className="admin-toggle relative block h-7 w-12 rounded-full" aria-hidden="true">
+                <span className="absolute left-1 top-1 h-5 w-5 rounded-full bg-[#91A0AF] transition-transform" />
+              </span>
+            </label>
+          </div>
+        </div>
 
-          {settings.length === 0 ? (
-            <div className="admin-empty py-16 text-center">
-              <Settings2 className="mx-auto h-6 w-6 text-[#617386]" />
-              <h2 className="mt-4 font-medium">No server settings yet</h2>
-              <p className="mt-1 text-sm text-[#91A0AF]">Add the first key and value to start configuring the server.</p>
-              <button
-                type="button"
-                onClick={onAdd}
-                className="admin-secondary mt-5 inline-flex items-center gap-2 px-4 py-2.5 text-sm"
-              >
-                <Plus className="h-4 w-4" /> Add setting
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {settings.map((setting, index) => (
-                <SettingRow
-                  key={`${setting.updatedAt || 'new'}-${index}`}
-                  index={index}
-                  setting={setting}
-                  onRemove={onRemove}
-                  onUpdate={onUpdate}
-                />
-              ))}
-            </div>
-          )}
+        <div className="mt-8">
+          <div className="mb-3 flex items-center gap-2 text-sm font-medium text-[#DCE6EF]">
+            <Radio className="h-4 w-4 text-[#4EA1FF]" /> Xtream connection
+          </div>
+          <div className="admin-panel overflow-hidden">
+            <TextSetting
+              label="Xtream URL"
+              description="Portal base URL, including the port when required."
+              placeholder="https://provider.example.com:8080"
+              value={settings.xtreamUrl}
+              onChange={(value) => onUpdate('xtreamUrl', value)}
+              autoComplete="url"
+            />
+            <TextSetting
+              label="Xtream username"
+              description="Username supplied by your IPTV provider."
+              placeholder="Username"
+              value={settings.xtreamUsername}
+              onChange={(value) => onUpdate('xtreamUsername', value)}
+              autoComplete="username"
+            />
+            <TextSetting
+              label="Xtream password"
+              description="Stored in the server SQLite database as plain text."
+              placeholder="Password"
+              value={settings.xtreamPassword}
+              onChange={(value) => onUpdate('xtreamPassword', value)}
+              type="password"
+              autoComplete="current-password"
+            />
+          </div>
         </div>
 
         <footer className="mt-7 flex flex-col-reverse gap-3 border-t border-[#233242] pt-6 sm:flex-row sm:items-center sm:justify-between">
