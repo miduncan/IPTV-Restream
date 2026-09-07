@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Loader } from 'lucide-react';
 import AdminLayout from './AdminLayout';
 import { AdminSection } from './AdminLayout';
-import AdminLogin from './AdminLogin';
 import ChannelManager from './ChannelManager';
 import SettingsEditor from './SettingsEditor';
 import { useAdminSettings } from './useAdminSettings';
@@ -22,10 +21,6 @@ function AdminPage() {
     );
   }
 
-  if (adminSettings.pageState === 'login') {
-    return <AdminLogin message={adminSettings.message} onLogin={adminSettings.login} />;
-  }
-
   if (adminSettings.pageState === 'error') {
     return (
       <main className="admin-shell flex min-h-screen items-center justify-center px-5 text-[#EAF0F6]">
@@ -41,7 +36,7 @@ function AdminPage() {
   }
 
   return (
-    <AdminLayout authRequired={adminSettings.authRequired} onSignOut={adminSettings.signOut} activeSection={activeSection} onSectionChange={setActiveSection}>
+    <AdminLayout activeSection={activeSection} onSectionChange={setActiveSection}>
       {activeSection === 'settings' ? <SettingsEditor
         settings={adminSettings.settings}
         message={adminSettings.message}

@@ -6,4 +6,4 @@ export interface AdminSettings {
   xtreamPassword: string;
 }
 
-export type AdminPageState = 'loading' | 'login' | 'ready' | 'error';
+export type AdminPageState = 'loading' | 'ready' | 'error';

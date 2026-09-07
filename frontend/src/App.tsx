@@ -8,14 +8,13 @@ import socketService from './services/SocketService';
 import apiService from './services/ApiService';
 import { ToastProvider, ToastContext } from './components/notifications/ToastContext';
 import ToastContainer from './components/notifications/ToastContainer';
-import { AdminProvider, useAdmin } from './components/admin/AdminContext';
-import AdminModal from './components/admin/AdminModal';
 
 function AppContent() {
 
   const [channels, setChannels] = useState<Channel[]>([]);
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [channelSelectRequiresAdmin, setChannelSelectRequiresAdmin] = useState(false);
   const [sidebarView, setSidebarView] = useState<'channels' | 'chat'>('channels');
   const [syncEnabled, setSyncEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,7 +22,6 @@ function AppContent() {
   const [selectedGroup, setSelectedGroup] = useState<string>('Category');
   const [isGroupDropdownOpen, setIsGroupDropdownOpen] = useState(false);
 
-  const { isAdmin, isAdminEnabled, setIsAdminEnabled, channelSelectRequiresAdmin, setChannelSelectRequiresAdmin } = useAdmin();
   const { addToast } = useContext(ToastContext);
 
   const filteredChannels = useMemo(() => {
@@ -44,9 +42,9 @@ function AppContent() {
   useEffect(() => {
     // Check if admin mode is enabled on the server
     apiService
-      .request<{ enabled: boolean; channelSelectionRequiresAdmin: boolean; streamSynchronizationEnabled: boolean }>('/auth/admin-status', 'GET')
+      .request<{ isAdmin: boolean; channelSelectionRequiresAdmin: boolean; streamSynchronizationEnabled: boolean }>('/auth/admin-status', 'GET')
       .then((data) => {
-        setIsAdminEnabled(data.enabled);
+        setIsAdmin(data.isAdmin);
         setChannelSelectRequiresAdmin(data.channelSelectionRequiresAdmin);
         setSyncEnabled(data.streamSynchronizationEnabled);
       })
@@ -148,7 +146,7 @@ function AppContent() {
       socketService.disconnect();
       console.log('WebSocket connection closed');
     };
-  }, []);
+  }, [addToast]);
 
   return (
     <main className="player-shell min-h-screen text-[#EAF0F6]">
@@ -169,14 +167,16 @@ function AppContent() {
           )}
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
+          {isAdmin && (
             <a
               href="/admin/"
               aria-label="Open admin panel"
-              className={`player-header-action ${isAdmin ? "text-[#70E0AE]" : ""}`}
+              className="player-header-action text-[#70E0AE]"
             >
               <Shield className="h-4 w-4" />
               <span className="hidden sm:inline">Admin</span>
             </a>
+          )}
           </div>
       </header>
 
@@ -248,8 +248,13 @@ function AppContent() {
                 selectedChannel={selectedChannel}
                 setSearchQuery={setSearchQuery}
                 onChannelSelectCheckPermission={() => {
-                  if (isAdminEnabled && channelSelectRequiresAdmin && !isAdmin) {
-                    setIsAdminModalOpen(true);
+                  if (channelSelectRequiresAdmin && !isAdmin) {
+                    addToast({
+                      type: 'error',
+                      title: 'Admin access required',
+                      message: 'Sign in with the admin site credentials to switch channels.',
+                      duration: 4000,
+                    });
                     return false;
                   }
                   return true;
@@ -263,11 +268,6 @@ function AppContent() {
         </aside>
       </div>
 
-      <AdminModal
-        isOpen={isAdminModalOpen}
-        onClose={() => setIsAdminModalOpen(false)}
-      />
-
       <ToastContainer />
     </main>
   );
@@ -276,9 +276,7 @@ function AppContent() {
 function App() {
   return (
     <ToastProvider>
-      <AdminProvider>
-        <AppContent />
-      </AdminProvider>
+      <AppContent />
     </ToastProvider>
   );
 }

@@ -1,29 +1,21 @@
 import { io, Socket } from 'socket.io-client';
-import { ChannelMode } from '../types';
+import { Channel, ChannelMode } from '../types';
 
 class SocketService {
   private socket: Socket | null = null;
-  private listeners: Map<string, ((data: any) => void)[]> = new Map();
+  private listeners: Map<string, ((data: unknown) => void)[]> = new Map();
   private isConnecting: boolean = false;
-  private token: string | null = null;
 
-  // Initialize connection with JWT token if available
   connect() {
-    // Get JWT token from localStorage
-    const newToken = localStorage.getItem('admin_token');
-
-    // If already connected with the same token, don't reconnect
-    if (this.socket?.connected && this.token === newToken) {
+    if (this.socket?.connected) {
       return;
     }
 
-    // If connecting with the same token, don't try to connect again
-    if (this.isConnecting && this.token === newToken) {
+    if (this.isConnecting) {
       return;
     }
 
     this.isConnecting = true;
-    this.token = newToken;
 
     console.log('Connecting to WebSocket server');
 
@@ -40,16 +32,10 @@ class SocketService {
       this.listeners = savedListeners;
     }
 
-    // Connect with auth token if available
-    this.socket = io(import.meta.env.VITE_BACKEND_URL, {
-      auth: this.token ? { token: this.token } : undefined,
-    });
+    this.socket = io(import.meta.env.VITE_BACKEND_URL);
 
     this.socket.on('connect', () => {
-      console.log(
-        'Connected to WebSocket server with auth:',
-        this.token ? 'yes' : 'no'
-      );
+      console.log('Connected to WebSocket server');
       this.isConnecting = false;
 
       // Re-apply listeners to new socket connection
@@ -72,7 +58,7 @@ class SocketService {
     });
 
     // Listen for incoming custom events
-    this.socket.onAny((event: string, data: any) => {
+    this.socket.onAny((event: string, data: unknown) => {
       this.notifyListeners(event, data);
     });
   }
@@ -100,20 +86,22 @@ class SocketService {
       this.listeners.set(event, []);
     }
     const eventListeners = this.listeners.get(event);
+    const normalizedListener = listener as unknown as (data: unknown) => void;
     // Avoid duplicate listeners
-    if (eventListeners && !eventListeners.includes(listener)) {
-      eventListeners.push(listener);
+    if (eventListeners && !eventListeners.includes(normalizedListener)) {
+      eventListeners.push(normalizedListener);
     }
   }
 
   // Unsubscribe from event
   unsubscribeFromEvent<T>(event: string, listener: (data: T) => void) {
     const eventListeners = this.listeners.get(event);
+    const normalizedListener = listener as unknown as (data: unknown) => void;
     if (eventListeners) {
       this.listeners.set(
         event,
         eventListeners.filter(
-          (existingListener) => existingListener !== listener
+          (existingListener) => existingListener !== normalizedListener
         )
       );
     }
@@ -188,7 +176,7 @@ class SocketService {
   }
 
   // Update channel
-  updateChannel(id: number, updatedAttributes: any) {
+  updateChannel(id: number, updatedAttributes: Partial<Channel>) {
     if (!this.socket || !this.socket.connected) {
       this.connect();
 
@@ -228,7 +216,7 @@ class SocketService {
   // Update playlist
   updatePlaylist(
     playlist: string,
-    updatedAttributes: any,
+    updatedAttributes: Partial<Channel>,
   ) {
     if (!this.socket || !this.socket.connected) {
       this.connect();
@@ -254,17 +242,6 @@ class SocketService {
     this.socket.emit('delete-playlist', playlist);
   }
 
-  // Update authentication token and reconnect
-  updateAuthToken() {
-    // Force disconnect and reconnect with the new token
-    this.disconnect();
-
-    // Reset the token so connect() will use the new one from localStorage
-    this.token = null;
-
-    // Connect with the new token
-    this.connect();
-  }
 }
 
 const socketService = new SocketService();

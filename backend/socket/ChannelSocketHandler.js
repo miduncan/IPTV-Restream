@@ -6,7 +6,7 @@ module.exports = (io, socket) => {
   socket.on("add-channel", ({ name, url, avatar, mode, headersJson }) => {
     try {
       // Check if user is authenticated as admin from the socket middleware
-      if (authService.isAdminEnabled() && !socket.user?.isAdmin) {
+      if (!authService.hasRole(socket.user, "admin")) {
         return socket.emit("app-error", {
           message: "Admin access required to add channels",
         });
@@ -29,9 +29,8 @@ module.exports = (io, socket) => {
   socket.on("set-current-channel", async (id) => {
     try {
       if (
-        authService.isAdminEnabled() &&
         authService.channelSelectionRequiresAdmin() &&
-        !socket.user?.isAdmin
+        !authService.hasRole(socket.user, "admin")
       ) {
         return socket.emit("app-error", {
           message: "Admin access required to switch channel",
@@ -48,7 +47,7 @@ module.exports = (io, socket) => {
   socket.on("delete-channel", async (id) => {
     try {
       // Check if user is authenticated as admin from the socket middleware
-      if (authService.isAdminEnabled() && !socket.user?.isAdmin) {
+      if (!authService.hasRole(socket.user, "admin")) {
         return socket.emit("app-error", {
           message: "Admin access required to delete channels",
         });
@@ -67,7 +66,7 @@ module.exports = (io, socket) => {
   socket.on("update-channel", async ({ id, updatedAttributes }) => {
     try {
       // Check if user is authenticated as admin from the socket middleware
-      if (authService.isAdminEnabled() && !socket.user?.isAdmin) {
+      if (!authService.hasRole(socket.user, "admin")) {
         return socket.emit("app-error", {
           message: "Admin access required to update channels",
         });

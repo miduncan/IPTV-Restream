@@ -32,20 +32,23 @@ docker compose up -d
 ```
 Open http://localhost
 
-### Optional shared password gate
+### Shared viewer and admin access
 
 To keep the entire site out of public view, copy `.env.example` to `.env` and
-set a shared username and password:
+set separate shared credentials for friends and administrators:
 
 ```dotenv
-BASIC_AUTH_USERNAME=friends
-BASIC_AUTH_PASSWORD=replace-with-a-long-random-passphrase
+BASIC_AUTH_FRIENDS_USERNAME=friends
+BASIC_AUTH_FRIENDS_PASSWORD=replace-with-a-long-random-passphrase
+BASIC_AUTH_ADMIN_USERNAME=admin
+BASIC_AUTH_ADMIN_PASSWORD=replace-with-a-different-long-random-passphrase
 ```
 
 The Nginx proxy applies HTTP Basic Auth to every route, including the API,
-WebSocket, proxied media, and restreamed segments. Leave both values empty (or
-omit them) to disable the gate. Friends will see the browser's standard login
-prompt and can all use the same credentials.
+WebSocket, proxied media, and restreamed segments. Both users can watch and
+chat, while only the admin user can open `/admin/` or perform privileged HTTP
+and WebSocket operations. The backend maps the Nginx-authenticated username to
+an application role, so there is no second admin login or JWT session.
 
 > [!IMPORTANT]
 > Use HTTPS when exposing the site publicly. HTTP Basic Auth does not encrypt

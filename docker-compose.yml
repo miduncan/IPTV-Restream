@@ -31,9 +31,6 @@ services:
       # If you have problems with the playlist, set the backend url manually here
       #BACKEND_URL: http://localhost:5000
 
-      # Admin mode configuration
-      ADMIN_ENABLED: "true"
-      ADMIN_PASSWORD: "your_secure_password"
       # CHANNEL_SELECTION_REQUIRES_ADMIN: "true"
     networks:
       - app-network
@@ -42,8 +39,10 @@ services:
   iptv_restream_nginx:
     image: nginx:alpine
     environment:
-      BASIC_AUTH_USERNAME: "${BASIC_AUTH_USERNAME:-}"
-      BASIC_AUTH_PASSWORD: "${BASIC_AUTH_PASSWORD:-}"
+      BASIC_AUTH_FRIENDS_USERNAME: "${BASIC_AUTH_FRIENDS_USERNAME:-}"
+      BASIC_AUTH_FRIENDS_PASSWORD: "${BASIC_AUTH_FRIENDS_PASSWORD:-}"
+      BASIC_AUTH_ADMIN_USERNAME: "${BASIC_AUTH_ADMIN_USERNAME:-}"
+      BASIC_AUTH_ADMIN_PASSWORD: "${BASIC_AUTH_ADMIN_PASSWORD:-}"
     volumes:
       - ./deployment/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./deployment/nginx/40-basic-auth.sh:/docker-entrypoint.d/40-basic-auth.sh:ro

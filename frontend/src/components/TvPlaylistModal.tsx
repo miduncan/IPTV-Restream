@@ -1,15 +1,14 @@
 import { X, Copy, Tv2 } from 'lucide-react';
 import { useContext } from 'react';
 import { ToastContext } from './notifications/ToastContext';
-import { useAdmin } from './admin/AdminContext';
 
 interface TvPlaylistModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isAdmin?: boolean;
 }
 
-function TvPlaylistModal({ isOpen, onClose }: TvPlaylistModalProps) {
-  const { isAdmin  } = useAdmin();
+function TvPlaylistModal({ isOpen, onClose, isAdmin = false }: TvPlaylistModalProps) {
   const { addToast } = useContext(ToastContext);
   const playlistUrl = `${import.meta.env.VITE_BACKEND_URL || window.location.origin}/api/channels/playlist`;
 
@@ -23,7 +22,7 @@ function TvPlaylistModal({ isOpen, onClose }: TvPlaylistModalProps) {
         title: 'Playlist URL copied to clipboard',
         duration: 2500,
       });
-    } catch (err) {
+    } catch {
       addToast({
         type: 'error',
         title: 'Failed to copy URL',

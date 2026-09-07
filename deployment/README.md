@@ -2,28 +2,24 @@
 
 ## Configuration Options
 
-### Admin Mode
-Admin Mode restricts channel management to authenticated administrators only.
+### Viewer and admin roles
 
-**Configuration (in `docker-compose.yml` > iptv_restream_backend):**
-- `ADMIN_ENABLED`: Enable admin mode (`true` or `false` [default]).
-- `ADMIN_PASSWORD`: Set a secure password for admin login (required if admin mode is enabled).
-- `CHANNEL_SELECTION_REQUIRES_ADMIN`: If set to `true`, only admins can switch the currently watched channel.
-
-### Shared site password
-
-Nginx can require one shared HTTP Basic Auth login before serving any frontend,
-API, WebSocket, proxy, or stream URL. Create a `.env` file next to the Compose
-file:
+Nginx authenticates two shared users and passes their identity to the backend,
+which assigns either the `viewer` or `admin` role. Create a `.env` file next to
+the Compose file:
 
 ```dotenv
-BASIC_AUTH_USERNAME=friends
-BASIC_AUTH_PASSWORD=replace-with-a-long-random-passphrase
+BASIC_AUTH_FRIENDS_USERNAME=friends
+BASIC_AUTH_FRIENDS_PASSWORD=replace-with-a-long-random-passphrase
+BASIC_AUTH_ADMIN_USERNAME=admin
+BASIC_AUTH_ADMIN_PASSWORD=replace-with-a-different-long-random-passphrase
 ```
 
-Both values must be set to enable the gate. If both are omitted or empty, it is
-disabled. This is separate from Admin Mode: the shared login controls who can
-reach the site, while Admin Mode controls who can change its configuration.
+Both users can view streams and use chat. Only the admin user can open the
+control panel, change settings, manage channels and playlists, or use other
+privileged API and WebSocket operations. Set
+`CHANNEL_SELECTION_REQUIRES_ADMIN=true` on the backend if switching the current
+channel should also require the admin role.
 
 Use HTTPS for any public deployment because Basic Auth credentials are only
 protected in transit when TLS is enabled.

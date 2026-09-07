@@ -1,17 +1,15 @@
 import { ReactNode } from 'react';
-import { ArrowLeft, ListVideo, LogOut, Radio, Settings2 } from 'lucide-react';
+import { ArrowLeft, ListVideo, Radio, Settings2 } from 'lucide-react';
 
 export type AdminSection = 'settings' | 'channels';
 
 interface AdminLayoutProps {
-  authRequired: boolean;
   children: ReactNode;
-  onSignOut: () => void;
   activeSection: AdminSection;
   onSectionChange: (section: AdminSection) => void;
 }
 
-function AdminLayout({ authRequired, children, onSignOut, activeSection, onSectionChange }: AdminLayoutProps) {
+function AdminLayout({ children, activeSection, onSectionChange }: AdminLayoutProps) {
   return (
     <main className="admin-shell min-h-screen text-[#EAF0F6]">
       <header className="admin-header flex h-16 items-center justify-between px-5 sm:px-8">
@@ -21,15 +19,9 @@ function AdminLayout({ authRequired, children, onSignOut, activeSection, onSecti
           <span className="text-[#435466]">/</span>
           <span className="text-sm text-[#91A0AF]">Admin</span>
         </div>
-        {authRequired ? (
-          <button type="button" onClick={onSignOut} className="admin-link flex items-center gap-2 text-sm text-[#91A0AF]">
-            <LogOut className="h-4 w-4" /> Sign out
-          </button>
-        ) : (
-          <a href="/" className="admin-link flex items-center gap-2 text-sm text-[#91A0AF]">
-            <ArrowLeft className="h-4 w-4" /> Back to player
-          </a>
-        )}
+        <a href="/" className="admin-link flex items-center gap-2 text-sm text-[#91A0AF]">
+          <ArrowLeft className="h-4 w-4" /> Back to player
+        </a>
       </header>
 
       <div className="mx-auto grid max-w-[1500px] md:grid-cols-[230px_minmax(0,1fr)]">
