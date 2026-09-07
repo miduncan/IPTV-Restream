@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch --watch-preserve-output server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/antebrl/iptv-restream#readme",
   "dependencies": {
+    "better-sqlite3": "^11.10.0",
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",

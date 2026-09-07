@@ -11,6 +11,7 @@ const proxyController = require('./controllers/ProxyController');
 const centralChannelController = require('./controllers/CentralChannelController');
 const channelController = require('./controllers/ChannelController');
 const authController = require('./controllers/AuthController');
+const adminSettingsController = require('./controllers/AdminSettingsController');
 const streamController = require('./services/restream/StreamController');
 const ChannelService = require('./services/ChannelService');
 const PlaylistUpdater = require('./services/PlaylistUpdater');
@@ -37,6 +38,13 @@ authRouter.post('/admin-login', authController.adminLogin);
 authRouter.get('/admin-status', authController.checkAdminStatus);
 
 app.use('/api/auth', authRouter);
+
+// Admin settings routes
+const adminRouter = express.Router();
+adminRouter.use(authController.verifyToken);
+adminRouter.get('/settings', adminSettingsController.list);
+adminRouter.put('/settings', adminSettingsController.replace);
+app.use('/api/admin', adminRouter);
 
 // Channel routes
 const apiRouter = express.Router();

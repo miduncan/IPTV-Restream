@@ -219,15 +219,14 @@ function AppContent() {
             >
               <Settings className="w-6 h-6 text-blue-500" />
             </button>
-            {isAdminEnabled && (
-              <button
-                onClick={() => setIsAdminModalOpen(true)}
-                className={`p-2 hover:bg-gray-800 rounded-lg transition-colors ${isAdmin ?
-                  "text-green-500" : ""}`}
-              >
-                <Shield className="w-6 h-6" />
-              </button>
-            )}
+            <a
+              href="/admin/"
+              aria-label="Open admin panel"
+              className={`p-2 hover:bg-gray-800 rounded-lg transition-colors ${isAdmin ?
+                "text-green-500" : ""}`}
+            >
+              <Shield className="w-6 h-6" />
+            </a>
           </div>
         </header>
 

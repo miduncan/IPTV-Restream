@@ -2,6 +2,145 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+}
+
+.admin-shell {
+  background:
+    linear-gradient(90deg, rgba(78, 161, 255, 0.035) 1px, transparent 1px) 0 0 / 48px 48px,
+    #0b1118;
+}
+
+.admin-header {
+  background: rgba(11, 17, 24, 0.92);
+  border-bottom: 1px solid #233242;
+  backdrop-filter: blur(16px);
+}
+
+.admin-sidebar {
+  background: rgba(14, 23, 32, 0.76);
+  border-bottom: 1px solid #233242;
+}
+
+.admin-panel,
+.admin-setting-row,
+.admin-empty {
+  background: #101a24;
+  border: 1px solid #233242;
+  border-radius: 10px;
+}
+
+.admin-input {
+  background: #0b1118;
+  border: 1px solid #304254;
+  border-radius: 7px;
+  color: #eaf0f6;
+  outline: none;
+}
+
+.admin-input::placeholder {
+  color: #617386;
+}
+
+.admin-input:focus {
+  border-color: #4ea1ff;
+  box-shadow: 0 0 0 3px rgba(78, 161, 255, 0.14);
+}
+
+.admin-primary,
+.admin-secondary,
+.admin-icon-button,
+.admin-nav-active {
+  border-radius: 7px;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.admin-primary {
+  background: #4ea1ff;
+  color: #07111b;
+  font-weight: 650;
+}
+
+.admin-primary:hover:not(:disabled) {
+  background: #72b4ff;
+}
+
+.admin-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.admin-secondary {
+  background: #152332;
+  border: 1px solid #304254;
+  color: #dce6ef;
+}
+
+.admin-secondary:hover,
+.admin-icon-button:hover {
+  background: #1c2d3e;
+  border-color: #496177;
+}
+
+.admin-icon-button {
+  border: 1px solid #304254;
+  color: #91a0af;
+}
+
+.admin-icon-button:hover {
+  color: #ff8b8b;
+}
+
+.admin-nav-active {
+  background: rgba(78, 161, 255, 0.12);
+  color: #8bc3ff;
+  box-shadow: inset 2px 0 #4ea1ff;
+}
+
+.admin-link:hover {
+  color: #eaf0f6;
+}
+
+.signal-mark {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgba(78, 161, 255, 0.42);
+  border-radius: 50%;
+  color: #4ea1ff;
+  box-shadow: inset 0 0 0 5px rgba(78, 161, 255, 0.07), 0 0 28px rgba(78, 161, 255, 0.12);
+}
+
+.signal-mark-small {
+  width: 32px;
+  height: 32px;
+}
+
+.status-light {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+@media (min-width: 768px) {
+  .admin-sidebar {
+    border-right: 1px solid #233242;
+    border-bottom: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-primary,
+  .admin-secondary,
+  .admin-icon-button,
+  .admin-nav-active {
+    transition: none;
+  }
+}
+
 
 .scroll-container::-webkit-scrollbar {
     height: 10px; /* Höhe für horizontale Scrollbar */

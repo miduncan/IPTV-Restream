@@ -4,6 +4,14 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      input: {
+        player: 'index.html',
+        admin: 'admin/index.html',
+      },
+    },
+  },
   optimizeDeps: {
     exclude: ['lucide-react'],
   },

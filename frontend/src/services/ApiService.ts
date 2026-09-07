@@ -2,6 +2,16 @@ const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || '';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
+export class ApiError extends Error {
+  status: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+}
+
 const apiService = {
   /**
    * Execute API request with JWT auth token (if available)
@@ -33,7 +43,14 @@ const apiService = {
       const response = await fetch(`${api_url}${path}`, options);
 
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        let message = `Request failed with status ${response.status}`;
+        try {
+          const errorBody = (await response.json()) as { error?: string; message?: string };
+          message = errorBody.error || errorBody.message || message;
+        } catch {
+          // Keep the status-based message when the response has no JSON body.
+        }
+        throw new ApiError(response.status, message);
       }
 
       const data = (await response.json()) as T;
