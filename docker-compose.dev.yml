@@ -1,0 +1,27 @@
+services:
+  iptv_restream_frontend:
+    build:
+      target: builder
+    command: npm run dev -- --host 0.0.0.0
+    restart: "no"
+    init: true
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+
+  iptv_restream_backend:
+    command: npm run dev
+    restart: "no"
+    init: true
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+
+  iptv_restream_nginx:
+    restart: "no"
+    volumes:
+      - ./deployment/nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+
+volumes:
+  frontend_node_modules:
+  backend_node_modules:

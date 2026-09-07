@@ -32,6 +32,37 @@ docker compose up -d
 ```
 Open http://localhost
 
+### Local development
+
+The development Compose overlay bind-mounts the source tree into the containers.
+Vite hot-reloads frontend changes, and Node automatically restarts when backend
+JavaScript changes.
+
+```bash
+make dev
+```
+
+Open http://localhost. Stop the stack with `Ctrl+C`; use `make dev-down` to
+remove its containers. A source-only edit does not require a rebuild. After
+changing a `package.json`, lockfile, or Dockerfile, rebuild once with:
+
+```bash
+make dev-build
+```
+
+The equivalent command without Make is:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+To run the production-style stack instead, build it and start it in the
+background with:
+
+```bash
+make prod
+```
+
 > [!IMPORTANT]  
 > If a channel/playlist won't work, please try with `proxy` or `restream` mode. This fixes most of the problems! See also [Channel Mode](#channel-mode).
 >
