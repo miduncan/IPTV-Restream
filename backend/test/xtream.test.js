@@ -84,6 +84,35 @@ test("channel construction ignores client URLs and uses saved credentials", () =
   );
 });
 
+test("short EPG requests include the stream ID and requested limit", async (t) => {
+  const originalFetch = global.fetch;
+  t.after(() => { global.fetch = originalFetch; });
+  let requestedUrl;
+  global.fetch = async (url) => {
+    requestedUrl = new URL(url);
+    return { ok: true, json: async () => ({ epg_listings: [{ id: "1" }] }) };
+  };
+
+  assert.deepEqual(await xtreamService.fetchShortEpg("42", 6), [{ id: "1" }]);
+  assert.equal(requestedUrl.searchParams.get("action"), "get_short_epg");
+  assert.equal(requestedUrl.searchParams.get("stream_id"), "42");
+  assert.equal(requestedUrl.searchParams.get("limit"), "6");
+});
+
+test("server info requests use the player API without an action", async (t) => {
+  const originalFetch = global.fetch;
+  t.after(() => { global.fetch = originalFetch; });
+  let requestedUrl;
+  global.fetch = async (url) => {
+    requestedUrl = new URL(url);
+    return { ok: true, json: async () => ({ server_info: { timezone: "Europe/Amsterdam" } }) };
+  };
+
+  assert.deepEqual(await xtreamService.fetchServerInfo(), { timezone: "Europe/Amsterdam" });
+  assert.equal(requestedUrl.pathname, "/portal/player_api.php");
+  assert.equal(requestedUrl.searchParams.has("action"), false);
+});
+
 test.after(() => {
   fs.rmSync(testDirectory, { recursive: true, force: true });
 });

@@ -35,6 +35,20 @@ export interface Channel {
   sourceId?: string | null;
 }
 
+export interface EpgProgramme {
+  id: string;
+  title: string;
+  description: string;
+  start: string;
+  end: string;
+}
+
+export interface ChannelEpg {
+  current: EpgProgramme | null;
+  next: EpgProgramme | null;
+  cacheUntil: string;
+}
+
 export interface ChatMessage {
   id: number;
   user: User;

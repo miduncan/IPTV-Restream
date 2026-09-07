@@ -3,7 +3,7 @@ import { Search, Radio, ChevronDown, Shield, MessageSquare, ListVideo, ListFilte
 import VideoPlayer from './components/VideoPlayer';
 import ChannelList from './components/ChannelList';
 import Chat from './components/chat/Chat';
-import { Channel } from './types';
+import { Channel, ChannelEpg } from './types';
 import socketService from './services/SocketService';
 import apiService from './services/ApiService';
 import { ToastProvider, ToastContext } from './components/notifications/ToastContext';
@@ -20,6 +20,8 @@ function AppContent() {
   const [sidebarView, setSidebarView] = useState<'channels' | 'chat'>('channels');
   const [syncEnabled, setSyncEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [epgByChannel, setEpgByChannel] = useState<Record<number, ChannelEpg>>({});
+  const [epgRefreshVersion, setEpgRefreshVersion] = useState(0);
 
   const [selectedGroup, setSelectedGroup] = useState<string>('Category');
   const [isGroupDropdownOpen, setIsGroupDropdownOpen] = useState(false);
@@ -120,6 +122,7 @@ function AppContent() {
     };
 
     const socketConnectedListener = () => refreshChannelState();
+    const epgCacheClearedListener = () => setEpgRefreshVersion((version) => version + 1);
 
     socketService.subscribeToEvent('channel-added', channelAddedListener);
     socketService.subscribeToEvent('channel-selected', channelSelectedListener);
@@ -127,6 +130,7 @@ function AppContent() {
     socketService.subscribeToEvent('channel-deleted', channelDeletedListener);
     socketService.subscribeToEvent('app-error', errorListener);
     socketService.subscribeToEvent('socket-connected', socketConnectedListener);
+    socketService.subscribeToEvent('epg-cache-cleared', epgCacheClearedListener);
 
     socketService.connect();
 
@@ -146,10 +150,46 @@ function AppContent() {
       );
       socketService.unsubscribeFromEvent('app-error', errorListener);
       socketService.unsubscribeFromEvent('socket-connected', socketConnectedListener);
+      socketService.unsubscribeFromEvent('epg-cache-cleared', epgCacheClearedListener);
       socketService.disconnect();
       console.log('WebSocket connection closed');
     };
   }, [addToast]);
+
+  useEffect(() => {
+    let cancelled = false;
+    let refreshTimer: number | undefined;
+
+    if (channels.length === 0) {
+      setEpgByChannel({});
+      return;
+    }
+
+    const refreshEpg = async () => {
+      try {
+        const response = await apiService.request<{ guides: Record<number, ChannelEpg> }>('/channels/epg');
+        if (cancelled) return;
+        setEpgByChannel(response.guides);
+
+        const now = Date.now();
+        const nextExpiry = Object.values(response.guides)
+          .map((guide) => Date.parse(guide.cacheUntil))
+          .filter((expiry) => Number.isFinite(expiry) && expiry > now)
+          .sort((left, right) => left - right)[0];
+        const delay = nextExpiry ? Math.max(1000, nextExpiry - now + 1000) : 5 * 60 * 1000;
+        refreshTimer = window.setTimeout(refreshEpg, delay);
+      } catch (error) {
+        console.error('Error refreshing EPG:', error);
+        if (!cancelled) refreshTimer = window.setTimeout(refreshEpg, 5 * 60 * 1000);
+      }
+    };
+
+    refreshEpg();
+    return () => {
+      cancelled = true;
+      if (refreshTimer !== undefined) window.clearTimeout(refreshTimer);
+    };
+  }, [channels, epgRefreshVersion]);
 
   return (
     <main className="player-shell min-h-screen text-[#EAF0F6]">
@@ -250,6 +290,7 @@ function AppContent() {
               <ChannelList
                 channels={filteredChannels}
                 selectedChannel={selectedChannel}
+                epgByChannel={epgByChannel}
                 setSearchQuery={setSearchQuery}
                 onChannelSelectCheckPermission={() => {
                   if (channelSelectRequiresAdmin && !isAdmin) {

@@ -7,7 +7,14 @@ function getPlayerApiUrl(baseUrl, username, password, action) {
   const url = new URL(`${baseUrl.replace(/\/+$/, "")}/player_api.php`);
   url.searchParams.set("username", username);
   url.searchParams.set("password", password);
-  url.searchParams.set("action", action);
+  if (action) url.searchParams.set("action", action);
+  return url;
+}
+
+function addQueryParameters(url, parameters) {
+  for (const [key, value] of Object.entries(parameters)) {
+    if (value !== undefined && value !== null) url.searchParams.set(key, String(value));
+  }
   return url;
 }
 
@@ -92,6 +99,32 @@ class XtreamService {
         return [];
       }
     });
+  }
+
+  async fetchShortEpg(streamId, limit = 2) {
+    const normalizedId = normalizeStreamId(streamId);
+    const normalizedLimit = Number.parseInt(limit, 10);
+    if (!Number.isInteger(normalizedLimit) || normalizedLimit < 1 || normalizedLimit > 20) {
+      const error = new Error("EPG limit must be between 1 and 20");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const { url, username, password } = this.getCredentials();
+    const response = await fetchJson(addQueryParameters(
+      getPlayerApiUrl(url, username, password, "get_short_epg"),
+      { stream_id: normalizedId, limit: normalizedLimit }
+    ));
+
+    return Array.isArray(response?.epg_listings) ? response.epg_listings : [];
+  }
+
+  async fetchServerInfo() {
+    const { url, username, password } = this.getCredentials();
+    const response = await fetchJson(getPlayerApiUrl(url, username, password));
+    return response?.server_info && typeof response.server_info === "object"
+      ? response.server_info
+      : null;
   }
 
   async findStream(streamId) {

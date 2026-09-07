@@ -13,6 +13,7 @@ const channelController = require('./controllers/ChannelController');
 const authController = require('./controllers/AuthController');
 const adminSettingsController = require('./controllers/AdminSettingsController');
 const adminChannelController = require('./controllers/AdminChannelController');
+const epgController = require('./controllers/EpgController');
 const streamController = require('./services/restream/StreamController');
 const RestreamIdleManager = require('./services/restream/RestreamIdleManager');
 const ChannelService = require('./services/ChannelService');
@@ -50,6 +51,7 @@ adminRouter.put('/settings', adminSettingsController.replace);
 adminRouter.get('/channels', adminChannelController.list);
 adminRouter.post('/channels', adminChannelController.add);
 adminRouter.delete('/channels/:channelId', adminChannelController.remove);
+adminRouter.delete('/epg-cache', epgController.clear);
 app.use('/api/admin', adminRouter);
 
 // Channel routes
@@ -58,6 +60,7 @@ apiRouter.get('/', channelController.getChannels);
 apiRouter.get('/current', channelController.getCurrentChannel);
 apiRouter.delete('/clear', authController.requireAdmin, channelController.clearChannels);
 apiRouter.get('/playlist', centralChannelController.playlist);
+apiRouter.get('/epg', epgController.list);
 apiRouter.get('/:channelId', channelController.getChannel);
 // Protected routes
 apiRouter.delete('/:channelId', authController.requireAdmin, channelController.deleteChannel);

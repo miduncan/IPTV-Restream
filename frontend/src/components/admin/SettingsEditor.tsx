@@ -1,6 +1,7 @@
-import { Activity, Check, Eye, EyeOff, Loader, Radio, Save } from 'lucide-react';
+import { Activity, Check, Eye, EyeOff, Loader, Radio, RefreshCw, Save } from 'lucide-react';
 import { useState } from 'react';
 import { AdminSettings } from './adminTypes';
+import apiService from '../../services/ApiService';
 
 interface SettingsEditorProps {
   hasChanges: boolean;
@@ -75,6 +76,22 @@ function SettingsEditor({
   onSave,
   onUpdate,
 }: SettingsEditorProps) {
+  const [isClearingEpg, setIsClearingEpg] = useState(false);
+  const [epgMessage, setEpgMessage] = useState('');
+
+  const clearEpgCache = async () => {
+    setIsClearingEpg(true);
+    setEpgMessage('');
+    try {
+      const response = await apiService.request<{ cleared: number }>('/admin/epg-cache', 'DELETE');
+      setEpgMessage(response.cleared === 1 ? 'Cleared 1 cached channel' : `Cleared ${response.cleared} cached channels`);
+    } catch (error) {
+      setEpgMessage(error instanceof Error ? error.message : 'Could not clear the EPG cache');
+    } finally {
+      setIsClearingEpg(false);
+    }
+  };
+
   return (
     <section className="min-w-0 px-5 py-8 sm:px-8 lg:px-12 lg:py-12">
       <div className="mx-auto max-w-4xl">
@@ -148,6 +165,17 @@ function SettingsEditor({
               type="password"
               autoComplete="current-password"
             />
+            <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+              <div>
+                <h2 className="text-sm font-medium">EPG cache</h2>
+                <p className="mt-1 max-w-xl text-xs leading-5 text-[#738496]">Programme data refreshes when the current show ends. Clear it to force fresh data on the next player request.</p>
+                {epgMessage && <p className="mt-1.5 text-xs text-[#91A0AF]" aria-live="polite">{epgMessage}</p>}
+              </div>
+              <button type="button" onClick={clearEpgCache} disabled={isClearingEpg} className="admin-secondary flex shrink-0 items-center justify-center gap-2 px-4 py-2.5 text-sm disabled:cursor-not-allowed disabled:opacity-50">
+                <RefreshCw className={`h-4 w-4 ${isClearingEpg ? 'animate-spin' : ''}`} />
+                {isClearingEpg ? 'Clearing' : 'Clear EPG cache'}
+              </button>
+            </div>
           </div>
         </div>
 
