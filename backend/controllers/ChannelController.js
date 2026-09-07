@@ -19,7 +19,7 @@ module.exports = {
     },
 
     getCurrentChannel(req, res) {
-        res.json(ChannelService.getCurrentChannel());
+        res.json(ChannelService.getCurrentChannel() ?? null);
     },
 
     deleteChannel(req, res) {

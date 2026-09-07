@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import { Loader } from 'lucide-react';
 import AdminLayout from './AdminLayout';
+import { AdminSection } from './AdminLayout';
 import AdminLogin from './AdminLogin';
+import ChannelManager from './ChannelManager';
 import SettingsEditor from './SettingsEditor';
 import { useAdminSettings } from './useAdminSettings';
 
 function AdminPage() {
   const adminSettings = useAdminSettings();
+  const [activeSection, setActiveSection] = useState<AdminSection>('settings');
 
   if (adminSettings.pageState === 'loading') {
     return (
@@ -37,8 +41,8 @@ function AdminPage() {
   }
 
   return (
-    <AdminLayout authRequired={adminSettings.authRequired} onSignOut={adminSettings.signOut}>
-      <SettingsEditor
+    <AdminLayout authRequired={adminSettings.authRequired} onSignOut={adminSettings.signOut} activeSection={activeSection} onSectionChange={setActiveSection}>
+      {activeSection === 'settings' ? <SettingsEditor
         settings={adminSettings.settings}
         message={adminSettings.message}
         isSaving={adminSettings.isSaving}
@@ -46,7 +50,7 @@ function AdminPage() {
         validationMessage={adminSettings.validationMessage}
         onSave={adminSettings.saveSettings}
         onUpdate={adminSettings.updateSetting}
-      />
+      /> : <ChannelManager />}
     </AdminLayout>
   );
 }

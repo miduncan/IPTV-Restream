@@ -9,9 +9,21 @@ import { ModeTooltipContent, Tooltip } from '../Tooltip';
 interface ChannelModalProps {
   onClose: () => void;
   channel?: Channel | null;
+  preset?: Partial<Channel> | null;
+  channelOnly?: boolean;
+  sourceDescription?: string;
+  onAddChannel?: (channel: ChannelFormValues) => Promise<void>;
 }
 
-function ChannelModal({ onClose, channel }: ChannelModalProps) {
+export interface ChannelFormValues {
+  name: string;
+  url: string;
+  avatar: string;
+  mode: ChannelMode;
+  headers: CustomHeader[];
+}
+
+function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDescription, onAddChannel }: ChannelModalProps) {
   const [type, setType] = useState<'channel' | 'playlist'>('playlist');
   const [isEditMode, setIsEditMode] = useState(false);
   const [inputMethod, setInputMethod] = useState<'url' | 'text'>('url');
@@ -26,6 +38,8 @@ function ChannelModal({ onClose, channel }: ChannelModalProps) {
   const [playlistUrl, setPlaylistUrl] = useState('');
   const [playlistText, setPlaylistText] = useState('');
   const [playlistUpdate, setPlaylistUpdate] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const { addToast } = useContext(ToastContext);
 
@@ -56,20 +70,21 @@ function ChannelModal({ onClose, channel }: ChannelModalProps) {
       }
 
     } else {
-      setName('');
-      setUrl('');
-      setAvatar('');
-      setMode('proxy');
-      setHeaders([]);
+      setName(preset?.name || '');
+      setUrl(preset?.url || '');
+      setAvatar(preset?.avatar || '');
+      setMode(preset?.mode || 'proxy');
+      setHeaders(preset?.headers || []);
       setPlaylistName('');
       setPlaylistUrl('');
       setPlaylistText('');
       setPlaylistUpdate(false);
       setIsEditMode(false);
-      setType('playlist');
+      setType(channelOnly || preset ? 'channel' : 'playlist');
       setInputMethod('url');
     }
-  }, [channel]);
+    setSubmitError('');
+  }, [channel, preset, channelOnly]);
 
   const addHeader = () => {
     setHeaders([...headers, { key: '', value: '' }]);
@@ -94,14 +109,33 @@ function ChannelModal({ onClose, channel }: ChannelModalProps) {
     }
 
     if (type === 'channel') {
-      if (!name.trim() || !url.trim()) return;
-      socketService.addChannel(
-        name.trim(),
-        url.trim(),
-        avatar.trim() || 'https://via.placeholder.com/64',
-        mode,
-        JSON.stringify(headers),
-      );
+      if (!name.trim() || (!url.trim() && !onAddChannel)) return;
+      if (onAddChannel) {
+        setIsSubmitting(true);
+        setSubmitError('');
+        try {
+          await onAddChannel({
+            name: name.trim(),
+            url: url.trim(),
+            avatar: avatar.trim(),
+            mode,
+            headers,
+          });
+        } catch (error) {
+          setSubmitError(error instanceof Error ? error.message : 'Could not add channel');
+          setIsSubmitting(false);
+          return;
+        }
+        setIsSubmitting(false);
+      } else {
+        socketService.addChannel(
+          name.trim(),
+          url.trim(),
+          avatar.trim() || 'https://via.placeholder.com/64',
+          mode,
+          JSON.stringify(headers),
+        );
+      }
     } else if (type === 'playlist') {
       if (inputMethod === 'url' && !playlistUrl.trim()) return;
       if (inputMethod === 'text' && !playlistText.trim()) return;
@@ -170,8 +204,8 @@ function ChannelModal({ onClose, channel }: ChannelModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-gray-800 rounded-lg w-full max-w-md">
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+      <div className="max-h-[calc(100vh-2rem)] overflow-y-auto bg-gray-800 rounded-lg w-full max-w-md scroll-container">
         <div className="flex items-center justify-between p-4 border-b border-gray-700">
           <h2 className="text-xl font-semibold">
             {isEditMode ? (type === 'channel' ? 'Edit Channel' : 'Edit Playlist') : type === 'channel' ? 'Add New Channel' : 'Add New Playlist'}
@@ -184,7 +218,7 @@ function ChannelModal({ onClose, channel }: ChannelModalProps) {
           </button>
         </div>
 
-        {(!isEditMode || channel?.playlist) && (
+        {!channelOnly && (!isEditMode || channel?.playlist) && (
           <div className="p-4 pb-0">
             <div className="flex space-x-4 justify-center">
               <button
@@ -220,7 +254,12 @@ function ChannelModal({ onClose, channel }: ChannelModalProps) {
                   required
                 />
               </div>
-              <div>
+              {sourceDescription ? (
+                <div className="rounded-lg border border-blue-400/20 bg-blue-400/5 px-4 py-3">
+                  <p className="text-sm font-medium text-blue-300">Xtream source</p>
+                  <p className="mt-1 text-xs text-gray-400">{sourceDescription}</p>
+                </div>
+              ) : <div>
                 <div className="flex justify-between items-center mb-1">
                   <label htmlFor="url" className="block text-sm font-medium">
                     Stream URL
@@ -235,7 +274,7 @@ function ChannelModal({ onClose, channel }: ChannelModalProps) {
                   placeholder="Enter stream URL"
                   required
                 />
-              </div>
+              </div>}
               <div>
                 <label htmlFor="avatar" className="block text-sm font-medium mb-1">
                   Avatar URL
@@ -478,6 +517,7 @@ function ChannelModal({ onClose, channel }: ChannelModalProps) {
           )}
 
           <div className="flex justify-end space-x-3">
+            {submitError && <p className="mr-auto self-center text-sm text-red-400" role="alert">{submitError}</p>}
             {isEditMode && (
               <button
                 type="button"
@@ -496,9 +536,10 @@ function ChannelModal({ onClose, channel }: ChannelModalProps) {
             </button>
             <button
               type="submit"
+              disabled={isSubmitting}
               className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              {isEditMode ? 'Update' : 'Add'}
+              {isSubmitting ? 'Adding…' : isEditMode ? 'Update' : 'Add'}
             </button>
           </div>
         </form>

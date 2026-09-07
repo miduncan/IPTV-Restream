@@ -31,6 +31,8 @@ export interface Channel {
   playlist: string;
   playlistName: string;
   playlistUpdate: boolean;
+  source?: string | null;
+  sourceId?: string | null;
 }
 
 export interface ChatMessage {

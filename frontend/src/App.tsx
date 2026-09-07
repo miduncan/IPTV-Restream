@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo, useContext } from 'react';
-import { Search, Plus, Settings, Users, Radio, Tv2, ChevronDown, Shield } from 'lucide-react';
+import { Search, Settings, Users, Radio, Tv2, ChevronDown, Shield } from 'lucide-react';
 import VideoPlayer from './components/VideoPlayer';
 import ChannelList from './components/ChannelList';
 import Chat from './components/chat/Chat';
-import ChannelModal from './components/add_channel/ChannelModal';
 import { Channel } from './types';
 import socketService from './services/SocketService';
 import apiService from './services/ApiService';
@@ -18,7 +17,6 @@ function AppContent() {
 
   const [channels, setChannels] = useState<Channel[]>([]);
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isTvPlaylistOpen, setIsTvPlaylistOpen] = useState(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
@@ -27,7 +25,6 @@ function AppContent() {
     return savedValue !== null ? JSON.parse(savedValue) : false;
   });
   const [searchQuery, setSearchQuery] = useState('');
-  const [editChannel, setEditChannel] = useState<Channel | null>(null);
 
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>('All Channels');
   const [selectedGroup, setSelectedGroup] = useState<string>('Category');
@@ -86,7 +83,7 @@ function AppContent() {
       .catch((error) => console.error('Error loading channels:', error));
 
     apiService
-      .request<Channel>('/channels/current', 'GET')
+      .request<Channel | null>('/channels/current', 'GET')
       .then((data) => setSelectedChannel(data))
       .catch((error) => console.error('Error loading current channel:', error));
 
@@ -95,7 +92,7 @@ function AppContent() {
       setChannels((prevChannels) => [...prevChannels, channel]);
     };
 
-    const channelSelectedListener = (nextChannel: Channel) => {
+    const channelSelectedListener = (nextChannel: Channel | null) => {
       setSelectedChannel(nextChannel);
     };
 
@@ -169,16 +166,6 @@ function AppContent() {
       console.log('WebSocket connection closed');
     };
   }, []);
-
-  const handleEditChannel = (channel: Channel) => {
-    // Only allow editing if admin mode is not enabled or user is admin
-    if (!isAdminEnabled || isAdmin) {
-      setEditChannel(channel);
-      setIsModalOpen(true);
-    } else {
-      setIsAdminModalOpen(true);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
@@ -325,28 +312,12 @@ function AppContent() {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => {
-                    // Only allow adding channels if admin mode is not enabled or user is admin
-                    if (!isAdminEnabled || isAdmin) {
-                      setIsModalOpen(true);
-                      setIsGroupDropdownOpen(false);
-                      setIsPlaylistDropdownOpen(false);
-                    } else {
-                      setIsAdminModalOpen(true);
-                    }
-                  }}
-                  className="p-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  <Plus className="w-5 h-5" />
-                </button>
               </div>
 
               <ChannelList
                 channels={filteredChannels}
                 selectedChannel={selectedChannel}
                 setSearchQuery={setSearchQuery}
-                onEditChannel={handleEditChannel}
                 onChannelSelectCheckPermission={() => {
                   if (isAdminEnabled && channelSelectRequiresAdmin && !isAdmin) {
                     setIsAdminModalOpen(true);
@@ -365,16 +336,6 @@ function AppContent() {
           </div>
         </div>
       </div>
-
-      {isModalOpen && (
-        <ChannelModal
-          onClose={() => {
-            setIsModalOpen(false);
-            setEditChannel(null);
-          }}
-          channel={editChannel}
-        />
-      )}
 
       <SettingsModal
         isOpen={isSettingsOpen}

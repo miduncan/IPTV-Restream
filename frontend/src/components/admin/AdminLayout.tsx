@@ -1,13 +1,17 @@
 import { ReactNode } from 'react';
-import { ArrowLeft, LogOut, Radio, Settings2 } from 'lucide-react';
+import { ArrowLeft, ListVideo, LogOut, Radio, Settings2 } from 'lucide-react';
+
+export type AdminSection = 'settings' | 'channels';
 
 interface AdminLayoutProps {
   authRequired: boolean;
   children: ReactNode;
   onSignOut: () => void;
+  activeSection: AdminSection;
+  onSectionChange: (section: AdminSection) => void;
 }
 
-function AdminLayout({ authRequired, children, onSignOut }: AdminLayoutProps) {
+function AdminLayout({ authRequired, children, onSignOut, activeSection, onSectionChange }: AdminLayoutProps) {
   return (
     <main className="admin-shell min-h-screen text-[#EAF0F6]">
       <header className="admin-header flex h-16 items-center justify-between px-5 sm:px-8">
@@ -31,9 +35,12 @@ function AdminLayout({ authRequired, children, onSignOut }: AdminLayoutProps) {
       <div className="mx-auto grid max-w-[1500px] md:grid-cols-[230px_minmax(0,1fr)]">
         <aside className="admin-sidebar px-5 py-6 sm:px-8 md:min-h-[calc(100vh-4rem)] md:px-5">
           <nav>
-            <a href="/admin/" aria-current="page" className="admin-nav-active flex items-center gap-3 px-3 py-2.5 text-sm font-medium">
+            <button type="button" onClick={() => onSectionChange('settings')} aria-current={activeSection === 'settings' ? 'page' : undefined} className={`${activeSection === 'settings' ? 'admin-nav-active' : 'admin-nav'} flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm font-medium`}>
               <Settings2 className="h-4 w-4" /> Settings
-            </a>
+            </button>
+            <button type="button" onClick={() => onSectionChange('channels')} aria-current={activeSection === 'channels' ? 'page' : undefined} className={`${activeSection === 'channels' ? 'admin-nav-active' : 'admin-nav'} mt-1 flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm font-medium`}>
+              <ListVideo className="h-4 w-4" /> Channels
+            </button>
           </nav>
           <div className="mt-8 space-y-3 px-3 text-xs text-[#91A0AF] md:mt-12">
             <p className="flex items-center gap-2"><span className="status-light bg-[#44D492]" /> API connected</p>

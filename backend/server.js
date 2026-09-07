@@ -12,6 +12,7 @@ const centralChannelController = require('./controllers/CentralChannelController
 const channelController = require('./controllers/ChannelController');
 const authController = require('./controllers/AuthController');
 const adminSettingsController = require('./controllers/AdminSettingsController');
+const adminChannelController = require('./controllers/AdminChannelController');
 const streamController = require('./services/restream/StreamController');
 const ChannelService = require('./services/ChannelService');
 const PlaylistUpdater = require('./services/PlaylistUpdater');
@@ -44,6 +45,9 @@ const adminRouter = express.Router();
 adminRouter.use(authController.verifyToken);
 adminRouter.get('/settings', adminSettingsController.list);
 adminRouter.put('/settings', adminSettingsController.replace);
+adminRouter.get('/channels', adminChannelController.list);
+adminRouter.post('/channels', adminChannelController.add);
+adminRouter.delete('/channels/:channelId', adminChannelController.remove);
 app.use('/api/admin', adminRouter);
 
 // Channel routes
@@ -88,6 +92,7 @@ const io = new Server(server, {
     credentials: true,
   },
 });
+app.set('io', io);
 
 // Add JWT authentication middleware to socket.io
 io.use(socketAuthMiddleware);

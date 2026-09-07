@@ -62,6 +62,9 @@ module.exports = {
         const channel = ChannelService.getCurrentChannel();
 
         res.set('Access-Control-Allow-Origin', '*');
+        if (!channel) {
+            return res.status(404).json({ error: 'No channel is currently selected' });
+        }
         if(channel.restream()) {
             const path = Path.resolve(`${STORAGE_PATH}${channel.id}/${channel.id}.m3u8`);
             if (fs.existsSync(path)) {

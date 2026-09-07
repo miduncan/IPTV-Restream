@@ -104,7 +104,7 @@ async function handleDeletePlaylist({ playlist }, io, socket) {
     channels.forEach((channel) => {
       io.emit("channel-deleted", channel.id);
     });
-    io.emit("channel-selected", ChannelService.getCurrentChannel());
+    io.emit("channel-selected", ChannelService.getCurrentChannel() ?? null);
 
     PlaylistUpdater.delete(playlist);
   } catch (err) {

@@ -13,7 +13,7 @@
 **IPTV Player** - IPTV web player with support for any other iptv players by exposing the playlist.
 **Restream / Proxy** - Proxy your iptv streams through the backend. <br>
 **Synchronization** - The selection and playback of the stream is perfectly synchronized for all viewers. <br>
-**Channels** - Add multiple iptv streams and playlists, you can switch between. <br>
+**Channels** - Browse an Xtream provider's live-channel directory and choose the channels available in the player. <br>
 **Live chat** - chat with other viewers with a randomized profile.
 
 ## 🚀 Run
@@ -66,11 +66,7 @@ make prod
 > [!IMPORTANT]  
 > If a channel/playlist won't work, please try with `proxy` or `restream` mode. This fixes most of the problems! See also [Channel Mode](#channel-mode).
 >
-> If you're using an **Xtream Codes** playlist (format: `/get.php?username=xxx&password=xxx&type=xxx&output=xxx`), try the following options:
-> - Use **proxy mode** with HLS output: Use `&type=m3u_plus&output=hls` in your playlist URL.
-> - Use **restream mode** with MPEG-TS output: Use `&type=m3u_plus&output=ts` to your playlist URL.
->
-> If your playlist is a plain HTTP link or has CORS issues, you must use **proxy** or **restream mode** to ensure compatibility in the web.
+> Configure the Xtream portal URL, username, and password under **Admin → Settings**. Then use **Admin → Channels** to browse channels from `player_api.php`, add them to the player, and choose direct, proxy, or restream mode.
 
 
 There is also [documentation for ADVANCED DEPLOYMENT](/deployment/README.md):
@@ -115,9 +111,9 @@ How can I use the channels on any other iptv player (e.g. on TV)?
 > If this playlist does not work, please check if the base-url of the channels in the playlist is correct and set the `BACKEND_URL` in the `docker-compose.yml` if not.
 ---
 
-My playlist only supports xtream codes api!
+How do I add channels from my Xtream account?
 
-> [IPTV playlist browser](https://github.com/PhunkyBob/iptv_playlist_browser) allows you to export a m3u playlist from your xtream codes account, and let's you select single channels or the whole playlist. Official xstreams-code integration is planned!
+> Open **Admin → Settings** and save the Xtream portal base URL and credentials. Open **Admin → Channels** to search or filter the live-channel directory. Selecting **Add** opens the channel dialog with the provider's name and logo prefilled; the server creates the stream URL directly from the Xtream stream ID. No M3U download is used.
 ---
 Error: `Bind for 0.0.0.0:80 failed: port is already allocated`
 

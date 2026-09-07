@@ -6,7 +6,6 @@ interface ChannelListProps {
   channels: Channel[];
   selectedChannel: Channel | null;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  onEditChannel: (channel: Channel) => void;
   onChannelSelectCheckPermission: () => boolean;
 }
 
@@ -14,7 +13,6 @@ function ChannelList({
   channels,
   selectedChannel,
   setSearchQuery,
-  onEditChannel,
   onChannelSelectCheckPermission,
 }: ChannelListProps) {
 
@@ -25,19 +23,18 @@ function ChannelList({
     socketService.setCurrentChannel(channel.id);
   };
 
-  const onRightClickChannel = (event: React.MouseEvent, channel: Channel) => {
-    event.preventDefault();
-    onEditChannel(channel);
-  };
-
   return (
     <div className="flex space-x-3 hover:overflow-x-auto overflow-hidden pb-2 px-1 pt-1 scroll-container">
+      {channels.length === 0 && (
+        <div className="flex min-h-28 w-full items-center justify-center rounded-lg border border-dashed border-gray-700 px-5 text-center text-sm text-gray-400">
+          No channels have been added. Add one from the admin panel.
+        </div>
+      )}
       {channels.map((channel) => (
         <button
           key={channel.id}
           title={channel.name.length > 28 ? channel.name : ""}
           onClick={() => onSelectChannel(channel)}
-          onContextMenu={(event) => onRightClickChannel(event, channel)}
           className={`group relative p-2 rounded-lg transition-all ${
             selectedChannel?.id === channel.id
               ? "bg-blue-500 bg-opacity-20 ring-2 ring-blue-500"

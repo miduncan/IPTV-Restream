@@ -35,11 +35,7 @@ class ChannelService {
         return filtered;
     }
 
-    addChannel({ name, url, avatar, mode, headersJson, group = null, playlist = null, playlistName = null, playlistUpdate = false }, save = true) {
-        // const existing = this.channels.find(channel => channel.url === url);
-        // if (existing) {
-        //     throw new Error('Channel already exists');
-        // }
+    addChannel({ name, url, avatar, mode, headersJson, group = null, playlist = null, playlistName = null, playlistUpdate = false, source = null, sourceId = null }, save = true) {
 
         let headers = headersJson;
         try {
@@ -48,7 +44,7 @@ class ChannelService {
         } catch (error) {
         }
 
-        const newChannel = new Channel(name, url, avatar, mode, headers, group, playlist, playlistName, playlistUpdate);
+        const newChannel = new Channel(name, url, avatar, mode, headers, group, playlist, playlistName, playlistUpdate, source, sourceId);
         this.channels.push(newChannel);
         if(save) ChannelStorage.save(this.channels);
 
@@ -62,12 +58,12 @@ class ChannelService {
         }
 
         if (this.currentChannel !== nextChannel) {
+            if (this.currentChannel) {
+                await streamController.stop(this.currentChannel);
+            }
             if (nextChannel.restream()) {
-                streamController.stop(this.currentChannel);
                 storageService.deleteChannelStorage(nextChannel.id);
                 await streamController.start(nextChannel);
-            } else {
-                streamController.stop(this.currentChannel);
             }
             this.currentChannel = nextChannel;
         }
@@ -88,17 +84,17 @@ class ChannelService {
             throw new Error('Channel does not exist');
         }
 
-        // Prevent deleting the last channel
-        if (this.channels.length === 1) {
-            throw new Error('Cannot delete the last channel');
-        }
-
         const [deletedChannel] = this.channels.splice(channelIndex, 1);
 
         // If we deleted the current channel, switch to another one
-        if (this.currentChannel.id === id) {
+        if (this.currentChannel?.id === id) {
             const nextChannel = this.channels[0];
-            await this.setCurrentChannel(nextChannel.id);
+            if (nextChannel) {
+                await this.setCurrentChannel(nextChannel.id);
+            } else {
+                await streamController.stop(deletedChannel);
+                this.currentChannel = undefined;
+            }
         }
 
         if(save) ChannelStorage.save(this.channels);
@@ -113,14 +109,13 @@ class ChannelService {
             throw new Error('Channel does not exist');
         }
 
-        const streamChanged = updatedAttributes.url != this.currentChannel.url ||
-            JSON.stringify(updatedAttributes.headers) != JSON.stringify(this.currentChannel.headers) ||
-            updatedAttributes.mode != this.currentChannel.mode;
-
         const channel = this.channels[channelIndex];
+        const streamChanged = updatedAttributes.url != channel.url ||
+            JSON.stringify(updatedAttributes.headers) != JSON.stringify(channel.headers) ||
+            updatedAttributes.mode != channel.mode;
         Object.assign(channel, updatedAttributes);
 
-        if (this.currentChannel.id == id) {
+        if (this.currentChannel?.id == id) {
             if (streamChanged) {
                 streamController.stop(channel);
                 if (channel.restream()) {
