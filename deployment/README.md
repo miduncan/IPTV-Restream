@@ -4,15 +4,14 @@
 
 ### Viewer and admin roles
 
-Nginx authenticates two shared users and passes their identity to the backend,
-which assigns either the `viewer` or `admin` role. Create a `.env` file next to
-the Compose file:
+The backend authenticates two shared users and assigns either the `viewer` or
+`admin` role. Create a `.env` file next to the Compose file:
 
 ```dotenv
-BASIC_AUTH_FRIENDS_USERNAME=friends
-BASIC_AUTH_FRIENDS_PASSWORD=replace-with-a-long-random-passphrase
-BASIC_AUTH_ADMIN_USERNAME=admin
-BASIC_AUTH_ADMIN_PASSWORD=replace-with-a-different-long-random-passphrase
+AUTH_VIEWER_USERNAME=friends
+AUTH_VIEWER_PASSWORD=replace-with-a-long-random-passphrase
+AUTH_ADMIN_USERNAME=admin
+AUTH_ADMIN_PASSWORD=replace-with-a-different-long-random-passphrase
 ```
 
 Both users can view streams and use chat. Only the admin user can open the
@@ -21,8 +20,9 @@ privileged API and WebSocket operations. Set
 `CHANNEL_SELECTION_REQUIRES_ADMIN=true` on the backend if switching the current
 channel should also require the admin role.
 
-Use HTTPS for any public deployment because Basic Auth credentials are only
-protected in transit when TLS is enabled.
+Login uses an opaque server-side session stored in an HttpOnly cookie. Use
+HTTPS for any public deployment so credentials and session cookies are
+protected in transit.
 
 ## Docker 
 

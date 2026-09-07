@@ -32,7 +32,9 @@ class SocketService {
       this.listeners = savedListeners;
     }
 
-    this.socket = io(import.meta.env.VITE_BACKEND_URL);
+    this.socket = io(import.meta.env.VITE_BACKEND_URL, {
+      withCredentials: true,
+    });
 
     this.socket.on('connect', () => {
       console.log('Connected to WebSocket server');
@@ -51,6 +53,9 @@ class SocketService {
     this.socket.on('connect_error', (error) => {
       console.error('Connection error:', error);
       this.isConnecting = false;
+      if (error.message === 'Authentication required.') {
+        window.dispatchEvent(new Event('auth-expired'));
+      }
     });
 
     this.socket.on('app-error', (error) => {

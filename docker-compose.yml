@@ -28,6 +28,10 @@ services:
       - channels:/channels
     environment:
       STORAGE_PATH: /streams/
+      AUTH_VIEWER_USERNAME: "${AUTH_VIEWER_USERNAME:-}"
+      AUTH_VIEWER_PASSWORD: "${AUTH_VIEWER_PASSWORD:-}"
+      AUTH_ADMIN_USERNAME: "${AUTH_ADMIN_USERNAME:-}"
+      AUTH_ADMIN_PASSWORD: "${AUTH_ADMIN_PASSWORD:-}"
       # If you have problems with the playlist, set the backend url manually here
       #BACKEND_URL: http://localhost:5000
 
@@ -38,14 +42,8 @@ services:
   # Nginx Reverse Proxy
   iptv_restream_nginx:
     image: nginx:alpine
-    environment:
-      BASIC_AUTH_FRIENDS_USERNAME: "${BASIC_AUTH_FRIENDS_USERNAME:-}"
-      BASIC_AUTH_FRIENDS_PASSWORD: "${BASIC_AUTH_FRIENDS_PASSWORD:-}"
-      BASIC_AUTH_ADMIN_USERNAME: "${BASIC_AUTH_ADMIN_USERNAME:-}"
-      BASIC_AUTH_ADMIN_PASSWORD: "${BASIC_AUTH_ADMIN_PASSWORD:-}"
     volumes:
       - ./deployment/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./deployment/nginx/40-basic-auth.sh:/docker-entrypoint.d/40-basic-auth.sh:ro
       - streams_data:/streams
     ports:
       - "80:80"

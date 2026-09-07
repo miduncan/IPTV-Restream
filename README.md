@@ -38,21 +38,21 @@ To keep the entire site out of public view, copy `.env.example` to `.env` and
 set separate shared credentials for friends and administrators:
 
 ```dotenv
-BASIC_AUTH_FRIENDS_USERNAME=friends
-BASIC_AUTH_FRIENDS_PASSWORD=replace-with-a-long-random-passphrase
-BASIC_AUTH_ADMIN_USERNAME=admin
-BASIC_AUTH_ADMIN_PASSWORD=replace-with-a-different-long-random-passphrase
+AUTH_VIEWER_USERNAME=friends
+AUTH_VIEWER_PASSWORD=replace-with-a-long-random-passphrase
+AUTH_ADMIN_USERNAME=admin
+AUTH_ADMIN_PASSWORD=replace-with-a-different-long-random-passphrase
 ```
 
-The Nginx proxy applies HTTP Basic Auth to every route, including the API,
-WebSocket, proxied media, and restreamed segments. Both users can watch and
-chat, while only the admin user can open `/admin/` or perform privileged HTTP
-and WebSocket operations. The backend maps the Nginx-authenticated username to
-an application role, so there is no second admin login or JWT session.
+The backend validates these shared credentials on the StreamHub login screen
+and creates an opaque, revocable session. The browser keeps the session in an
+HttpOnly, same-site cookie, which works consistently for the API, WebSocket,
+proxied media, and restreamed segments. Both users can watch and chat, while
+only the admin user can open `/admin/` or perform privileged operations.
 
 > [!IMPORTANT]
-> Use HTTPS when exposing the site publicly. HTTP Basic Auth does not encrypt
-> credentials on its own; TLS is what protects them in transit.
+> Use HTTPS when exposing the site publicly. TLS protects both the submitted
+> credentials and the resulting session cookie in transit.
 
 ### Local development
 

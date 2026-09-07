@@ -14,7 +14,7 @@ export class ApiError extends Error {
 
 const apiService = {
   /**
-   * Execute API request with JWT auth token (if available)
+   * Execute an API request with the browser session cookie.
    * @param path - Path (e.g. "/channels/")
    * @param method - HTTP-Method (GET, POST, etc.)
    * @param api_url - The API URL (default: API_BASE_URL + '/api')
@@ -25,6 +25,7 @@ const apiService = {
     try {
       const options: RequestInit = {
         method,
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         } as Record<string, string>,
@@ -37,6 +38,9 @@ const apiService = {
       const response = await fetch(`${api_url}${path}`, options);
 
       if (!response.ok) {
+        if (response.status === 401 && path !== '/auth/login') {
+          window.dispatchEvent(new Event('auth-expired'));
+        }
         let message = `Request failed with status ${response.status}`;
         try {
           const errorBody = (await response.json()) as { error?: string; message?: string };

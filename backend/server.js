@@ -6,6 +6,7 @@ const ChatSocketHandler = require('./socket/ChatSocketHandler');
 const ChannelSocketHandler = require('./socket/ChannelSocketHandler');
 const PlaylistSocketHandler = require('./socket/PlaylistSocketHandler');
 const socketRoleMiddleware = require('./socket/middleware/roles');
+const authService = require('./services/auth/AuthService');
 
 const proxyController = require('./controllers/ProxyController');
 const centralChannelController = require('./controllers/CentralChannelController');
@@ -24,10 +25,30 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+function isAllowedSocketOrigin(req) {
+  const origin = req.headers.origin;
+  if (!origin) return true;
+  try {
+    return new URL(origin).host === req.headers.host || origin === process.env.CORS_ORIGIN;
+  } catch {
+    return false;
+  }
+}
+
+function isAuthenticatedSocketRequest(req) {
+  const user = authService.userFromHeaders(req.headers);
+  return authService.hasRole(user, 'viewer');
+}
+
 // CORS middleware
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  const allowedOrigin = process.env.CORS_ORIGIN;
+  if (allowedOrigin && req.headers.origin === allowedOrigin) {
+    res.header('Access-Control-Allow-Origin', allowedOrigin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Vary', 'Origin');
+  }
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
@@ -39,9 +60,14 @@ app.use(authController.attachUser);
 
 // Auth routes
 const authRouter = express.Router();
-authRouter.get('/admin-status', authController.checkAdminStatus);
+authRouter.post('/login', authController.requireSameOrigin, authController.login);
+authRouter.post('/logout', authController.requireSameOrigin, authController.logout);
+authRouter.get('/admin-status', authController.requireAuthenticated, authController.checkAdminStatus);
+authRouter.get('/verify', authController.requireAuthenticated, authController.verifySession);
 
 app.use('/api/auth', authRouter);
+app.use('/api', authController.requireAuthenticated);
+app.use('/api', authController.requireSameOrigin);
 
 // Admin settings routes
 const adminRouter = express.Router();
@@ -69,6 +95,7 @@ apiRouter.post('/', authController.requireAdmin, channelController.addChannel);
 app.use('/api/channels', apiRouter);
 
 const proxyRouter = express.Router();
+proxyRouter.use(authController.requireAuthenticated);
 proxyRouter.get('/channel', proxyController.channel);
 proxyRouter.get('/segment', proxyController.segment);
 proxyRouter.get('/key', proxyController.key);
@@ -92,10 +119,14 @@ const server = app.listen(PORT, () => {
 
 // Web Sockets with explicit CORS configuration
 const io = new Server(server, {
+  allowRequest: (req, callback) => callback(
+    null,
+    isAllowedSocketOrigin(req) && isAuthenticatedSocketRequest(req)
+  ),
   cors: {
-    origin: "*", // Allow any origin in development
+    origin: process.env.CORS_ORIGIN || false,
     methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Authorization", "Content-Type"],
+    allowedHeaders: ["Content-Type"],
     credentials: true,
   },
 });
