@@ -52,44 +52,16 @@
   min-width: 0;
   align-items: center;
   justify-content: center;
-  padding: clamp(1rem, 2.5vw, 2.5rem);
 }
 
 .video-frame {
   width: 100%;
-  max-width: 1500px;
   overflow: hidden;
-  border: 1px solid #233242;
-  border-radius: 10px;
   background: #05080b;
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.35);
 }
 
-/* Keep the stage disciplined while Vite hot-swaps an active stream element. */
 .player-stage > div {
   width: 100%;
-  max-width: 1500px;
-}
-
-.player-stage video + div {
-  min-height: 64px;
-}
-
-.player-stage video + div > img {
-  width: 2.25rem !important;
-  height: 2.25rem !important;
-  flex: 0 0 2.25rem;
-  object-fit: contain;
-}
-
-.video-meta {
-  display: flex;
-  min-height: 64px;
-  align-items: center;
-  gap: 0.75rem;
-  border-top: 1px solid #1c2936;
-  background: #101a24;
-  padding: 0.75rem 1rem;
 }
 
 .player-sidebar {

@@ -43,8 +43,6 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
               shouldRetry: (
                 retryConfig,
                 retryCount,
-                _isTimeout,
-                _loaderResponse,
               ) => retryCount < retryConfig!.maxNumRetry
             },
           },
@@ -77,7 +75,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       const maxDeviation = import.meta.env.VITE_SYNCHRONIZATION_MAX_DEVIATION || 4;
 
       let toastDurationSet = false;
-      hls.on(Hls.Events.MANIFEST_PARSED, (_event, _data) => {
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
         if (channel.mode === 'restream') {
           const now = new Date().getTime();
       
@@ -239,18 +237,6 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
         controls
         onClick={handleVideoClick}
       />
-      {channel ? (
-        <div className="video-meta">
-          <img src={channel.avatar} alt="" className="h-9 w-9 rounded-md bg-[#0B1118] object-contain" />
-          <div className="min-w-0">
-            <p className="truncate text-sm font-medium text-[#EAF0F6]">{channel.name}</p>
-            <p className="truncate text-xs text-[#91A0AF]">{channel.group || channel.playlistName || 'Live stream'}</p>
-          </div>
-          <span className="ml-auto flex items-center gap-2 text-xs text-[#91A0AF]"><span className="status-light bg-[#44D492] text-[#44D492]" /> Live</span>
-        </div>
-      ) : (
-        <div className="video-meta text-sm text-[#91A0AF]">Choose a channel from the sidebar to start watching.</div>
-      )}
     </div>
   );
 }
