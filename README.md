@@ -32,6 +32,25 @@ docker compose up -d
 ```
 Open http://localhost
 
+### Optional shared password gate
+
+To keep the entire site out of public view, copy `.env.example` to `.env` and
+set a shared username and password:
+
+```dotenv
+BASIC_AUTH_USERNAME=friends
+BASIC_AUTH_PASSWORD=replace-with-a-long-random-passphrase
+```
+
+The Nginx proxy applies HTTP Basic Auth to every route, including the API,
+WebSocket, proxied media, and restreamed segments. Leave both values empty (or
+omit them) to disable the gate. Friends will see the browser's standard login
+prompt and can all use the same credentials.
+
+> [!IMPORTANT]
+> Use HTTPS when exposing the site publicly. HTTP Basic Auth does not encrypt
+> credentials on its own; TLS is what protects them in transit.
+
 ### Local development
 
 The development Compose overlay bind-mounts the source tree into the containers.

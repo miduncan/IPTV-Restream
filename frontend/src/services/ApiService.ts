@@ -30,10 +30,10 @@ const apiService = {
         } as Record<string, string>,
       };
 
-      // Add Authorization header if JWT token exists
+      // Keep the admin JWT separate from HTTP Basic Auth's Authorization header.
       const token = localStorage.getItem('admin_token');
       if (token) {
-        (options.headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
+        (options.headers as Record<string, string>)['X-Admin-Authorization'] = `Bearer ${token}`;
       }
 
       if (body) {

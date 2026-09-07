@@ -35,8 +35,12 @@ services:
   # Nginx Reverse Proxy
   iptv_restream_nginx:
     image: nginx:alpine
+    environment:
+      BASIC_AUTH_USERNAME: "${BASIC_AUTH_USERNAME:-}"
+      BASIC_AUTH_PASSWORD: "${BASIC_AUTH_PASSWORD:-}"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/40-basic-auth.sh:/docker-entrypoint.d/40-basic-auth.sh:ro
       - streams_data:/streams
     networks:
       - app-network

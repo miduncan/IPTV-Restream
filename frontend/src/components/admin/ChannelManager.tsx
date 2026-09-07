@@ -164,7 +164,7 @@ function ChannelManager() {
       await apiService.request(`/admin/channels/${channelId}`, 'DELETE');
       await loadChannels();
     } catch (removeError) {
-      if (removeError instanceof ApiError && removeError.status === 401) window.location.reload();
+      if (removeError instanceof ApiError && (removeError.status === 401 || removeError.status === 403)) window.location.reload();
       setError(removeError instanceof Error ? removeError.message : 'Could not remove channel');
     } finally {
       setRemovingId(null);

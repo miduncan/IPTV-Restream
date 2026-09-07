@@ -28,7 +28,7 @@ module.exports = {
         token,
       });
     } else {
-      return res.status(401).json({
+      return res.status(403).json({
         success: false,
         message: "Invalid password",
       });
@@ -50,10 +50,15 @@ module.exports = {
       return next();
     }
 
-    const token = req.headers.authorization?.split(" ")[1];
+    // X-Admin-Authorization allows the outer Nginx Basic Auth gate to keep
+    // ownership of the standard Authorization header. Keep the old header as
+    // a fallback for clients that connect directly to the backend.
+    const authorization =
+      req.headers["x-admin-authorization"] || req.headers.authorization;
+    const token = authorization?.split(" ")[1];
 
     if (!token) {
-      return res.status(401).json({
+      return res.status(403).json({
         success: false,
         message: "Access denied. No token provided.",
       });
@@ -61,7 +66,7 @@ module.exports = {
 
     const decoded = authService.verifyToken(token);
     if (!decoded) {
-      return res.status(401).json({
+      return res.status(403).json({
         success: false,
         message: "Invalid token.",
       });

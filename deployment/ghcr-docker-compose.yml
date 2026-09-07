@@ -21,7 +21,12 @@ services:
   # Nginx Reverse Proxy
   iptv_restream_nginx:
     image: ghcr.io/antebrl/iptv-restream/nginx:v2.2
+    environment:
+      BASIC_AUTH_USERNAME: "${BASIC_AUTH_USERNAME:-}"
+      BASIC_AUTH_PASSWORD: "${BASIC_AUTH_PASSWORD:-}"
     volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/40-basic-auth.sh:/docker-entrypoint.d/40-basic-auth.sh:ro
       - streams_data:/streams
     ports:
       - "80:80" # Configure exposed port, if 80 is already in use e.g. 8080:80

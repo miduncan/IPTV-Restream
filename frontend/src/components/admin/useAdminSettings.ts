@@ -43,7 +43,7 @@ export function useAdminSettings() {
       setSavedSettings(response.settings);
       setPageState('ready');
     } catch (error) {
-      if (error instanceof ApiError && error.status === 401) {
+      if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
         setPageState('login');
         return;
       }
@@ -97,7 +97,7 @@ export function useAdminSettings() {
       setSavedSettings(response.settings);
       setMessage('Settings saved');
     } catch (error) {
-      if (error instanceof ApiError && error.status === 401) {
+      if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
         localStorage.removeItem('admin_token');
         setPageState('login');
       }
