@@ -12,7 +12,7 @@ function getPlayerApiUrl(baseUrl, username, password, action) {
 }
 
 function getStreamUrl(baseUrl, username, password, streamId) {
-  return `${baseUrl.replace(/\/+$/, "")}/live/${encodeURIComponent(username)}/${encodeURIComponent(password)}/${encodeURIComponent(streamId)}`;
+  return `${baseUrl.replace(/\/+$/, "")}/live/${encodeURIComponent(username)}/${encodeURIComponent(password)}/${encodeURIComponent(streamId)}.ts`;
 }
 
 function normalizeStreamId(value) {

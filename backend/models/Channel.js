@@ -1,7 +1,6 @@
 class Channel {
-    static nextId = 0;
     constructor(name, url, avatar, mode, headers = [], group = null, playlist = null, playlistName = null, playlistUpdate = false, source = null, sourceId = null) {
-        this.id = Channel.nextId++;
+        this.id = null;
         this.name = name;
         this.url = url;
         this.sessionUrl = null;
@@ -21,7 +20,7 @@ class Channel {
     }
 
     static from(json){
-        return Object.assign(new Channel(), json);
+        return Object.assign(Object.create(Channel.prototype), json);
     }
 }
 

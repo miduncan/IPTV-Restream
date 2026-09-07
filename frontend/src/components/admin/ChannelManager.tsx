@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type UIEvent } from 'react';
 import { Check, ListVideo, Loader, Plus, Radio, RefreshCw, Search, Trash2 } from 'lucide-react';
 import apiService, { ApiError } from '../../services/ApiService';
 import { ChannelMode } from '../../types';
@@ -30,6 +30,11 @@ interface ChannelResponse {
   catalogError: string | null;
 }
 
+const DIRECTORY_HEIGHT = 680;
+const DIRECTORY_ROW_HEIGHT = 69;
+const DIRECTORY_OVERSCAN = 6;
+const VIRTUALIZE_THRESHOLD = 100;
+
 function ChannelLogo({ avatar, name }: { avatar: string; name: string }) {
   const [failed, setFailed] = useState(false);
   return (
@@ -38,6 +43,36 @@ function ChannelLogo({ avatar, name }: { avatar: string; name: string }) {
         <img src={avatar} alt="" className="h-full w-full object-contain p-1" onError={() => setFailed(true)} />
       ) : (
         <Radio className="h-5 w-5 text-[#496177]" aria-label={`${name} has no logo`} />
+      )}
+    </div>
+  );
+}
+
+function DirectoryRow({
+  channel,
+  isLast,
+  onAdd,
+  style,
+}: {
+  channel: XtreamChannel;
+  isLast: boolean;
+  onAdd: (channel: XtreamChannel) => void;
+  style?: CSSProperties;
+}) {
+  return (
+    <div
+      style={style}
+      className={`flex h-[69px] items-center gap-3 px-4 py-3 sm:px-5 ${isLast ? '' : 'border-b border-[#233242]'}`}
+    >
+      <ChannelLogo avatar={channel.avatar} name={channel.name} />
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-medium text-[#EAF0F6]">{channel.name}</p>
+        <p className="mt-0.5 truncate text-xs text-[#738496]">{channel.category} · Stream {channel.streamId}</p>
+      </div>
+      {channel.addedChannelId !== null ? (
+        <span className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#315c4c] bg-[#14271f] px-3 py-1.5 text-xs font-medium text-[#72DFAD]"><Check className="h-3.5 w-3.5" /> Added</span>
+      ) : (
+        <button type="button" onClick={() => onAdd(channel)} className="admin-secondary flex shrink-0 items-center gap-1.5 px-3 py-2 text-xs font-medium"><Plus className="h-3.5 w-3.5" /> Add</button>
       )}
     </div>
   );
@@ -52,6 +87,8 @@ function ChannelManager() {
   const [isLoading, setIsLoading] = useState(true);
   const [removingId, setRemovingId] = useState<number | null>(null);
   const [error, setError] = useState('');
+  const [directoryScrollTop, setDirectoryScrollTop] = useState(0);
+  const directoryRef = useRef<HTMLDivElement>(null);
 
   const loadChannels = useCallback(async () => {
     setIsLoading(true);
@@ -89,6 +126,24 @@ function ChannelManager() {
     () => selected ? { name: selected.name, avatar: selected.avatar, mode: 'proxy' as ChannelMode, headers: [] } : null,
     [selected]
   );
+
+  const shouldVirtualize = filteredChannels.length > VIRTUALIZE_THRESHOLD;
+  const virtualRange = useMemo(() => {
+    const firstVisible = Math.floor(directoryScrollTop / DIRECTORY_ROW_HEIGHT);
+    const start = Math.max(0, firstVisible - DIRECTORY_OVERSCAN);
+    const visibleCount = Math.ceil(DIRECTORY_HEIGHT / DIRECTORY_ROW_HEIGHT);
+    const end = Math.min(filteredChannels.length, firstVisible + visibleCount + DIRECTORY_OVERSCAN);
+    return { start, end };
+  }, [directoryScrollTop, filteredChannels.length]);
+
+  useEffect(() => {
+    setDirectoryScrollTop(0);
+    if (directoryRef.current) directoryRef.current.scrollTop = 0;
+  }, [query, category]);
+
+  const handleDirectoryScroll = (event: UIEvent<HTMLDivElement>) => {
+    if (shouldVirtualize) setDirectoryScrollTop(event.currentTarget.scrollTop);
+  };
 
   const addChannel = async (values: ChannelFormValues) => {
     if (!selected) return;
@@ -180,24 +235,37 @@ function ChannelManager() {
             </select>
           </div>
 
-          <div className="admin-panel max-h-[680px] overflow-y-auto scroll-container">
+          <div
+            ref={directoryRef}
+            onScroll={handleDirectoryScroll}
+            className={`admin-panel overflow-y-auto scroll-container ${shouldVirtualize ? 'h-[680px]' : 'max-h-[680px]'}`}
+          >
             {isLoading ? (
               <div className="flex items-center justify-center gap-3 px-5 py-16 text-sm text-[#91A0AF]"><Loader className="h-5 w-5 animate-spin text-[#4EA1FF]" /> Loading Xtream channels</div>
             ) : filteredChannels.length === 0 ? (
               <div className="px-5 py-12 text-center text-sm text-[#91A0AF]">No channels match this search and category.</div>
-            ) : filteredChannels.map((channel) => (
-              <div key={channel.streamId} className="flex items-center gap-3 border-b border-[#233242] px-4 py-3 last:border-b-0 sm:px-5">
-                <ChannelLogo avatar={channel.avatar} name={channel.name} />
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-[#EAF0F6]">{channel.name}</p>
-                  <p className="mt-0.5 truncate text-xs text-[#738496]">{channel.category} · Stream {channel.streamId}</p>
-                </div>
-                {channel.addedChannelId !== null ? (
-                  <span className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#315c4c] bg-[#14271f] px-3 py-1.5 text-xs font-medium text-[#72DFAD]"><Check className="h-3.5 w-3.5" /> Added</span>
-                ) : (
-                  <button type="button" onClick={() => setSelected(channel)} className="admin-secondary flex shrink-0 items-center gap-1.5 px-3 py-2 text-xs font-medium"><Plus className="h-3.5 w-3.5" /> Add</button>
-                )}
+            ) : shouldVirtualize ? (
+              <div className="relative" style={{ height: filteredChannels.length * DIRECTORY_ROW_HEIGHT }}>
+                {filteredChannels.slice(virtualRange.start, virtualRange.end).map((channel, offset) => {
+                  const index = virtualRange.start + offset;
+                  return (
+                    <DirectoryRow
+                      key={channel.streamId}
+                      channel={channel}
+                      isLast={index === filteredChannels.length - 1}
+                      onAdd={setSelected}
+                      style={{ position: 'absolute', insetInline: 0, top: index * DIRECTORY_ROW_HEIGHT }}
+                    />
+                  );
+                })}
               </div>
+            ) : filteredChannels.map((channel, index) => (
+              <DirectoryRow
+                key={channel.streamId}
+                channel={channel}
+                isLast={index === filteredChannels.length - 1}
+                onAdd={setSelected}
+              />
             ))}
           </div>
         </div>

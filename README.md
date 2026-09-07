@@ -85,6 +85,8 @@ These are some tested playlists as an example. Use your own iptv playlist for th
 
 ## ⚙️ Settings
 
+Channel records and admin settings are stored in `/channels/iptv-restream.db`.
+
 ### Channel Mode
 #### `Direct`
 Directly uses the source stream. Won't work with most of the streams, because of CORS, IP/Device restrictions. Is also incompatible with custom headers and privacy mode.
@@ -113,7 +115,7 @@ How can I use the channels on any other iptv player (e.g. on TV)?
 
 How do I add channels from my Xtream account?
 
-> Open **Admin → Settings** and save the Xtream portal base URL and credentials. Open **Admin → Channels** to search or filter the live-channel directory. Selecting **Add** opens the channel dialog with the provider's name and logo prefilled; the server creates the stream URL directly from the Xtream stream ID. No M3U download is used.
+> Open **Admin → Settings** and save the Xtream portal base URL and credentials. Open **Admin → Channels** to search or filter the live-channel directory. Selecting **Add** opens the channel dialog with the provider's name and logo prefilled; the server creates the MPEG-TS stream URL directly from the Xtream stream ID. No M3U download is used.
 ---
 Error: `Bind for 0.0.0.0:80 failed: port is already allocated`
 

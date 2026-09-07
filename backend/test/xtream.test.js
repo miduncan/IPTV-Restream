@@ -42,7 +42,7 @@ test("stream URLs use the Xtream live path and encode path segments", () => {
       credentials.xtreamPassword,
       "1234"
     ),
-    "https://provider.example.com:8080/portal/live/viewer%20name/secret%2Fvalue/1234"
+    "https://provider.example.com:8080/portal/live/viewer%20name/secret%2Fvalue/1234.ts"
   );
 });
 
@@ -80,7 +80,7 @@ test("channel construction ignores client URLs and uses saved credentials", () =
   assert.equal(channel.sourceId, "42");
   assert.equal(
     channel.url,
-    "https://provider.example.com:8080/portal/live/viewer%20name/secret%2Fvalue/42"
+    "https://provider.example.com:8080/portal/live/viewer%20name/secret%2Fvalue/42.ts"
   );
 });
 

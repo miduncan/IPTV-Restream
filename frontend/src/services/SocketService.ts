@@ -54,6 +54,7 @@ class SocketService {
 
       // Re-apply listeners to new socket connection
       this.reapplyListeners();
+      this.notifyListeners('socket-connected');
     });
 
     this.socket.on('disconnect', () => {
@@ -72,11 +73,13 @@ class SocketService {
 
     // Listen for incoming custom events
     this.socket.onAny((event: string, data: any) => {
-      const eventListeners = this.listeners.get(event);
-      if (eventListeners) {
-        eventListeners.forEach((listener) => listener(data));
-      }
+      this.notifyListeners(event, data);
     });
+  }
+
+  private notifyListeners(event: string, data?: unknown) {
+    const eventListeners = this.listeners.get(event);
+    if (eventListeners) eventListeners.forEach((listener) => listener(data));
   }
 
   // Re-apply all event listeners to the new socket connection

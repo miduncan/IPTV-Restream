@@ -12,8 +12,8 @@ class ChannelService {
 
     clearChannels() {
         ChannelStorage.clear();
-        this.channels = ChannelStorage.load();
-        this.currentChannel = this.channels[0];
+        this.channels = [];
+        this.currentChannel = undefined;
     }
 
     getChannels() {
@@ -45,8 +45,8 @@ class ChannelService {
         }
 
         const newChannel = new Channel(name, url, avatar, mode, headers, group, playlist, playlistName, playlistUpdate, source, sourceId);
+        if(save) newChannel.id = ChannelStorage.insert(newChannel);
         this.channels.push(newChannel);
-        if(save) ChannelStorage.save(this.channels);
 
         return newChannel;
     }
@@ -97,7 +97,7 @@ class ChannelService {
             }
         }
 
-        if(save) ChannelStorage.save(this.channels);
+        if(save) ChannelStorage.delete(id);
 
         return this.currentChannel;
     }
@@ -124,7 +124,7 @@ class ChannelService {
             }
         }
 
-        if(save) ChannelStorage.save(this.channels);
+        if(save) ChannelStorage.update(channel);
 
         return channel;
     }

@@ -77,15 +77,19 @@ function AppContent() {
       })
       .catch((error) => console.error('Error checking admin status:', error));
 
-    apiService
-      .request<Channel[]>('/channels/', 'GET')
-      .then((data) => setChannels(data))
-      .catch((error) => console.error('Error loading channels:', error));
+    const refreshChannelState = () => {
+      Promise.all([
+        apiService.request<Channel[]>('/channels/', 'GET'),
+        apiService.request<Channel | null>('/channels/current', 'GET'),
+      ])
+        .then(([nextChannels, currentChannel]) => {
+          setChannels(nextChannels);
+          setSelectedChannel(currentChannel);
+        })
+        .catch((error) => console.error('Error refreshing channels:', error));
+    };
 
-    apiService
-      .request<Channel | null>('/channels/current', 'GET')
-      .then((data) => setSelectedChannel(data))
-      .catch((error) => console.error('Error loading current channel:', error));
+    refreshChannelState();
 
     console.log('Subscribing to events');
     const channelAddedListener = (channel: Channel) => {
@@ -139,11 +143,14 @@ function AppContent() {
       });
     };
 
+    const socketConnectedListener = () => refreshChannelState();
+
     socketService.subscribeToEvent('channel-added', channelAddedListener);
     socketService.subscribeToEvent('channel-selected', channelSelectedListener);
     socketService.subscribeToEvent('channel-updated', channelUpdatedListener);
     socketService.subscribeToEvent('channel-deleted', channelDeletedListener);
     socketService.subscribeToEvent('app-error', errorListener);
+    socketService.subscribeToEvent('socket-connected', socketConnectedListener);
 
     socketService.connect();
 
@@ -162,6 +169,7 @@ function AppContent() {
         channelDeletedListener
       );
       socketService.unsubscribeFromEvent('app-error', errorListener);
+      socketService.unsubscribeFromEvent('socket-connected', socketConnectedListener);
       socketService.disconnect();
       console.log('WebSocket connection closed');
     };
