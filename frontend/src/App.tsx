@@ -8,12 +8,14 @@ import socketService from './services/SocketService';
 import apiService from './services/ApiService';
 import { ToastProvider, ToastContext } from './components/notifications/ToastContext';
 import ToastContainer from './components/notifications/ToastContainer';
+import LogoutButton from './components/LogoutButton';
 
 function AppContent() {
 
   const [channels, setChannels] = useState<Channel[]>([]);
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
   const [channelSelectRequiresAdmin, setChannelSelectRequiresAdmin] = useState(false);
   const [sidebarView, setSidebarView] = useState<'channels' | 'chat'>('channels');
   const [syncEnabled, setSyncEnabled] = useState(false);
@@ -42,8 +44,9 @@ function AppContent() {
   useEffect(() => {
     // Check if admin mode is enabled on the server
     apiService
-      .request<{ isAdmin: boolean; channelSelectionRequiresAdmin: boolean; streamSynchronizationEnabled: boolean }>('/auth/admin-status', 'GET')
+      .request<{ username: string | null; isAdmin: boolean; channelSelectionRequiresAdmin: boolean; streamSynchronizationEnabled: boolean }>('/auth/admin-status', 'GET')
       .then((data) => {
+        setUsername(data.username);
         setIsAdmin(data.isAdmin);
         setChannelSelectRequiresAdmin(data.channelSelectionRequiresAdmin);
         setSyncEnabled(data.streamSynchronizationEnabled);
@@ -177,7 +180,8 @@ function AppContent() {
               <span className="hidden sm:inline">Admin</span>
             </a>
           )}
-          </div>
+          {username && <LogoutButton className="player-header-action" />}
+        </div>
       </header>
 
       <div className="player-workspace">

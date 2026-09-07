@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { ArrowLeft, ListVideo, Radio, Settings2 } from 'lucide-react';
+import LogoutButton from '../LogoutButton';
 
 export type AdminSection = 'settings' | 'channels';
 
@@ -19,9 +20,12 @@ function AdminLayout({ children, activeSection, onSectionChange }: AdminLayoutPr
           <span className="text-[#435466]">/</span>
           <span className="text-sm text-[#91A0AF]">Admin</span>
         </div>
-        <a href="/" className="admin-link flex items-center gap-2 text-sm text-[#91A0AF]">
-          <ArrowLeft className="h-4 w-4" /> Back to player
-        </a>
+        <div className="flex items-center gap-3 sm:gap-5">
+          <a href="/" className="admin-link flex items-center gap-2 text-sm text-[#91A0AF]">
+            <ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">Back to player</span>
+          </a>
+          <LogoutButton className="admin-link flex items-center gap-2 text-sm text-[#91A0AF]" />
+        </div>
       </header>
 
       <div className="mx-auto grid max-w-[1500px] md:grid-cols-[230px_minmax(0,1fr)]">
