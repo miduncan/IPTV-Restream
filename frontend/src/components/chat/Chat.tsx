@@ -1,7 +1,7 @@
 import { FormEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Send, MessageSquare } from 'lucide-react';
 import socketService from '../../services/SocketService';
-import { Channel, ChatMessage } from '../../types';
+import { ChatMessage } from '../../types';
 import ChatMessageItem from './ChatMessageItem';
 import SystemMessage from './SystemMessage';
 import UsernameModal from './UsernameModal';
@@ -26,6 +26,7 @@ function Chat({ isActive }: { isActive: boolean }) {
   const [sendError, setSendError] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [isConnected, setIsConnected] = useState(() => socketService.isConnected());
+  const [viewerCount, setViewerCount] = useState<number | null>(null);
   const composerRef = useRef<HTMLInputElement>(null);
   const messageListRef = useRef<HTMLDivElement>(null);
   const shouldFollowMessagesRef = useRef(true);
@@ -42,37 +43,26 @@ function Chat({ isActive }: { isActive: boolean }) {
         return [...history.filter(({ id }) => !previousIds.has(id)), ...previous];
       });
     };
-    const channelSelectedListener = (selectedChannel: Channel) => {
-      setMessages((previous) => [
-        ...previous,
-        {
-          id: `system-${Date.now()}`,
-          kind: 'system',
-          user: { name: 'System' },
-          message: `Switched to ${selectedChannel.name}'s stream`,
-          timestamp: new Date().toISOString(),
-        },
-      ]);
-    };
     const connectedListener = () => {
       setIsConnected(true);
       setSendError('');
     };
     const disconnectedListener = () => setIsConnected(false);
+    const viewerCountListener = ({ count }: { count: number }) => setViewerCount(count);
 
     socketService.subscribeToEvent('chat-message', messageListener);
     socketService.subscribeToEvent('chat-history', historyListener);
-    socketService.subscribeToEvent('channel-selected', channelSelectedListener);
     socketService.subscribeToEvent('socket-connected', connectedListener);
     socketService.subscribeToEvent('socket-disconnected', disconnectedListener);
     socketService.subscribeToEvent('socket-connect-error', disconnectedListener);
+    socketService.subscribeToEvent('viewer-count', viewerCountListener);
     return () => {
       socketService.unsubscribeFromEvent('chat-message', messageListener);
       socketService.unsubscribeFromEvent('chat-history', historyListener);
-      socketService.unsubscribeFromEvent('channel-selected', channelSelectedListener);
       socketService.unsubscribeFromEvent('socket-connected', connectedListener);
       socketService.unsubscribeFromEvent('socket-disconnected', disconnectedListener);
       socketService.unsubscribeFromEvent('socket-connect-error', disconnectedListener);
+      socketService.unsubscribeFromEvent('viewer-count', viewerCountListener);
     };
   }, []);
 
@@ -128,7 +118,9 @@ function Chat({ isActive }: { isActive: boolean }) {
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="flex items-center gap-2 border-b border-[#233242] px-4 py-3 text-xs text-[#91A0AF]">
         <span className={`status-light ${isConnected ? 'bg-[#44D492] text-[#44D492]' : 'bg-[#D7A94B] text-[#D7A94B]'}`} aria-hidden="true" />
-        {isConnected ? 'Messages update live' : 'Chat is reconnecting'}
+        {isConnected
+          ? `${viewerCount ?? 1} ${(viewerCount ?? 1) === 1 ? 'viewer' : 'viewers'} connected`
+          : 'Chat is reconnecting'}
       </div>
 
       <div

@@ -6,6 +6,7 @@ const ChatSocketHandler = require('./socket/ChatSocketHandler');
 const ChannelSocketHandler = require('./socket/ChannelSocketHandler');
 const PlaylistSocketHandler = require('./socket/PlaylistSocketHandler');
 const socketRoleMiddleware = require('./socket/middleware/roles');
+const ViewerPresence = require('./socket/ViewerPresence');
 const authService = require('./services/auth/AuthService');
 
 const proxyController = require('./controllers/ProxyController');
@@ -130,10 +131,12 @@ app.set('io', io);
 io.use(socketRoleMiddleware);
 
 const connectedUsers = {};
+const viewerPresence = new ViewerPresence(io);
 
 io.on('connection', socket => {
   console.log('New client connected');
   restreamIdleManager.viewerConnected(socket.id);
+  viewerPresence.connected(socket.id);
 
   socket.on('new-user', userId => {
     connectedUsers[socket.id] = userId;
@@ -142,6 +145,7 @@ io.on('connection', socket => {
 
   socket.on('disconnect', () => {
     restreamIdleManager.viewerDisconnected(socket.id);
+    viewerPresence.disconnected(socket.id);
     socket.broadcast.emit('user-disconnected', connectedUsers[socket.id]);
     delete connectedUsers[socket.id];
   })

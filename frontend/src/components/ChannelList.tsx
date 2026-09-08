@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Channel, ChannelEpg } from "../types";
 import socketService from "../services/SocketService";
+import ChannelChangeModal from "./ChannelChangeModal";
 
 interface ChannelListProps {
   channels: Channel[];
@@ -18,6 +19,7 @@ function ChannelList({
   onChannelSelectCheckPermission,
 }: ChannelListProps) {
   const [now, setNow] = useState(() => Date.now());
+  const [pendingChannel, setPendingChannel] = useState<Channel | null>(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 30_000);
@@ -30,11 +32,21 @@ function ChannelList({
   }).format(new Date(value));
 
   const onSelectChannel = (channel: Channel) => {
-    setSearchQuery("");
     if (channel.id === selectedChannel?.id) return;
     if (!onChannelSelectCheckPermission()) return;
-    socketService.setCurrentChannel(channel.id);
+    setPendingChannel(channel);
   };
+
+  const cancelChannelChange = useCallback(() => {
+    setPendingChannel(null);
+  }, []);
+
+  const confirmChannelChange = useCallback(() => {
+    if (!pendingChannel) return;
+    socketService.setCurrentChannel(pendingChannel.id);
+    setSearchQuery("");
+    setPendingChannel(null);
+  }, [pendingChannel, setSearchQuery]);
 
   return (
     <div className="space-y-1">
@@ -53,6 +65,7 @@ function ChannelList({
         const progress = end > start ? Math.max(0, Math.min(100, ((now - start) / (end - start)) * 100)) : 0;
 
         return <button
+          type="button"
           key={channel.id}
           title={channel.name.length > 28 ? channel.name : ""}
           onClick={() => onSelectChannel(channel)}
@@ -96,6 +109,11 @@ function ChannelList({
           {isSelected && <span className="status-light mt-1.5 shrink-0 bg-[#44D492] text-[#44D492]" aria-label="Currently playing" />}
         </button>;
       })}
+      <ChannelChangeModal
+        channel={pendingChannel}
+        onCancel={cancelChannelChange}
+        onConfirm={confirmChannelChange}
+      />
     </div>
   );
 }

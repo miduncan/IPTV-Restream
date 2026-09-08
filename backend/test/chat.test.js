@@ -3,6 +3,7 @@ const test = require('node:test');
 
 const ChatService = require('../services/ChatService');
 const ChatSocketHandler = require('../socket/ChatSocketHandler');
+const broadcastChannelSelection = require('../socket/broadcastChannelSelection');
 
 test.beforeEach(() => {
   ChatService.messages = [];
@@ -22,6 +23,27 @@ test('chat rejects invalid display names and messages', () => {
   assert.throws(() => ChatService.addMessage('x', 'Hello'), /2–24 characters/);
   assert.throws(() => ChatService.addMessage('Viewer', '   '), /Write a message/);
   assert.throws(() => ChatService.addMessage('Viewer', 'x'.repeat(501)), /up to 500/);
+});
+
+test('system messages are stored in chat history', () => {
+  const message = ChatService.addSystemMessage("Switched to Sports Central's stream");
+
+  assert.equal(message.kind, 'system');
+  assert.equal(message.user.name, 'System');
+  assert.equal(ChatService.getMessages()[0], message);
+});
+
+test('channel selections broadcast and persist one system message', () => {
+  const events = [];
+  const io = { emit(event, payload) { events.push({ event, payload }); } };
+
+  broadcastChannelSelection(io, { id: 4, name: 'Sports Central' });
+
+  assert.equal(events[0].event, 'channel-selected');
+  assert.equal(events[1].event, 'chat-message');
+  assert.equal(events[1].payload.kind, 'system');
+  assert.equal(events[1].payload.message, "Switched to Sports Central's stream");
+  assert.equal(ChatService.getMessages()[0], events[1].payload);
 });
 
 test('chat retains only the latest 200 messages', () => {

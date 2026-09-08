@@ -8,9 +8,9 @@ class User {
 
 
 class ChatMessage {
-    constructor(user, message, timestamp) {
+    constructor(user, message, timestamp, kind = 'chat') {
         this.id = crypto.randomUUID();
-        this.kind = 'chat';
+        this.kind = kind;
         this.user = user;
         this.message = message;
         this.timestamp = timestamp;

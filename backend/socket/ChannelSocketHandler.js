@@ -1,5 +1,6 @@
 const ChannelService = require("../services/ChannelService");
 const authService = require("../services/auth/AuthService");
+const broadcastChannelSelection = require("./broadcastChannelSelection");
 
 module.exports = (io, socket) => {
   // Check if admin mode is required for channel modifications
@@ -37,7 +38,7 @@ module.exports = (io, socket) => {
         });
       }
       const nextChannel = await ChannelService.setCurrentChannel(id);
-      io.emit("channel-selected", nextChannel); // Broadcast to all clients
+      broadcastChannelSelection(io, nextChannel);
     } catch (err) {
       console.error(err);
       socket.emit("app-error", { message: err.message });
@@ -56,7 +57,7 @@ module.exports = (io, socket) => {
       const lastChannel = ChannelService.getCurrentChannel();
       const current = await ChannelService.deleteChannel(id);
       io.emit("channel-deleted", id); // Broadcast to all clients
-      if (lastChannel?.id != current?.id) io.emit("channel-selected", current ?? null);
+      if (lastChannel?.id != current?.id) broadcastChannelSelection(io, current ?? null);
     } catch (err) {
       console.error(err);
       socket.emit("app-error", { message: err.message });

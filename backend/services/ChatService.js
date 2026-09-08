@@ -6,14 +6,27 @@ class ChatService {
     }
 
     addMessage(userName, message) {
-        const newChatMessage = new ChatMessage(
+        return this.storeMessage(new ChatMessage(
             new User(this.validateUserName(userName)),
             this.validateMessage(message),
             new Date().toISOString()
-        );
-        this.messages.push(newChatMessage);
+        ));
+    }
+
+    addSystemMessage(message) {
+        const normalized = String(message).trim().slice(0, 500);
+        return this.storeMessage(new ChatMessage(
+            new User('System'),
+            normalized,
+            new Date().toISOString(),
+            'system'
+        ));
+    }
+
+    storeMessage(chatMessage) {
+        this.messages.push(chatMessage);
         if (this.messages.length > 200) this.messages.shift();
-        return newChatMessage;
+        return chatMessage;
     }
 
     validateUserName(userName) {

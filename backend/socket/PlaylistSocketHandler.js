@@ -3,6 +3,7 @@ const ChannelService = require("../services/ChannelService");
 const PlaylistUpdater = require("../services/PlaylistUpdater");
 const Playlist = require("../models/Playlist");
 const authService = require("../services/auth/AuthService");
+const broadcastChannelSelection = require("./broadcastChannelSelection");
 require("dotenv").config();
 
 async function handleAddPlaylist(
@@ -104,7 +105,7 @@ async function handleDeletePlaylist({ playlist }, io, socket) {
     channels.forEach((channel) => {
       io.emit("channel-deleted", channel.id);
     });
-    io.emit("channel-selected", ChannelService.getCurrentChannel() ?? null);
+    broadcastChannelSelection(io, ChannelService.getCurrentChannel() ?? null);
 
     PlaylistUpdater.delete(playlist);
   } catch (err) {

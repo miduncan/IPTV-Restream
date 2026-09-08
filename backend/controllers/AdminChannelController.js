@@ -1,5 +1,6 @@
 const ChannelService = require("../services/ChannelService");
 const XtreamService = require("../services/XtreamService");
+const broadcastChannelSelection = require("../socket/broadcastChannelSelection");
 
 function sendError(res, error, fallback) {
   console.error(fallback, error);
@@ -62,7 +63,7 @@ module.exports = {
       if (!hadCurrentChannel) await ChannelService.setCurrentChannel(channel.id);
       const io = req.app.get("io");
       io?.emit("channel-added", channel);
-      if (!hadCurrentChannel) io?.emit("channel-selected", channel);
+      if (!hadCurrentChannel) broadcastChannelSelection(io, channel);
       return res.status(201).json({ channel });
     } catch (error) {
       return sendError(res, error, "Could not add Xtream channel");
@@ -83,7 +84,7 @@ module.exports = {
       const currentChannel = await ChannelService.deleteChannel(channelId);
       const io = req.app.get("io");
       io?.emit("channel-deleted", channelId);
-      if (wasCurrent) io?.emit("channel-selected", currentChannel ?? null);
+      if (wasCurrent) broadcastChannelSelection(io, currentChannel ?? null);
       return res.json({ currentChannel: currentChannel ?? null });
     } catch (error) {
       return sendError(res, error, "Could not remove channel");
