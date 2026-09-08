@@ -1,6 +1,8 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { Airplay, Maximize, Pause, PictureInPicture2, Play, Volume2, VolumeX } from 'lucide-react';
 import Hls from 'hls.js';
 import { Channel, ChannelMode } from '../types';
+import apiService from '../services/ApiService';
 import { ToastContext } from './notifications/ToastContext';
 
 interface VideoPlayerProps {
@@ -8,14 +10,73 @@ interface VideoPlayerProps {
   syncEnabled: boolean;
 }
 
+interface AirPlaySession {
+  playbackUrl: string;
+}
+
+type AirPlayVideoElement = HTMLVideoElement & {
+  webkitCurrentPlaybackTargetIsWireless?: boolean;
+  webkitShowPlaybackTargetPicker?: () => void;
+};
+
 function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<Hls | null>(null);
+  const useCustomControls = navigator.maxTouchPoints === 0;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [airPlaySupported, setAirPlaySupported] = useState(false);
+  const [airPlayActive, setAirPlayActive] = useState(false);
   const { addToast, removeToast, clearToasts, editToast } = useContext(ToastContext);
 
   useEffect(() => {
     if (!videoRef.current || !channel?.url) return;
-    const video = videoRef.current;
+    const video = videoRef.current as AirPlayVideoElement;
+    let cancelled = false;
+
+    const sourceLinks: Record<ChannelMode, string> = {
+      direct: channel.url,
+      //TODO: needs update for multi-channel streaming
+      proxy: import.meta.env.VITE_BACKEND_URL + '/proxy/channel',
+      restream: import.meta.env.VITE_BACKEND_URL + '/streams/' + channel.id + "/" + channel.id + ".m3u8",
+    };
+
+    if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      setAirPlaySupported(typeof video.webkitShowPlaybackTargetPicker === 'function');
+      video.setAttribute('x-webkit-airplay', 'allow');
+      video.disableRemotePlayback = false;
+
+      const startNativePlayback = async () => {
+        try {
+          const session = await apiService.request<AirPlaySession>('/airplay/sessions', 'POST');
+          if (cancelled) return;
+
+          video.src = session.playbackUrl;
+          video.load();
+          await video.play();
+        } catch (error) {
+          if (cancelled) return;
+          console.error('Failed to start native HLS playback:', error);
+          addToast({
+            type: 'error',
+            title: 'Stream unavailable',
+            message: 'This stream could not be started.',
+            duration: 5000,
+          });
+        }
+      };
+
+      void startNativePlayback();
+
+      return () => {
+        cancelled = true;
+        setAirPlayActive(false);
+        video.pause();
+        video.removeAttribute('src');
+        video.removeAttribute('x-webkit-airplay');
+        video.load();
+      };
+    }
 
     if (Hls.isSupported()) {
       if (hlsRef.current) {
@@ -49,18 +110,17 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
         },
       });
 
-      const sourceLinks: Record<ChannelMode, string> = {
-        direct: channel.url,
-        //TODO: needs update for multi-channel streaming
-        proxy: import.meta.env.VITE_BACKEND_URL + '/proxy/channel', 
-        restream: import.meta.env.VITE_BACKEND_URL + '/streams/' + channel.id + "/" + channel.id + ".m3u8", //e.g. http://backend:3000/streams/1/1.m3u8
-      };    
-
       hlsRef.current = hls;
       hls.loadSource(sourceLinks[channel.mode]);
       hls.attachMedia(video);
 
-      if(!syncEnabled) return;
+      const cleanup = () => {
+        cancelled = true;
+        hls.destroy();
+        if (hlsRef.current === hls) hlsRef.current = null;
+      };
+
+      if(!syncEnabled) return cleanup;
 
       clearToasts();
       let toastStartId = null;
@@ -207,36 +267,107 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
           
         }
       });
+      return cleanup;
     }
 
     return () => {
+      cancelled = true;
       if (hlsRef.current) {
         hlsRef.current.destroy();
+        hlsRef.current = null;
       }
     };
 
-  }, [channel?.url, channel?.mode, syncEnabled]);
+  }, [channel?.id, channel?.url, channel?.mode, syncEnabled, addToast, clearToasts, editToast, removeToast]);
 
-  const handleVideoClick = (event: React.MouseEvent<HTMLVideoElement>) => {
-    if (videoRef.current?.muted) {
-      event.preventDefault();
+  useEffect(() => {
+    const video = videoRef.current as AirPlayVideoElement | null;
+    if (!video) return;
 
-      videoRef.current.muted = false;
-      videoRef.current.play();
+    const updatePlaying = () => setIsPlaying(!video.paused && !video.ended);
+    const updateMuted = () => setIsMuted(video.muted);
+    const updateAirPlay = () => setAirPlayActive(Boolean(video.webkitCurrentPlaybackTargetIsWireless));
+
+    video.addEventListener('play', updatePlaying);
+    video.addEventListener('pause', updatePlaying);
+    video.addEventListener('ended', updatePlaying);
+    video.addEventListener('volumechange', updateMuted);
+    video.addEventListener('webkitcurrentplaybacktargetiswirelesschanged', updateAirPlay);
+    updatePlaying();
+    updateMuted();
+    updateAirPlay();
+
+    return () => {
+      video.removeEventListener('play', updatePlaying);
+      video.removeEventListener('pause', updatePlaying);
+      video.removeEventListener('ended', updatePlaying);
+      video.removeEventListener('volumechange', updateMuted);
+      video.removeEventListener('webkitcurrentplaybacktargetiswirelesschanged', updateAirPlay);
+    };
+  }, []);
+
+  const togglePlayback = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) video.play().catch(() => undefined);
+    else video.pause();
+  };
+
+  const toggleMuted = () => {
+    const video = videoRef.current;
+    if (video) video.muted = !video.muted;
+  };
+
+  const showAirPlayPicker = () => {
+    const video = videoRef.current as AirPlayVideoElement | null;
+    video?.webkitShowPlaybackTargetPicker?.();
+  };
+
+  const enterPictureInPicture = () => {
+    const video = videoRef.current;
+    if (video && document.pictureInPictureEnabled && !video.disablePictureInPicture) {
+      video.requestPictureInPicture().catch(() => undefined);
     }
   };
 
+  const enterFullscreen = () => {
+    videoRef.current?.parentElement?.requestFullscreen().catch(() => undefined);
+  };
+
   return (
-    <div className="video-frame">
+    <div className="video-frame relative">
       <video
         ref={videoRef}
         className="block h-auto max-h-[calc(100vh-7rem)] w-full bg-black object-contain aspect-video"
         muted
         autoPlay
         playsInline
-        controls
-        onClick={handleVideoClick}
+        controls={!useCustomControls}
+        onClick={useCustomControls ? togglePlayback : undefined}
       />
+      {useCustomControls && (
+        <div className="absolute inset-x-0 bottom-0 z-10 flex items-center gap-1 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-3 pb-3 pt-10 text-white">
+          <button type="button" onClick={togglePlayback} aria-label={isPlaying ? 'Pause' : 'Play'} title={isPlaying ? 'Pause' : 'Play'} className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
+            {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+          </button>
+          <button type="button" onClick={toggleMuted} aria-label={isMuted ? 'Unmute' : 'Mute'} title={isMuted ? 'Unmute' : 'Mute'} className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
+            {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+          </button>
+          <span className="ml-1 text-xs font-semibold uppercase tracking-wider text-white/80">Live</span>
+          <div className="flex-1" />
+          {airPlaySupported && (
+            <button type="button" onClick={showAirPlayPicker} aria-label="AirPlay" aria-pressed={airPlayActive} title="AirPlay" className={`rounded-md p-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF] ${airPlayActive ? 'bg-[#4EA1FF] text-[#07111B]' : 'hover:bg-white/15'}`}>
+              <Airplay className="h-5 w-5" />
+            </button>
+          )}
+          <button type="button" onClick={enterPictureInPicture} aria-label="Picture in Picture" title="Picture in Picture" className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
+            <PictureInPicture2 className="h-5 w-5" />
+          </button>
+          <button type="button" onClick={enterFullscreen} aria-label="Full screen" title="Full screen" className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
+            <Maximize className="h-5 w-5" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

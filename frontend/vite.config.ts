@@ -6,7 +6,7 @@ const appendFrontendTrailingSlash: Plugin = {
   configureServer(server) {
     server.middlewares.use((request, response, next) => {
       const url = new URL(request.url || '/', 'http://localhost')
-      const isBackendRoute = /^\/(api|socket\.io|proxy|streams)(\/|$)/.test(url.pathname)
+      const isBackendRoute = /^\/(airplay|api|socket\.io|proxy|streams)(\/|$)/.test(url.pathname)
       const isViteInternalRoute = url.pathname.startsWith('/@')
       const lastSegment = url.pathname.split('/').pop() || ''
       if (url.pathname !== '/' && !url.pathname.endsWith('/') && !lastSegment.includes('.') && !isBackendRoute && !isViteInternalRoute) {
@@ -21,7 +21,7 @@ const appendFrontendTrailingSlash: Plugin = {
   configurePreviewServer(server) {
     server.middlewares.use((request, response, next) => {
       const url = new URL(request.url || '/', 'http://localhost')
-      const isBackendRoute = /^\/(api|socket\.io|proxy|streams)(\/|$)/.test(url.pathname)
+      const isBackendRoute = /^\/(airplay|api|socket\.io|proxy|streams)(\/|$)/.test(url.pathname)
       const isViteInternalRoute = url.pathname.startsWith('/@')
       const lastSegment = url.pathname.split('/').pop() || ''
       if (url.pathname !== '/' && !url.pathname.endsWith('/') && !lastSegment.includes('.') && !isBackendRoute && !isViteInternalRoute) {

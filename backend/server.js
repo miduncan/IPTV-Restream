@@ -16,6 +16,7 @@ const authController = require('./controllers/AuthController');
 const adminSettingsController = require('./controllers/AdminSettingsController');
 const adminChannelController = require('./controllers/AdminChannelController');
 const epgController = require('./controllers/EpgController');
+const airPlayController = require('./controllers/AirPlayController');
 const streamController = require('./services/restream/StreamController');
 const RestreamIdleManager = require('./services/restream/RestreamIdleManager');
 const ChannelService = require('./services/ChannelService');
@@ -90,6 +91,21 @@ apiRouter.put('/:channelId', authController.requireAdmin, channelController.upda
 apiRouter.post('/', authController.requireAdmin, channelController.addChannel);
 app.use('/api/channels', apiRouter);
 
+const airPlayApiRouter = express.Router();
+airPlayApiRouter.post('/sessions', airPlayController.createSession);
+app.use('/api/airplay', airPlayApiRouter);
+
+const airPlayReceiverRouter = express.Router();
+airPlayReceiverRouter.use((_req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Range');
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Range, Accept-Ranges');
+  next();
+});
+airPlayReceiverRouter.get('/:sessionId/master.m3u8', airPlayController.manifest);
+airPlayReceiverRouter.get('/:sessionId/resource/:resourceId', airPlayController.resource);
+app.use('/airplay', airPlayReceiverRouter);
+
 const proxyRouter = express.Router();
 proxyRouter.use(authController.requireAuthenticated);
 proxyRouter.get('/channel', proxyController.channel);
@@ -105,6 +121,7 @@ const restreamIdleManager = new RestreamIdleManager({
   streamController,
 });
 streamController.setStartAllowed(() => restreamIdleManager.isStreamingAllowed());
+airPlayController.setActivityTracker(viewerId => restreamIdleManager.viewerActivity(viewerId));
 
 const server = app.listen(PORT, () => {
   console.log(`Server listening on Port ${PORT}`);

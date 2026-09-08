@@ -44,10 +44,13 @@ function startFFmpeg(nextChannel) {
         '-re',
         '-i', channelUrl,
         ...getCodecArguments(),
+        // Repeat codec setup data so copied H.264 segments remain
+        // independently decodable.
+        '-bsf:v', 'dump_extra=freq=keyframe',
         '-f', 'hls',
         '-hls_time', '6',
         '-hls_list_size', '5',
-        '-hls_flags', 'delete_segments+program_date_time',
+        '-hls_flags', 'delete_segments+program_date_time+independent_segments',
         '-start_number', Math.floor(Date.now() / 1000),
         `${STORAGE_PATH}${currentChannelId}/${currentChannelId}.m3u8`
     ]);

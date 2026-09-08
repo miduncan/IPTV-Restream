@@ -14,6 +14,7 @@ class RestreamIdleManager {
         this.setTimer = setTimer;
         this.clearTimer = clearTimer;
         this.viewerIds = new Set();
+        this.activityTimers = new Map();
         this.idleTimer = null;
         this.streamingAllowed = false;
         this.operationQueue = Promise.resolve();
@@ -48,6 +49,11 @@ class RestreamIdleManager {
     }
 
     viewerDisconnected(viewerId) {
+        const activityTimer = this.activityTimers.get(viewerId);
+        if (activityTimer) {
+            this.clearTimer(activityTimer);
+            this.activityTimers.delete(viewerId);
+        }
         this.viewerIds.delete(viewerId);
         if (this.viewerIds.size > 0 || this.idleTimer || !this.streamingAllowed) return;
 
@@ -67,6 +73,19 @@ class RestreamIdleManager {
 
         // An idle timer should not keep the backend process alive by itself.
         this.idleTimer.unref?.();
+    }
+
+    viewerActivity(viewerId, activityTimeoutMs = 30 * 1000) {
+        const existingTimer = this.activityTimers.get(viewerId);
+        if (existingTimer) this.clearTimer(existingTimer);
+
+        this.viewerConnected(viewerId);
+        const activityTimer = this.setTimer(() => {
+            this.activityTimers.delete(viewerId);
+            this.viewerDisconnected(viewerId);
+        }, activityTimeoutMs);
+        activityTimer.unref?.();
+        this.activityTimers.set(viewerId, activityTimer);
     }
 
     enqueue(operation) {

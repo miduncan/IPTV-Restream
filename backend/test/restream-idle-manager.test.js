@@ -90,3 +90,20 @@ test('waits until every viewer disconnects before scheduling shutdown', async ()
     manager.viewerDisconnected('viewer-2');
     assert.equal(timers.length, 1);
 });
+
+test('receiver activity keeps a restream alive and becomes idle after requests stop', async () => {
+    const { calls, manager, timers } = createHarness();
+
+    manager.viewerActivity('airplay:session-1', 30_000);
+    await manager.waitForPendingOperations();
+
+    assert.deepEqual(calls, [['start', 7]]);
+    assert.equal(timers[0].delay, 30_000);
+
+    manager.viewerActivity('airplay:session-1', 30_000);
+    assert.equal(timers[0].cleared, true);
+    assert.equal(timers[1].delay, 30_000);
+
+    timers[1].callback();
+    assert.equal(timers[2].delay, 5 * 60 * 1000);
+});
