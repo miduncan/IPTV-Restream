@@ -5,12 +5,13 @@ import { Channel } from '../types';
 interface ChannelChangeModalProps {
   channel: Channel | null;
   onCancel: () => void;
-  onConfirm: () => void;
+  onConfirm: (dontShowAgain: boolean) => void;
 }
 
 function ChannelChangeModal({ channel, onCancel, onConfirm }: ChannelChangeModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
+  const dontShowAgainRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!channel) return;
@@ -29,7 +30,9 @@ function ChannelChangeModal({ channel, onCancel, onConfirm }: ChannelChangeModal
 
       if (event.key !== 'Tab') return;
 
-      const focusableElements = dialogRef.current?.querySelectorAll<HTMLElement>('button:not([disabled])');
+      const focusableElements = dialogRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), input:not([disabled])',
+      );
       if (!focusableElements?.length) return;
 
       const firstElement = focusableElements[0];
@@ -79,6 +82,14 @@ function ChannelChangeModal({ channel, onCancel, onConfirm }: ChannelChangeModal
             <p id="channel-change-description" className="mt-2 break-words text-sm leading-6 text-[#AEBECC]">
               Switching to <span className="font-semibold text-[#DCE6EF]">{channel.name}</span> will change what is playing for everyone watching right now.
             </p>
+            <label className="mt-4 flex w-fit cursor-pointer items-center gap-2.5 text-sm text-[#AEBECC]">
+              <input
+                ref={dontShowAgainRef}
+                type="checkbox"
+                className="h-4 w-4 shrink-0 cursor-pointer accent-[#4EA1FF] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4EA1FF]"
+              />
+              <span>Don’t show this again</span>
+            </label>
           </div>
           <button
             type="button"
@@ -100,7 +111,7 @@ function ChannelChangeModal({ channel, onCancel, onConfirm }: ChannelChangeModal
           </button>
           <button
             type="button"
-            onClick={onConfirm}
+            onClick={() => onConfirm(Boolean(dontShowAgainRef.current?.checked))}
             className="admin-primary px-4 py-2.5 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4EA1FF]"
           >
             Change channel

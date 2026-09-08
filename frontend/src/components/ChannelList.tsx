@@ -11,6 +11,24 @@ interface ChannelListProps {
   onChannelSelectCheckPermission: () => boolean;
 }
 
+const SKIP_CHANNEL_CHANGE_CONFIRMATION_KEY = "streamhub:skip-channel-change-confirmation";
+
+function shouldSkipChannelChangeConfirmation() {
+  try {
+    return window.localStorage.getItem(SKIP_CHANNEL_CHANGE_CONFIRMATION_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
+function saveChannelChangeConfirmationPreference() {
+  try {
+    window.localStorage.setItem(SKIP_CHANNEL_CHANGE_CONFIRMATION_KEY, "true");
+  } catch {
+    // Switching channels should still work when browser storage is unavailable.
+  }
+}
+
 function ChannelList({
   channels,
   selectedChannel,
@@ -31,9 +49,22 @@ function ChannelList({
     minute: "2-digit",
   }).format(new Date(value));
 
+  const changeChannel = useCallback((channel: Channel) => {
+    void socketService.setCurrentChannel(channel.id).catch(() => {
+      // SocketService reports a user-facing error through the shared app-error event.
+    });
+    setSearchQuery("");
+  }, [setSearchQuery]);
+
   const onSelectChannel = (channel: Channel) => {
     if (channel.id === selectedChannel?.id) return;
     if (!onChannelSelectCheckPermission()) return;
+
+    if (shouldSkipChannelChangeConfirmation()) {
+      changeChannel(channel);
+      return;
+    }
+
     setPendingChannel(channel);
   };
 
@@ -41,12 +72,12 @@ function ChannelList({
     setPendingChannel(null);
   }, []);
 
-  const confirmChannelChange = useCallback(() => {
+  const confirmChannelChange = useCallback((dontShowAgain: boolean) => {
     if (!pendingChannel) return;
-    socketService.setCurrentChannel(pendingChannel.id);
-    setSearchQuery("");
+    if (dontShowAgain) saveChannelChangeConfirmationPreference();
+    changeChannel(pendingChannel);
     setPendingChannel(null);
-  }, [pendingChannel, setSearchQuery]);
+  }, [changeChannel, pendingChannel]);
 
   return (
     <div className="space-y-1">

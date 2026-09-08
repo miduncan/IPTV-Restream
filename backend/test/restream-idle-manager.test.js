@@ -34,7 +34,12 @@ function createHarness() {
         },
     });
 
-    return { calls, manager, timers };
+    return {
+        calls,
+        manager,
+        timers,
+        setRunning: value => { running = value; },
+    };
 }
 
 test('starts the current restream when the first viewer connects', async () => {
@@ -106,4 +111,25 @@ test('receiver activity keeps a restream alive and becomes idle after requests s
 
     timers[1].callback();
     assert.equal(timers[2].delay, 5 * 60 * 1000);
+});
+
+test('receiver activity resolves after a stopped restream has started', async () => {
+    const { calls, manager } = createHarness();
+
+    await manager.viewerActivity('airplay:session-1', 30_000);
+
+    assert.deepEqual(calls, [['start', 7]]);
+    assert.equal(manager.isStreamingAllowed(), true);
+});
+
+test('receiver activity restarts playback when a socket viewer is still connected', async () => {
+    const { calls, manager, setRunning } = createHarness();
+
+    manager.viewerConnected('socket-1');
+    await manager.waitForPendingOperations();
+    setRunning(false);
+
+    await manager.viewerActivity('airplay:session-1', 30_000);
+
+    assert.deepEqual(calls, [['start', 7], ['start', 7]]);
 });

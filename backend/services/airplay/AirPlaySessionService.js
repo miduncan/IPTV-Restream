@@ -51,6 +51,10 @@ class AirPlaySessionService {
         return this.get(sessionId)?.resources.get(resourceId) || null;
     }
 
+    remove(sessionId) {
+        this.sessions.delete(sessionId);
+    }
+
     pruneExpired() {
         const currentTime = this.now();
         for (const [id, session] of this.sessions) {

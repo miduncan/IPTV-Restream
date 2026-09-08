@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Airplay, Maximize, Pause, PictureInPicture2, Play, Volume2, VolumeX } from 'lucide-react';
 import Hls from 'hls.js';
 import { Channel, ChannelMode } from '../types';
-import apiService from '../services/ApiService';
+import apiService, { ApiError } from '../services/ApiService';
 import { ToastContext } from './notifications/ToastContext';
 
 interface VideoPlayerProps {
@@ -47,8 +47,31 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       video.disableRemotePlayback = false;
 
       const startNativePlayback = async () => {
+        clearToasts();
+        const toastId = addToast({
+          type: 'loading',
+          title: 'Starting Stream',
+          message: 'Waiting for the live stream to become ready...',
+          duration: 0,
+        });
+
         try {
-          const session = await apiService.request<AirPlaySession>('/airplay/sessions', 'POST');
+          const deadline = Date.now() + 90_000;
+          let session: AirPlaySession;
+          while (true) {
+            try {
+              session = await apiService.request<AirPlaySession>('/airplay/sessions', 'POST');
+              break;
+            } catch (error) {
+              const retryableStatus = error instanceof ApiError && [502, 503, 504].includes(error.status);
+              const retryableNetworkError = error instanceof TypeError;
+              if ((!retryableStatus && !retryableNetworkError) || Date.now() >= deadline) {
+                throw error;
+              }
+              await new Promise(resolve => window.setTimeout(resolve, 1_000));
+              if (cancelled) return;
+            }
+          }
           if (cancelled) return;
 
           video.src = session.playbackUrl;
@@ -60,9 +83,11 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
           addToast({
             type: 'error',
             title: 'Stream unavailable',
-            message: 'This stream could not be started.',
+            message: error instanceof ApiError ? error.message : 'This stream could not be started.',
             duration: 5000,
           });
+        } finally {
+          removeToast(toastId);
         }
       };
 

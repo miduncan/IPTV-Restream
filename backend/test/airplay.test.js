@@ -35,6 +35,15 @@ test('AirPlay resources can only be resolved through their session', () => {
     assert.equal(service.getResource('missing-session', resourceId), null);
 });
 
+test('AirPlay sessions can be discarded when playback fails to start', () => {
+    const service = new AirPlaySessionService({ createId: () => 'failed-session' });
+    const session = service.create(1);
+
+    service.remove(session.id);
+
+    assert.equal(service.get(session.id), null);
+});
+
 test('AirPlay manifest rewriting covers playlists, segments, keys, maps, and renditions', () => {
     const source = `#EXTM3U
 #EXT-X-MEDIA:TYPE=AUDIO,URI="audio/index.m3u8"

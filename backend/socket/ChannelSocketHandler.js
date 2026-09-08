@@ -27,21 +27,25 @@ module.exports = (io, socket) => {
     }
   });
 
-  socket.on("set-current-channel", async (id) => {
+  socket.on("set-current-channel", async (id, acknowledge) => {
+    const reply = typeof acknowledge === "function" ? acknowledge : () => {};
     try {
       if (
         authService.channelSelectionRequiresAdmin() &&
         !authService.hasRole(socket.user, "admin")
       ) {
-        return socket.emit("app-error", {
-          message: "Admin access required to switch channel",
-        });
+        const message = "Admin access required to switch channel";
+        socket.emit("app-error", { message });
+        reply({ ok: false, error: message });
+        return;
       }
       const nextChannel = await ChannelService.setCurrentChannel(id);
       broadcastChannelSelection(io, nextChannel);
+      reply({ ok: true });
     } catch (err) {
       console.error(err);
       socket.emit("app-error", { message: err.message });
+      reply({ ok: false, error: err.message });
     }
   });
 

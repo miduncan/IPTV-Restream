@@ -28,15 +28,18 @@ class RestreamIdleManager {
         const hadViewers = this.viewerIds.size > 0;
         this.viewerIds.add(viewerId);
 
-        if (hadViewers) return;
-
-        if (this.idleTimer) {
+        if (!hadViewers && this.idleTimer) {
             this.clearTimer(this.idleTimer);
             this.idleTimer = null;
         }
 
         this.streamingAllowed = true;
-        this.enqueue(async () => {
+        const currentChannel = this.getCurrentChannel();
+        if (!currentChannel?.restream() || this.streamController.isRunning()) {
+            return this.operationQueue;
+        }
+
+        return this.enqueue(async () => {
             const currentChannel = this.getCurrentChannel();
             if (
                 this.streamingAllowed &&
@@ -79,13 +82,14 @@ class RestreamIdleManager {
         const existingTimer = this.activityTimers.get(viewerId);
         if (existingTimer) this.clearTimer(existingTimer);
 
-        this.viewerConnected(viewerId);
+        const pendingStart = this.viewerConnected(viewerId);
         const activityTimer = this.setTimer(() => {
             this.activityTimers.delete(viewerId);
             this.viewerDisconnected(viewerId);
         }, activityTimeoutMs);
         activityTimer.unref?.();
         this.activityTimers.set(viewerId, activityTimer);
+        return pendingStart;
     }
 
     enqueue(operation) {

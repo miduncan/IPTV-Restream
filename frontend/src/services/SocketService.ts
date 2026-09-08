@@ -4,33 +4,18 @@ import { Channel, ChannelMode } from '../types';
 class SocketService {
   private socket: Socket | null = null;
   private listeners: Map<string, ((data: unknown) => void)[]> = new Map();
-  private isConnecting: boolean = false;
 
   connect() {
     if (this.socket?.connected) {
       return;
     }
 
-    if (this.isConnecting) {
+    if (this.socket) {
+      if (!this.socket.active) this.socket.connect();
       return;
     }
 
-    this.isConnecting = true;
-
     console.log('Connecting to WebSocket server');
-
-    // Disconnect existing socket if necessary
-    if (this.socket) {
-      // Save listeners before disconnecting
-      const savedListeners = new Map(this.listeners);
-
-      // Disconnect and reset the socket
-      this.socket.disconnect();
-      this.socket = null;
-
-      // Restore listeners
-      this.listeners = savedListeners;
-    }
 
     this.socket = io(import.meta.env.VITE_BACKEND_URL, {
       withCredentials: true,
@@ -38,7 +23,6 @@ class SocketService {
 
     this.socket.on('connect', () => {
       console.log('Connected to WebSocket server');
-      this.isConnecting = false;
 
       // Re-apply listeners to new socket connection
       this.reapplyListeners();
@@ -47,13 +31,11 @@ class SocketService {
 
     this.socket.on('disconnect', () => {
       console.log('Disconnected from WebSocket server');
-      this.isConnecting = false;
       this.notifyListeners('socket-disconnected');
     });
 
     this.socket.on('connect_error', (error) => {
       console.error('Connection error:', error);
-      this.isConnecting = false;
       this.notifyListeners('socket-connect-error');
       if (error.message === 'Authentication required.') {
         window.dispatchEvent(new Event('auth-expired'));
@@ -84,12 +66,42 @@ class SocketService {
     if (this.socket) {
       this.socket.disconnect();
       this.socket = null;
-      this.isConnecting = false;
     }
   }
 
   isConnected() {
     return Boolean(this.socket?.connected);
+  }
+
+  private waitUntilConnected(timeoutMs: number = 10_000): Promise<Socket> {
+    if (this.socket?.connected) return Promise.resolve(this.socket);
+
+    this.connect();
+    const socket = this.socket;
+    if (!socket) return Promise.reject(new Error('Socket could not be created.'));
+
+    return new Promise((resolve, reject) => {
+      const cleanup = () => {
+        window.clearTimeout(timer);
+        socket.off('connect', onConnect);
+        socket.off('connect_error', onError);
+      };
+      const onConnect = () => {
+        cleanup();
+        resolve(socket);
+      };
+      const onError = (error: Error) => {
+        cleanup();
+        reject(error);
+      };
+      const timer = window.setTimeout(() => {
+        cleanup();
+        reject(new Error('The connection timed out. Try again.'));
+      }, timeoutMs);
+
+      socket.once('connect', onConnect);
+      socket.once('connect_error', onError);
+    });
   }
 
   subscribeToEvent<T>(event: string, listener: (data: T) => void) {
@@ -163,16 +175,33 @@ class SocketService {
   }
 
   // Set current channel
-  setCurrentChannel(id: number) {
-    if (!this.socket || !this.socket.connected) {
-      this.connect();
-
-      if (!this.socket || !this.socket.connected) {
-        throw new Error('Socket is not connected.');
-      }
+  async setCurrentChannel(id: number): Promise<void> {
+    let socket: Socket;
+    try {
+      socket = await this.waitUntilConnected();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Channel could not be changed.';
+      this.notifyListeners('app-error', { message });
+      throw error;
     }
 
-    this.socket.emit('set-current-channel', id);
+    return new Promise((resolve, reject) => {
+      socket.timeout(15_000).emit(
+        'set-current-channel',
+        id,
+        (timeoutError: Error | null, response?: { ok: boolean; error?: string }) => {
+          if (timeoutError) {
+            const error = new Error('The channel change timed out. Try again.');
+            this.notifyListeners('app-error', { message: error.message });
+            reject(error);
+          } else if (!response?.ok) {
+            reject(new Error(response?.error || 'Channel could not be changed.'));
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
   }
 
   // Delete channel

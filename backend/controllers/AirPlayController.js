@@ -5,6 +5,7 @@ const ChannelService = require('../services/ChannelService');
 const SessionFactory = require('../services/session/SessionFactory');
 const airPlaySessionService = require('../services/airplay/AirPlaySessionService');
 const { rewriteManifest } = require('../services/airplay/AirPlayManifestService');
+const { waitForHlsManifest } = require('../services/restream/waitForFile');
 
 const STORAGE_PATH = process.env.STORAGE_PATH;
 const PUBLIC_BACKEND_URL = process.env.BACKEND_URL;
@@ -93,11 +94,33 @@ module.exports = {
         trackReceiverActivity = typeof tracker === 'function' ? tracker : () => {};
     },
 
-    createSession(req, res) {
+    async createSession(req, res) {
         const channel = ChannelService.getCurrentChannel();
         if (!channel) return res.status(404).json({ message: 'No channel is currently selected.' });
 
         const session = airPlaySessionService.create(channel.id);
+        try {
+            await trackReceiverActivity(`airplay:${session.id}`);
+        } catch (error) {
+            console.error('Could not start the restream for playback:', error.message);
+            airPlaySessionService.remove(session.id);
+            return res.status(503).json({ message: 'The stream could not be started.' });
+        }
+
+        if (channel.restream()) {
+            const manifestPath = path.resolve(STORAGE_PATH, String(channel.id), `${channel.id}.m3u8`);
+            const ready = await waitForHlsManifest(manifestPath);
+            if (!ready) {
+                airPlaySessionService.remove(session.id);
+                return res.status(503).json({ message: 'The stream is still starting.' });
+            }
+        }
+
+        if (ChannelService.getCurrentChannel()?.id !== channel.id) {
+            airPlaySessionService.remove(session.id);
+            return res.status(409).json({ message: 'The channel changed while the stream was starting.' });
+        }
+
         res.setHeader('Cache-Control', 'no-store');
         return res.status(201).json({
             playbackUrl: `${publicOrigin(req)}/airplay/${encodeURIComponent(session.id)}/master.m3u8`,
@@ -113,7 +136,7 @@ module.exports = {
         if (channel.restream()) {
             const channelDirectory = path.resolve(STORAGE_PATH, String(channel.id));
             const manifestPath = path.join(channelDirectory, `${channel.id}.m3u8`);
-            if (!fs.existsSync(manifestPath)) {
+            if (!await waitForHlsManifest(manifestPath)) {
                 return res.status(503).json({ message: 'The stream is still starting.' });
             }
 
