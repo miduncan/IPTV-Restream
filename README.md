@@ -78,8 +78,8 @@ The equivalent command without Make is:
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 ```
 
-To run the production-style stack instead, build it and start it in the
-background with:
+To run a production-style stack locally, build it and start it in the background
+with:
 
 ```bash
 make prod
@@ -91,10 +91,9 @@ make prod
 > Configure the Xtream portal URL, username, and password under **Admin → Settings**. Then use **Admin → Channels** to browse channels from `player_api.php`, add them to the player, and choose direct, proxy, or restream mode.
 
 
-There is also [documentation for ADVANCED DEPLOYMENT](/deployment/README.md):
-- Configuration options (Admin mode).
-- Deploy from container registry and without cloning and building.
-- Deploy together with nginx proxy manager for automatic ssl handling.
+See the [DigitalOcean deployment guide](/deployment/README.md) to deploy
+prebuilt, commit-tagged images from GHCR. The server only pulls images; all
+builds happen in GitHub Actions.
 
 ## 🆓 Free compatible playlists
 
