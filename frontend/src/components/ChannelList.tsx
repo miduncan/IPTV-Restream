@@ -98,6 +98,7 @@ function ChannelList({
         return <button
           type="button"
           key={channel.id}
+          data-channel-id={channel.id}
           title={channel.name.length > 28 ? channel.name : ""}
           onClick={() => onSelectChannel(channel)}
           className={`channel-row group relative ${isSelected ? "items-start" : ""} ${

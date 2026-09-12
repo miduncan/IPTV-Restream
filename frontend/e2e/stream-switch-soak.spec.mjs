@@ -140,11 +140,11 @@ async function videoEvents(page) {
   return page.evaluate(() => window.__streamSoak?.events || []);
 }
 
-function playbackSummary(events) {
-  const loadStartIndex = events.findIndex(event => event.type === 'loadstart');
-  const firstPlaying = loadStartIndex < 0
-    ? undefined
-    : events.slice(loadStartIndex + 1).find(event => event.type === 'playing');
+function playbackSummary(events, handoffMs = 0) {
+  // During make-before-break warm-up the previous channel intentionally keeps
+  // playing. Only events at the handoff boundary belong to the target stream.
+  const boundaryMs = Math.max(0, handoffMs - 250);
+  const firstPlaying = events.find(event => event.type === 'playing' && event.atMs >= boundaryMs);
   let waitingAt = null;
   let rebufferCount = 0;
   let rebufferMs = 0;
@@ -241,7 +241,14 @@ test('channel switches remain playable with synchronization disabled', async ({ 
   const cycles = [];
   for (let index = 0; index < iterations; index += 1) {
     await assertSyncDisabled(page, `before cycle ${index + 1}`);
-    const channel = orderedChannels[index % orderedChannels.length];
+    const search = page.getByPlaceholder('Search channels');
+    await search.fill('');
+    const activeChannelId = Number(await page.locator('#channels-panel .channel-row-active').getAttribute('data-channel-id'));
+    const preferredChannel = orderedChannels[index % orderedChannels.length];
+    const channel = preferredChannel.id === activeChannelId
+      ? orderedChannels.find(candidate => candidate.id !== activeChannelId)
+      : preferredChannel;
+    if (!channel) throw new Error('No alternate channel is available for the next switch.');
     const cycle = {
       iteration: index + 1,
       channel: { id: channel.id, name: channel.name, mode: channel.mode },
@@ -266,9 +273,8 @@ test('channel switches remain playable with synchronization disabled', async ({ 
     await resetVideoProbe(page);
 
     try {
-      const search = page.getByPlaceholder('Search channels');
       await search.fill(channel.name);
-      const row = page.locator('#channels-panel button.channel-row').filter({ hasText: channel.name }).first();
+      const row = page.locator(`#channels-panel button.channel-row[data-channel-id="${channel.id}"]`);
       await expect(row).toBeVisible();
       await row.click();
       await expect(row).toHaveClass(/channel-row-active/, { timeout: startupTimeoutMs });
@@ -278,9 +284,9 @@ test('channel switches remain playable with synchronization disabled', async ({ 
       let playbackStarted = false;
       while (performance.now() < playbackDeadline) {
         const events = await videoEvents(page);
-        const loadStartIndex = events.findIndex(event => event.type === 'loadstart');
-        playbackStarted = loadStartIndex >= 0
-          && events.slice(loadStartIndex + 1).some(event => event.type === 'playing');
+        playbackStarted = events.some(event => (
+          event.type === 'playing' && event.atMs >= Math.max(0, cycle.switchMs - 250)
+        ));
         if (playbackStarted) break;
         await page.waitForTimeout(Math.min(1_000, playbackDeadline - performance.now()));
         await assertSyncDisabled(page, `startup for cycle ${index + 1}`);
@@ -294,8 +300,10 @@ test('channel switches remain playable with synchronization disabled', async ({ 
       }
 
       cycle.videoEvents = await videoEvents(page);
-      Object.assign(cycle, playbackSummary(cycle.videoEvents));
-      cycle.networkEvents = networkEvents.slice(eventStart);
+      Object.assign(cycle, playbackSummary(cycle.videoEvents, cycle.switchMs));
+      const targetStreamPath = `/streams/${channel.id}/`;
+      cycle.backgroundNetworkEvents = networkEvents.slice(eventStart).filter(event => !event.path.startsWith(targetStreamPath));
+      cycle.networkEvents = networkEvents.slice(eventStart).filter(event => event.path.startsWith(targetStreamPath));
       cycle.consoleErrors = consoleErrors.slice(consoleStart);
       const manifest = cycle.networkEvents.find(event => event.status >= 200 && event.status < 300 && event.path.endsWith('.m3u8'));
       const segment = cycle.networkEvents.find(event => event.status >= 200 && event.status < 300 && /\.(ts|m4s|mp4|aac)$/.test(event.path));
@@ -322,8 +330,10 @@ test('channel switches remain playable with synchronization disabled', async ({ 
       if (error.code === 'SYNC_ENABLED' || error.message?.startsWith('SYNC_ENABLED:')) throw error;
       cycle.failure = String(error.message || error).slice(0, 1_000);
       cycle.videoEvents = await videoEvents(page);
-      Object.assign(cycle, playbackSummary(cycle.videoEvents));
-      cycle.networkEvents = networkEvents.slice(eventStart);
+      Object.assign(cycle, playbackSummary(cycle.videoEvents, cycle.switchMs || 0));
+      const targetStreamPath = `/streams/${channel.id}/`;
+      cycle.backgroundNetworkEvents = networkEvents.slice(eventStart).filter(event => !event.path.startsWith(targetStreamPath));
+      cycle.networkEvents = networkEvents.slice(eventStart).filter(event => event.path.startsWith(targetStreamPath));
       cycle.consoleErrors = consoleErrors.slice(consoleStart);
       const manifest = cycle.networkEvents.find(event => event.status >= 200 && event.status < 300 && event.path.endsWith('.m3u8'));
       cycle.firstManifestMs = manifest?.atMs ?? null;

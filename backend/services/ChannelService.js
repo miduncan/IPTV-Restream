@@ -1,6 +1,5 @@
 const streamController = require('./restream/StreamController');
 const Channel = require('../models/Channel');
-const storageService = require('./restream/StorageService');
 const ChannelStorage = require('./ChannelStorage');
 
 
@@ -9,6 +8,7 @@ class ChannelService {
         this.channels = ChannelStorage.load();
         this.currentChannel = this.channels[0];
         this.channelSwitchQueue = Promise.resolve();
+        this.previousStreamRetirement = Promise.resolve();
     }
 
     clearChannels() {
@@ -69,15 +69,33 @@ class ChannelService {
             throw new Error('Channel does not exist');
         }
 
+        if (this.currentChannel === nextChannel && nextChannel.restream()) {
+            const ready = await streamController.ensureReady(nextChannel);
+            if (!ready) throw new Error('The current restream is not ready');
+            return nextChannel;
+        }
+
         if (this.currentChannel !== nextChannel) {
-            if (this.currentChannel) {
-                await streamController.stop(this.currentChannel);
-            }
+            const previousChannel = this.currentChannel;
             if (nextChannel.restream()) {
-                storageService.deleteChannelStorage(nextChannel.id);
-                await streamController.start(nextChannel);
+                // Keep the normal overlap capped at the current stream plus
+                // one warming stream, even when viewers click rapidly.
+                await this.previousStreamRetirement.catch(() => undefined);
+                const started = await streamController.start(nextChannel);
+                if (!started) throw new Error('The restream could not start without an active viewer');
             }
             this.currentChannel = nextChannel;
+            if (previousChannel) {
+                // Give the socket handler a chance to publish the ready channel
+                // before retiring the stream clients are currently watching.
+                this.previousStreamRetirement = new Promise(resolve => {
+                    setImmediate(() => {
+                        streamController.stop(previousChannel).catch(error => {
+                            console.error(`Failed to stop previous channel ${previousChannel.id}:`, error);
+                        }).finally(resolve);
+                    });
+                });
+            }
         }
         return nextChannel;
     }

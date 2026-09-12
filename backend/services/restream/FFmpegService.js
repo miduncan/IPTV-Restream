@@ -2,9 +2,12 @@ const { spawn } = require('child_process');
 const settingsService = require('../settings/SettingsService');
 require('dotenv').config();
 
-let currentFFmpegProcess = null;
-let currentChannelId = null;
+const runningProcesses = new Map();
 const STORAGE_PATH = process.env.STORAGE_PATH;
+const HLS_SEGMENT_SECONDS = 2;
+const HLS_LIST_SIZE = 12;
+const STOP_GRACE_MS = 1_500;
+const STOP_FORCE_WAIT_MS = 1_000;
 
 function getCodecArguments() {
     if (!settingsService.shouldTranscodeAudioToAacLc()) {
@@ -20,20 +23,17 @@ function getCodecArguments() {
     ];
 }
 
-function startFFmpeg(nextChannel) {
+async function startFFmpeg(nextChannel) {
     console.log('Starting FFmpeg process with channel:', nextChannel.id);
-    // if (currentFFmpegProcess) {
-    //     console.log('Gracefully terminate previous ffmpeg-Prozess...');
-    //     await stopFFmpeg();
-    // }
+    if (runningProcesses.has(nextChannel.id)) {
+        await stopFFmpeg(nextChannel.id);
+    }
 
     let channelUrl = nextChannel.sessionUrl ? nextChannel.sessionUrl : nextChannel.url;
 
-    currentChannelId = nextChannel.id;
     const headers = nextChannel.headers;
 
-
-    currentFFmpegProcess = spawn('ffmpeg', [
+    const child = spawn('ffmpeg', [
         '-headers', headers.map(header => `${header.key}: ${header.value}`).join('\r\n'),
         '-reconnect', '1',
         '-reconnect_at_eof', '1',
@@ -48,60 +48,97 @@ function startFFmpeg(nextChannel) {
         // independently decodable.
         '-bsf:v', 'dump_extra=freq=keyframe',
         '-f', 'hls',
-        '-hls_time', '6',
-        '-hls_list_size', '5',
+        '-hls_time', String(HLS_SEGMENT_SECONDS),
+        '-hls_list_size', String(HLS_LIST_SIZE),
         '-hls_flags', 'delete_segments+program_date_time+independent_segments',
         '-start_number', Math.floor(Date.now() / 1000),
-        `${STORAGE_PATH}${currentChannelId}/${currentChannelId}.m3u8`
+        `${STORAGE_PATH}${nextChannel.id}/${nextChannel.id}.m3u8`
     ]);
+    const handle = { channelId: nextChannel.id, child, stopPromise: null };
+    runningProcesses.set(nextChannel.id, handle);
 
-    currentFFmpegProcess.stdout.on('data', (data) => {
+    child.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
     });
 
-    currentFFmpegProcess.stderr.on('data', (data) => {
+    child.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
     });
 
-    // currentFFmpegProcess.on('close', (code) => {
-    //     console.log(`ffmpeg-Process terminated with code: ${code}`);
-
-    //     // currentFFmpegProcess = null;
-    //     // //Restart if crashed
-    //     // if (code !== null && code !== 255) {
-    //     //     console.log(`Restarting FFmpeg process with channel: ${nextChannel.id}`);
-    //     //     //wait 1 second before restarting
-    //     //     setTimeout(() => startFFmpeg(nextChannel), 2000);
-    //     // }
-    // });
-}
-
-function stopFFmpeg() {
-    return new Promise((resolve, reject) => {
-        if (currentFFmpegProcess) {
-            console.log('Gracefully terminate ffmpeg-Process...');
-            
-            currentFFmpegProcess.on('close', (code) => {
-                console.log(`ffmpeg-Process terminated with code: ${code}`);
-                currentFFmpegProcess = null;
-                resolve(); 
-            });
-
-            currentFFmpegProcess.kill('SIGTERM');
-        } else {
-            console.log('No ffmpeg process is running.');
-            resolve(); 
+    child.on('close', (code) => {
+        if (runningProcesses.get(nextChannel.id) === handle) {
+            runningProcesses.delete(nextChannel.id);
         }
+        console.log(`FFmpeg process for channel ${nextChannel.id} terminated with code: ${code}`);
     });
+
+    child.on('error', (error) => {
+        if (runningProcesses.get(nextChannel.id) === handle) {
+            runningProcesses.delete(nextChannel.id);
+        }
+        console.error(`FFmpeg process for channel ${nextChannel.id} failed:`, error);
+    });
+
+    return handle;
 }
 
-function isFFmpegRunning() {
-    return currentFFmpegProcess !== null;
+function stopFFmpeg(channelId) {
+    const handle = runningProcesses.get(channelId);
+    if (!handle) {
+        console.log(`No FFmpeg process is running for channel ${channelId}.`);
+        return Promise.resolve();
+    }
+    if (handle.stopPromise) return handle.stopPromise;
+
+    handle.stopPromise = new Promise(resolve => {
+        let settled = false;
+        let forceTimer;
+        let giveUpTimer;
+        const finish = () => {
+            if (settled) return;
+            settled = true;
+            clearTimeout(forceTimer);
+            clearTimeout(giveUpTimer);
+            if (runningProcesses.get(channelId) === handle) runningProcesses.delete(channelId);
+            resolve();
+        };
+
+        handle.child.once('close', finish);
+        handle.child.once('error', finish);
+        console.log(`Gracefully terminating FFmpeg process for channel ${channelId}...`);
+
+        if (!handle.child.kill('SIGTERM')) {
+            finish();
+            return;
+        }
+
+        forceTimer = setTimeout(() => {
+            if (settled) return;
+            console.warn(`FFmpeg process for channel ${channelId} did not stop gracefully; sending SIGKILL.`);
+            handle.child.kill('SIGKILL');
+        }, STOP_GRACE_MS);
+        forceTimer.unref?.();
+
+        // Never leave the channel-switch or per-channel operation queue blocked
+        // solely because a child process failed to emit its terminal event.
+        giveUpTimer = setTimeout(finish, STOP_GRACE_MS + STOP_FORCE_WAIT_MS);
+        giveUpTimer.unref?.();
+    });
+    return handle.stopPromise;
+}
+
+function isFFmpegRunning(channelId) {
+    return channelId === undefined
+        ? runningProcesses.size > 0
+        : runningProcesses.has(channelId);
 }
 
 module.exports = {
     startFFmpeg,
     stopFFmpeg,
     isFFmpegRunning,
-    getCodecArguments
+    getCodecArguments,
+    HLS_SEGMENT_SECONDS,
+    HLS_LIST_SIZE,
+    STOP_GRACE_MS,
 };

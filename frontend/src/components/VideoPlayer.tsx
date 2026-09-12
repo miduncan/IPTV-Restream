@@ -111,6 +111,10 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       const hls = new Hls({
         autoStartLoad: syncEnabled ? false : true,
         liveDurationInfinity: true,
+        // Prefer three target-duration segments behind the live edge. The
+        // backend publishes restream switches after at least two exist.
+        liveSyncDurationCount: 3,
+        liveMaxLatencyDurationCount: 6,
         //debug: true,
         manifestLoadPolicy: {
           default: {

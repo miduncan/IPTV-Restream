@@ -35,7 +35,7 @@ class RestreamIdleManager {
 
         this.streamingAllowed = true;
         const currentChannel = this.getCurrentChannel();
-        if (!currentChannel?.restream() || this.streamController.isRunning()) {
+        if (!currentChannel?.restream() || this.streamController.isRunning(currentChannel.id)) {
             return this.operationQueue;
         }
 
@@ -44,7 +44,7 @@ class RestreamIdleManager {
             if (
                 this.streamingAllowed &&
                 currentChannel?.restream() &&
-                !this.streamController.isRunning()
+                !this.streamController.isRunning(currentChannel.id)
             ) {
                 await this.streamController.start(currentChannel);
             }
@@ -67,7 +67,7 @@ class RestreamIdleManager {
                 if (this.streamingAllowed || this.viewerIds.size > 0) return;
 
                 const currentChannel = this.getCurrentChannel();
-                if (currentChannel?.restream() && this.streamController.isRunning()) {
+                if (currentChannel?.restream() && this.streamController.isRunning(currentChannel.id)) {
                     console.log('Stopping restream after five minutes without viewers');
                     await this.streamController.stop(currentChannel);
                 }

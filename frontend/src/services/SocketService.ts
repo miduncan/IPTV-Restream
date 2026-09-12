@@ -186,7 +186,9 @@ class SocketService {
     }
 
     return new Promise((resolve, reject) => {
-      socket.timeout(15_000).emit(
+      // A make-before-break restream switch may intentionally wait for the new
+      // channel to build its startup buffer before the server acknowledges it.
+      socket.timeout(40_000).emit(
         'set-current-channel',
         id,
         (timeoutError: Error | null, response?: { ok: boolean; error?: string }) => {
