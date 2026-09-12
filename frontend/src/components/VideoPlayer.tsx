@@ -61,6 +61,11 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
 
     const canPlayNativeHls = Boolean(video.canPlayType('application/vnd.apple.mpegurl'));
     const canUseAirPlay = typeof video.webkitShowPlaybackTargetPicker === 'function';
+    const canUseManagedMediaSource = 'ManagedMediaSource' in window;
+    // iPhone/iPad Safari is most reliable when the receiver-safe HLS URL is
+    // the video's primary source. Its ManagedMediaSource-to-AirPlay fallback
+    // varies by iOS/WebKit version and can degrade into audio-only routing.
+    const preferNativeAirPlay = !useCustomControls && canUseAirPlay && canPlayNativeHls;
 
     const createAirPlaySession = async () => {
       const deadline = Date.now() + 90_000;
@@ -92,7 +97,9 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
         removeAirPlayAlternative();
         const source = document.createElement('source');
         source.dataset.airplaySource = 'true';
-        source.type = 'application/vnd.apple.mpegurl';
+        // WebKit recognizes this as the remote-playback alternative to the
+        // local ManagedMediaSource attached by hls.js.
+        source.type = 'application/x-mpegURL';
         source.src = session.playbackUrl;
         video.appendChild(source);
         video.setAttribute('x-webkit-airplay', 'allow');
@@ -105,7 +112,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       }
     };
 
-    if (Hls.isSupported()) {
+    if (Hls.isSupported() && !preferNativeAirPlay && (!canUseAirPlay || canUseManagedMediaSource)) {
       // Safari can play locally through hls.js (and therefore use the same
       // synchronization loop as other browsers) while AirPlay uses the
       // receiver-safe native HLS source prepared alongside it.
@@ -118,6 +125,11 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       const hls = new Hls({
         autoStartLoad: syncEnabled ? false : true,
         liveDurationInfinity: true,
+        // AirPlay cannot send a MediaSource blob URL to a TV. On supported
+        // Apple devices, ManagedMediaSource makes hls.js attach its local
+        // source as a <source> element so the native HLS alternative above is
+        // selected for full video AirPlay.
+        preferManagedMediaSource: canUseAirPlay && canUseManagedMediaSource,
         // Prefer three target-duration segments behind the live edge. The
         // backend publishes restream switches after at least two exist.
         liveSyncDurationCount: 3,
@@ -403,7 +415,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       }
     };
 
-  }, [channel?.id, channel?.url, channel?.mode, syncEnabled, addToast, clearToasts, editToast, removeToast]);
+  }, [channel?.id, channel?.url, channel?.mode, syncEnabled, useCustomControls, addToast, clearToasts, editToast, removeToast]);
 
   useEffect(() => {
     const video = videoRef.current as AirPlayVideoElement | null;
