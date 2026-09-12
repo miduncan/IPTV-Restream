@@ -14,6 +14,7 @@ function AppContent() {
 
   const [channels, setChannels] = useState<Channel[]>([]);
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
+  const [playbackChannel, setPlaybackChannel] = useState<Channel | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [channelSelectRequiresAdmin, setChannelSelectRequiresAdmin] = useState(false);
@@ -63,6 +64,7 @@ function AppContent() {
         .then(([nextChannels, currentChannel]) => {
           setChannels(nextChannels);
           setSelectedChannel(currentChannel);
+          setPlaybackChannel(currentChannel);
         })
         .catch((error) => console.error('Error refreshing channels:', error));
     };
@@ -74,8 +76,19 @@ function AppContent() {
       setChannels((prevChannels) => [...prevChannels, channel]);
     };
 
+    const channelSwitchingListener = ({ channel }: { channel: Channel; revision: number }) => {
+      setSelectedChannel(channel);
+      setPlaybackChannel(null);
+    };
+
     const channelSelectedListener = (nextChannel: Channel | null) => {
       setSelectedChannel(nextChannel);
+      setPlaybackChannel(nextChannel);
+    };
+
+    const channelSwitchFailedListener = ({ channel }: { channel: Channel | null; revision: number }) => {
+      setSelectedChannel(channel);
+      setPlaybackChannel(channel);
     };
 
     const channelUpdatedListener = (updatedChannel: Channel) => {
@@ -104,6 +117,9 @@ function AppContent() {
         }
         return selectedChannel;
       });
+      setPlaybackChannel((currentPlaybackChannel) =>
+        currentPlaybackChannel?.id === updatedChannel.id ? updatedChannel : currentPlaybackChannel
+      );
     };
 
     const channelDeletedListener = (deletedChannel: number) => {
@@ -125,7 +141,9 @@ function AppContent() {
     const epgCacheClearedListener = () => setEpgRefreshVersion((version) => version + 1);
 
     socketService.subscribeToEvent('channel-added', channelAddedListener);
+    socketService.subscribeToEvent('channel-switching', channelSwitchingListener);
     socketService.subscribeToEvent('channel-selected', channelSelectedListener);
+    socketService.subscribeToEvent('channel-switch-failed', channelSwitchFailedListener);
     socketService.subscribeToEvent('channel-updated', channelUpdatedListener);
     socketService.subscribeToEvent('channel-deleted', channelDeletedListener);
     socketService.subscribeToEvent('app-error', errorListener);
@@ -136,10 +154,12 @@ function AppContent() {
 
     return () => {
       socketService.unsubscribeFromEvent('channel-added', channelAddedListener);
+      socketService.unsubscribeFromEvent('channel-switching', channelSwitchingListener);
       socketService.unsubscribeFromEvent(
         'channel-selected',
         channelSelectedListener
       );
+      socketService.unsubscribeFromEvent('channel-switch-failed', channelSwitchFailedListener);
       socketService.unsubscribeFromEvent(
         'channel-updated',
         channelUpdatedListener
@@ -226,7 +246,7 @@ function AppContent() {
 
       <div className="player-workspace">
         <section className="player-stage" aria-label="Video player">
-          <VideoPlayer channel={selectedChannel} syncEnabled={syncEnabled} />
+          <VideoPlayer channel={playbackChannel} syncEnabled={syncEnabled} />
         </section>
 
         <aside className="player-sidebar">

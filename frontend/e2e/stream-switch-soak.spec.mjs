@@ -43,6 +43,7 @@ function aggregate(cycles) {
     failed: cycles.length - passed.length,
     successRatePercent: cycles.length ? Math.round(passed.length / cycles.length * 10_000) / 100 : 0,
     switchMs: { median: percentile(metric('switchMs'), 0.5), p95: percentile(metric('switchMs'), 0.95) },
+    oldVideoCutMs: { median: percentile(metric('oldVideoCutMs'), 0.5), p95: percentile(metric('oldVideoCutMs'), 0.95) },
     firstManifestMs: { median: percentile(metric('firstManifestMs'), 0.5), p95: percentile(metric('firstManifestMs'), 0.95) },
     firstSegmentMs: { median: percentile(metric('firstSegmentMs'), 0.5), p95: percentile(metric('firstSegmentMs'), 0.95) },
     firstPlayingMs: { median: percentile(metric('firstPlayingMs'), 0.5), p95: percentile(metric('firstPlayingMs'), 0.95) },
@@ -254,6 +255,7 @@ test('channel switches remain playable with synchronization disabled', async ({ 
       channel: { id: channel.id, name: channel.name, mode: channel.mode },
       ok: false,
       switchMs: null,
+      oldVideoCutMs: null,
       firstManifestMs: null,
       firstSegmentMs: null,
       firstPlayingMs: null,
@@ -277,8 +279,14 @@ test('channel switches remain playable with synchronization disabled', async ({ 
       const row = page.locator(`#channels-panel button.channel-row[data-channel-id="${channel.id}"]`);
       await expect(row).toBeVisible();
       await row.click();
-      await expect(row).toHaveClass(/channel-row-active/, { timeout: startupTimeoutMs });
+      await expect(row).toHaveClass(/channel-row-active/, { timeout: 2_000 });
       cycle.switchMs = Math.round(performance.now() - cycleAnchor);
+
+      await expect.poll(async () => {
+        const events = await videoEvents(page);
+        return events.some(event => event.type === 'emptied');
+      }, { timeout: 2_000, message: 'the old video should be cleared immediately' }).toBe(true);
+      cycle.oldVideoCutMs = (await videoEvents(page)).find(event => event.type === 'emptied')?.atMs ?? null;
 
       const playbackDeadline = performance.now() + startupTimeoutMs;
       let playbackStarted = false;
@@ -322,9 +330,13 @@ test('channel switches remain playable with synchronization disabled', async ({ 
           && event.path.endsWith('.m3u8')
         ))
       ));
-      cycle.ok = cycle.firstPlayingMs !== null && cycle.rebufferCount === 0 && cycle.requestFailures.length === 0;
+      cycle.ok = cycle.oldVideoCutMs !== null
+        && cycle.oldVideoCutMs <= 2_000
+        && cycle.firstPlayingMs !== null
+        && cycle.rebufferCount === 0
+        && cycle.requestFailures.length === 0;
       if (!cycle.ok) {
-        cycle.failure = `playing=${cycle.firstPlayingMs !== null}, rebuffers=${cycle.rebufferCount}, requestFailures=${cycle.requestFailures.length}`;
+        cycle.failure = `oldVideoCutMs=${cycle.oldVideoCutMs}, playing=${cycle.firstPlayingMs !== null}, rebuffers=${cycle.rebufferCount}, requestFailures=${cycle.requestFailures.length}`;
       }
     } catch (error) {
       if (error.code === 'SYNC_ENABLED' || error.message?.startsWith('SYNC_ENABLED:')) throw error;
@@ -354,7 +366,7 @@ test('channel switches remain playable with synchronization disabled', async ({ 
       cycle.totalMs = Math.round(performance.now() - cycleAnchor);
       console.log(
         `[${cycle.iteration}/${iterations}] channel ${channel.id}: ${cycle.ok ? 'PASS' : 'FAIL'} `
-        + `switch=${cycle.switchMs ?? '-'}ms playing=${cycle.firstPlayingMs ?? '-'}ms `
+        + `switch=${cycle.switchMs ?? '-'}ms oldVideoCut=${cycle.oldVideoCutMs ?? '-'}ms playing=${cycle.firstPlayingMs ?? '-'}ms `
         + `rebuffers=${cycle.rebufferCount} requestFailures=${cycle.requestFailures.length}`
       );
     }

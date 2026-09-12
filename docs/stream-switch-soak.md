@@ -2,8 +2,10 @@
 
 This Playwright test repeatedly changes the shared current channel through the
 real application UI. It records channel-selection time, HLS requests, actual
-video playback events, startup time, rebuffering, browser errors, and request
-failures during the first 45 seconds after every switch.
+video playback events, old-video cutoff time, startup time, rebuffering,
+browser errors, and request failures during the first 45 seconds after every
+switch. It fails if the new selection or old-video cutoff takes more than two
+seconds.
 
 The test has a hard safety check for playback synchronization. It refuses to
 start when synchronization is enabled and checks the setting again before each

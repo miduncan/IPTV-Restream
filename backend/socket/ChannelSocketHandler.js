@@ -2,6 +2,8 @@ const ChannelService = require("../services/ChannelService");
 const authService = require("../services/auth/AuthService");
 const broadcastChannelSelection = require("./broadcastChannelSelection");
 
+let latestChannelSwitchRevision = 0;
+
 module.exports = (io, socket) => {
   // Check if admin mode is required for channel modifications
   socket.on("add-channel", ({ name, url, avatar, mode, headersJson }) => {
@@ -29,6 +31,7 @@ module.exports = (io, socket) => {
 
   socket.on("set-current-channel", async (id, acknowledge) => {
     const reply = typeof acknowledge === "function" ? acknowledge : () => {};
+    let revision;
     try {
       if (
         authService.channelSelectionRequiresAdmin() &&
@@ -39,11 +42,30 @@ module.exports = (io, socket) => {
         reply({ ok: false, error: message });
         return;
       }
+
+      const requestedChannel = ChannelService.getChannelById(id);
+      if (!requestedChannel) {
+        throw new Error("Channel does not exist");
+      }
+
+      revision = ++latestChannelSwitchRevision;
+      // Update every client's selection immediately. Playback remains empty
+      // until channel-selected announces that the new stream is ready.
+      io.emit("channel-switching", { channel: requestedChannel, revision });
+
       const nextChannel = await ChannelService.setCurrentChannel(id);
-      broadcastChannelSelection(io, nextChannel);
+      if (revision === latestChannelSwitchRevision) {
+        broadcastChannelSelection(io, nextChannel);
+      }
       reply({ ok: true });
     } catch (err) {
       console.error(err);
+      if (revision !== undefined && revision === latestChannelSwitchRevision) {
+        io.emit("channel-switch-failed", {
+          channel: ChannelService.getCurrentChannel() ?? null,
+          revision,
+        });
+      }
       socket.emit("app-error", { message: err.message });
       reply({ ok: false, error: err.message });
     }
