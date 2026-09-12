@@ -4,6 +4,8 @@ import { Channel, ChannelMode } from '../types';
 class SocketService {
   private socket: Socket | null = null;
   private listeners: Map<string, ((data: unknown) => void)[]> = new Map();
+  private serverClockAnchor: { serverTimeMs: number; performanceTimeMs: number } | null = null;
+  private clockRefreshTimer: number | null = null;
 
   connect() {
     if (this.socket?.connected) {
@@ -27,6 +29,11 @@ class SocketService {
       // Re-apply listeners to new socket connection
       this.reapplyListeners();
       this.notifyListeners('socket-connected');
+      void this.synchronizeServerClock(this.socket!);
+      if (this.clockRefreshTimer !== null) window.clearInterval(this.clockRefreshTimer);
+      this.clockRefreshTimer = window.setInterval(() => {
+        if (this.socket?.connected) void this.synchronizeServerClock(this.socket);
+      }, 5 * 60 * 1000);
     });
 
     this.socket.on('disconnect', () => {
@@ -63,6 +70,10 @@ class SocketService {
   }
 
   disconnect() {
+    if (this.clockRefreshTimer !== null) {
+      window.clearInterval(this.clockRefreshTimer);
+      this.clockRefreshTimer = null;
+    }
     if (this.socket) {
       this.socket.disconnect();
       this.socket = null;
@@ -71,6 +82,67 @@ class SocketService {
 
   isConnected() {
     return Boolean(this.socket?.connected);
+  }
+
+  serverNow() {
+    if (!this.serverClockAnchor) return Date.now();
+    return this.serverClockAnchor.serverTimeMs
+      + performance.now()
+      - this.serverClockAnchor.performanceTimeMs;
+  }
+
+  private measureServerClock(socket: Socket): Promise<{
+    roundTripMs: number;
+    serverTimeAtReceiveMs: number;
+    performanceTimeAtReceiveMs: number;
+  }> {
+    const startedAt = performance.now();
+    return new Promise((resolve, reject) => {
+      socket.timeout(2_000).emit(
+        'sync-clock',
+        (timeoutError: Error | null, response?: { serverTimeMs?: number }) => {
+          const receivedAt = performance.now();
+          if (timeoutError) {
+            reject(timeoutError);
+            return;
+          }
+          if (!Number.isFinite(response?.serverTimeMs)) {
+            reject(new Error('The server returned an invalid clock response.'));
+            return;
+          }
+
+          const roundTripMs = receivedAt - startedAt;
+          resolve({
+            roundTripMs,
+            serverTimeAtReceiveMs: response!.serverTimeMs! + roundTripMs / 2,
+            performanceTimeAtReceiveMs: receivedAt,
+          });
+        },
+      );
+    });
+  }
+
+  private async synchronizeServerClock(socket: Socket) {
+    const samples = [];
+    for (let index = 0; index < 5 && socket.connected; index += 1) {
+      try {
+        samples.push(await this.measureServerClock(socket));
+      } catch (error) {
+        console.warn('Server clock sample failed:', error);
+      }
+    }
+
+    if (!samples.length || socket !== this.socket || !socket.connected) return;
+    const bestSample = samples.reduce((best, sample) =>
+      sample.roundTripMs < best.roundTripMs ? sample : best
+    );
+    this.serverClockAnchor = {
+      serverTimeMs: bestSample.serverTimeAtReceiveMs,
+      performanceTimeMs: bestSample.performanceTimeAtReceiveMs,
+    };
+    this.notifyListeners('server-clock-synchronized', {
+      roundTripMs: bestSample.roundTripMs,
+    });
   }
 
   private waitUntilConnected(timeoutMs: number = 10_000): Promise<Socket> {

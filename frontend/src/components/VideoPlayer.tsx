@@ -1,8 +1,9 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Airplay, Maximize, Pause, PictureInPicture2, Play, Volume2, VolumeX } from 'lucide-react';
+import { Airplay, Maximize, Minimize, Pause, PictureInPicture2, Play, Volume2, VolumeX } from 'lucide-react';
 import Hls from 'hls.js';
 import { Channel, ChannelMode } from '../types';
 import apiService, { ApiError } from '../services/ApiService';
+import socketService from '../services/SocketService';
 import { ToastContext } from './notifications/ToastContext';
 
 interface VideoPlayerProps {
@@ -19,12 +20,28 @@ type AirPlayVideoElement = HTMLVideoElement & {
   webkitShowPlaybackTargetPicker?: () => void;
 };
 
+function envNumber(value: unknown, fallback: number) {
+  if (
+    value === undefined
+    || value === null
+    || (typeof value === 'string' && value.trim() === '')
+  ) {
+    return fallback;
+  }
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
 function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
+  const frameRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const controlsRef = useRef<HTMLDivElement>(null);
   const hlsRef = useRef<Hls | null>(null);
   const useCustomControls = navigator.maxTouchPoints === 0;
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [controlsVisible, setControlsVisible] = useState(true);
   const [airPlaySupported, setAirPlaySupported] = useState(false);
   const [airPlayActive, setAirPlayActive] = useState(false);
   const { addToast, removeToast, clearToasts, editToast } = useContext(ToastContext);
@@ -33,6 +50,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     if (!videoRef.current || !channel?.url) return;
     const video = videoRef.current as AirPlayVideoElement;
     let cancelled = false;
+    setAirPlaySupported(false);
 
     const sourceLinks: Record<ChannelMode, string> = {
       direct: channel.url,
@@ -41,69 +59,58 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       restream: import.meta.env.VITE_BACKEND_URL + '/streams/' + channel.id + "/" + channel.id + ".m3u8",
     };
 
-    if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      setAirPlaySupported(typeof video.webkitShowPlaybackTargetPicker === 'function');
-      video.setAttribute('x-webkit-airplay', 'allow');
-      video.disableRemotePlayback = false;
+    const canPlayNativeHls = Boolean(video.canPlayType('application/vnd.apple.mpegurl'));
+    const canUseAirPlay = typeof video.webkitShowPlaybackTargetPicker === 'function';
 
-      const startNativePlayback = async () => {
-        clearToasts();
-        const toastId = addToast({
-          type: 'loading',
-          title: 'Starting Stream',
-          message: 'Waiting for the live stream to become ready...',
-          duration: 0,
-        });
-
+    const createAirPlaySession = async () => {
+      const deadline = Date.now() + 90_000;
+      while (true) {
         try {
-          const deadline = Date.now() + 90_000;
-          let session: AirPlaySession;
-          while (true) {
-            try {
-              session = await apiService.request<AirPlaySession>('/airplay/sessions', 'POST');
-              break;
-            } catch (error) {
-              const retryableStatus = error instanceof ApiError && [502, 503, 504].includes(error.status);
-              const retryableNetworkError = error instanceof TypeError;
-              if ((!retryableStatus && !retryableNetworkError) || Date.now() >= deadline) {
-                throw error;
-              }
-              await new Promise(resolve => window.setTimeout(resolve, 1_000));
-              if (cancelled) return;
-            }
-          }
-          if (cancelled) return;
-
-          video.src = session.playbackUrl;
-          video.load();
-          await video.play();
+          return await apiService.request<AirPlaySession>('/airplay/sessions', 'POST');
         } catch (error) {
-          if (cancelled) return;
-          console.error('Failed to start native HLS playback:', error);
-          addToast({
-            type: 'error',
-            title: 'Stream unavailable',
-            message: error instanceof ApiError ? error.message : 'This stream could not be started.',
-            duration: 5000,
-          });
-        } finally {
-          removeToast(toastId);
+          const retryableStatus = error instanceof ApiError && [502, 503, 504].includes(error.status);
+          const retryableNetworkError = error instanceof TypeError;
+          if ((!retryableStatus && !retryableNetworkError) || Date.now() >= deadline) {
+            throw error;
+          }
+          await new Promise(resolve => window.setTimeout(resolve, 1_000));
+          if (cancelled) return null;
         }
-      };
+      }
+    };
 
-      void startNativePlayback();
+    const removeAirPlayAlternative = () => {
+      video.querySelector('source[data-airplay-source]')?.remove();
+    };
 
-      return () => {
-        cancelled = true;
-        setAirPlayActive(false);
-        video.pause();
-        video.removeAttribute('src');
-        video.removeAttribute('x-webkit-airplay');
-        video.load();
-      };
-    }
+    const prepareAirPlayAlternative = async () => {
+      if (!canUseAirPlay) return;
+      try {
+        const session = await createAirPlaySession();
+        if (cancelled || !session) return;
+
+        removeAirPlayAlternative();
+        const source = document.createElement('source');
+        source.dataset.airplaySource = 'true';
+        source.type = 'application/vnd.apple.mpegurl';
+        source.src = session.playbackUrl;
+        video.appendChild(source);
+        video.setAttribute('x-webkit-airplay', 'allow');
+        // hls.js disables remote playback while it attaches ManagedMediaSource.
+        // The alternate receiver-safe HLS source makes AirPlay available again.
+        video.disableRemotePlayback = false;
+        setAirPlaySupported(true);
+      } catch (error) {
+        if (!cancelled) console.error('Failed to prepare AirPlay playback:', error);
+      }
+    };
 
     if (Hls.isSupported()) {
+      // Safari can play locally through hls.js (and therefore use the same
+      // synchronization loop as other browsers) while AirPlay uses the
+      // receiver-safe native HLS source prepared alongside it.
+      void prepareAirPlayAlternative();
+
       if (hlsRef.current) {
         hlsRef.current.destroy();
       }
@@ -145,7 +152,10 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
 
       const cleanup = () => {
         cancelled = true;
+        setAirPlayActive(false);
         hls.destroy();
+        removeAirPlayAlternative();
+        video.removeAttribute('x-webkit-airplay');
         if (hlsRef.current === hls) hlsRef.current = null;
       };
 
@@ -160,13 +170,13 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
         duration: 0,
       });
 
-      const tolerance = import.meta.env.VITE_SYNCHRONIZATION_TOLERANCE || 0.8;
-      const maxDeviation = import.meta.env.VITE_SYNCHRONIZATION_MAX_DEVIATION || 4;
+      const tolerance = envNumber(import.meta.env.VITE_SYNCHRONIZATION_TOLERANCE, 1.25);
+      const maxDeviation = envNumber(import.meta.env.VITE_SYNCHRONIZATION_MAX_DEVIATION, 5);
 
       let toastDurationSet = false;
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         if (channel.mode === 'restream') {
-          const now = new Date().getTime();
+          const now = socketService.serverNow();
       
           const fragments = hls.levels[0]?.details?.fragments;
           const lastFragment = fragments?.[fragments.length - 1];
@@ -177,12 +187,12 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       
           const timeDiff = (now - lastFragment.programDateTime) / 1000;
           const videoLength = fragments.reduce((acc, fragment) => acc + fragment.duration, 0);
-          const targetDelay : number = Number(import.meta.env.VITE_STREAM_DELAY);
+          const targetDelay = envNumber(import.meta.env.VITE_STREAM_DELAY, 18);
       
           //Load stream if it is close to the target delay
           const timeTolerance = tolerance + 1;
 
-          const delay : number = videoLength + timeDiff + timeTolerance;
+          const delay = videoLength + timeDiff + timeTolerance;
           if (delay >= targetDelay) {
             hls.startLoad();
             video.play();
@@ -216,8 +226,6 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       
       let timeMissingErrorShown = false;
       hls.on(Hls.Events.FRAG_LOADED, (_event, data) => {
-
-        const now = new Date().getTime();
         const newFrag = data.frag;
 
         if(!newFrag.programDateTime) {
@@ -231,45 +239,82 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
             console.warn("No program date time found in fragment. Cannot synchronize.");
             timeMissingErrorShown = true;
           }
-          return;
-        }
-        const timeDiff = (now - newFrag.programDateTime) / 1000;
-        const videoDiff = newFrag.end - video.currentTime;
-        //console.log("Time Diff: ", timeDiff, "Video Diff: ", videoDiff);
-        const delay = timeDiff + videoDiff;
-        
-        const targetDelay = channel.mode == 'restream' ? import.meta.env.VITE_STREAM_DELAY : import.meta.env.VITE_STREAM_PROXY_DELAY;
-       // console.log("Delay: ", delay, "Target Delay: ", targetDelay);
-
-        const deviation = delay - targetDelay;
-
-        if (Math.abs(deviation) > maxDeviation) {
-          video.currentTime += deviation;
-          video.playbackRate = 1.0;
-          console.log("Significant deviation detected. Adjusting current time.");
-
-          // TODO
-          // console.log("New Time: ", video.currentTime, "New Frag: ", newFrag.end);
-          // if(video.paused) {
-          //   console.warn("[Synchronization Issue] Video stopped. Switch to Restream Mode for this channel");
-          //   deviationErrorCount++;
-          //   if(deviationErrorCount > 2) {
-          //     addToast({
-          //       type: 'error',
-          //       title: 'Synchronization Error',
-          //       message: `Having problems synchronizing playback for the channel in mode: ${channel.mode}. Try to change to restream mode or turn off synchronization.`,
-          //       duration: 5000,
-          //     });
-          //   }
-          // }
-        } else if (Math.abs(deviation) > tolerance) {
-          const adjustmentFactor = import.meta.env.VITE_SYNCHRONIZATION_ADJUSTMENT || 0.06;
-          const speedAdjustment = 1 +  Math.sign(deviation) * Math.min(Math.abs(adjustmentFactor * deviation), import.meta.env.VITE_SYNCHRONIZATION_MAX_ADJUSTMENT || 0.16);
-          video.playbackRate = speedAdjustment;
-        } else {
-          video.playbackRate = 1.0;
         }
       });
+
+      const targetDelay = channel.mode == 'restream'
+        ? envNumber(import.meta.env.VITE_STREAM_DELAY, 18)
+        : envNumber(import.meta.env.VITE_STREAM_PROXY_DELAY, 30);
+      const adjustmentFactor = envNumber(import.meta.env.VITE_SYNCHRONIZATION_ADJUSTMENT, 0.02);
+      const maxAdjustment = envNumber(import.meta.env.VITE_SYNCHRONIZATION_MAX_ADJUSTMENT, 0.04);
+      const hardCorrectionCooldownMs = 15_000;
+      let smoothedDeviation: number | null = null;
+      let lastHardCorrectionAt = 0;
+
+      const correctPlayback = () => {
+        const playingDate = hls.playingDate;
+        if (!playingDate || video.paused || video.seeking || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+          return;
+        }
+
+        const delay = (socketService.serverNow() - playingDate.getTime()) / 1000;
+        const rawDeviation = delay - targetDelay;
+        const now = performance.now();
+        const targetDuration = hls.latestLevelDetails?.targetduration || 6;
+        const minimumLiveLatency = targetDuration * 2;
+
+        // Never consume the live buffer just to reach a wall-clock target that
+        // is closer to the edge than the stream can sustain. This is especially
+        // important just after a channel switch, while the new playlist is
+        // still building its first few segments.
+        if (rawDeviation > tolerance && hls.latency <= minimumLiveLatency) {
+          video.playbackRate = 1;
+          smoothedDeviation = null;
+          return;
+        }
+
+        if (
+          Math.abs(rawDeviation) > maxDeviation
+          && now - lastHardCorrectionAt >= hardCorrectionCooldownMs
+        ) {
+          const seekableIndex = video.seekable.length - 1;
+          const safeLiveEdge = seekableIndex >= 0
+            ? video.seekable.end(seekableIndex) - minimumLiveLatency
+            : Number.NEGATIVE_INFINITY;
+          const targetTime = rawDeviation > 0
+            ? Math.min(video.currentTime + rawDeviation, safeLiveEdge)
+            : video.currentTime + rawDeviation;
+          if (
+            seekableIndex >= 0
+            && targetTime >= video.seekable.start(seekableIndex)
+            && targetTime <= safeLiveEdge
+          ) {
+            video.currentTime = targetTime;
+            video.playbackRate = 1;
+            smoothedDeviation = null;
+            lastHardCorrectionAt = now;
+            console.log('Significant synchronization deviation detected. Adjusting current time.');
+            return;
+          }
+        }
+
+        smoothedDeviation = smoothedDeviation === null
+          ? rawDeviation
+          : smoothedDeviation * 0.75 + rawDeviation * 0.25;
+
+        if (Math.abs(smoothedDeviation) <= tolerance) {
+          video.playbackRate = 1;
+          return;
+        }
+
+        const rateAdjustment = Math.min(
+          Math.abs(adjustmentFactor * smoothedDeviation),
+          maxAdjustment,
+        );
+        video.playbackRate = 1 + Math.sign(smoothedDeviation) * rateAdjustment;
+      };
+
+      const correctionTimer = window.setInterval(correctPlayback, 1_000);
 
       hls.on(Hls.Events.ERROR, (_, data) => {
         if (data.fatal) {
@@ -296,7 +341,58 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
           
         }
       });
-      return cleanup;
+      return () => {
+        window.clearInterval(correctionTimer);
+        video.playbackRate = 1;
+        cleanup();
+      };
+    }
+
+    if (canPlayNativeHls) {
+      video.setAttribute('x-webkit-airplay', 'allow');
+      video.disableRemotePlayback = false;
+
+      const startNativePlayback = async () => {
+        clearToasts();
+        const toastId = addToast({
+          type: 'loading',
+          title: 'Starting Stream',
+          message: 'Waiting for the live stream to become ready...',
+          duration: 0,
+        });
+
+        try {
+          const session = await createAirPlaySession();
+          if (cancelled || !session) return;
+
+          video.src = session.playbackUrl;
+          video.load();
+          await video.play();
+          setAirPlaySupported(canUseAirPlay);
+        } catch (error) {
+          if (cancelled) return;
+          console.error('Failed to start native HLS playback:', error);
+          addToast({
+            type: 'error',
+            title: 'Stream unavailable',
+            message: error instanceof ApiError ? error.message : 'This stream could not be started.',
+            duration: 5000,
+          });
+        } finally {
+          removeToast(toastId);
+        }
+      };
+
+      void startNativePlayback();
+
+      return () => {
+        cancelled = true;
+        setAirPlayActive(false);
+        video.pause();
+        video.removeAttribute('src');
+        video.removeAttribute('x-webkit-airplay');
+        video.load();
+      };
     }
 
     return () => {
@@ -335,6 +431,62 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     };
   }, []);
 
+  useEffect(() => {
+    const updateFullscreen = () => {
+      setIsFullscreen(document.fullscreenElement === frameRef.current);
+    };
+
+    document.addEventListener('fullscreenchange', updateFullscreen);
+    updateFullscreen();
+
+    return () => document.removeEventListener('fullscreenchange', updateFullscreen);
+  }, []);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    const controls = controlsRef.current;
+    let hideTimer: number | undefined;
+
+    const clearHideTimer = () => {
+      if (hideTimer !== undefined) window.clearTimeout(hideTimer);
+      hideTimer = undefined;
+    };
+
+    if (!isFullscreen || !frame || !controls) {
+      setControlsVisible(true);
+      return clearHideTimer;
+    }
+
+    const keepControlsVisible = () => {
+      clearHideTimer();
+      setControlsVisible(true);
+    };
+
+    const scheduleControlsFade = () => {
+      keepControlsVisible();
+      hideTimer = window.setTimeout(() => {
+        const controlsAreActive = controls.matches(':hover') || controls.querySelector(':focus-visible') !== null;
+        if (!controlsAreActive) setControlsVisible(false);
+      }, 3_000);
+    };
+
+    frame.addEventListener('pointermove', scheduleControlsFade);
+    controls.addEventListener('pointerenter', keepControlsVisible);
+    controls.addEventListener('pointerleave', scheduleControlsFade);
+    controls.addEventListener('focusin', keepControlsVisible);
+    controls.addEventListener('focusout', scheduleControlsFade);
+    scheduleControlsFade();
+
+    return () => {
+      clearHideTimer();
+      frame.removeEventListener('pointermove', scheduleControlsFade);
+      controls.removeEventListener('pointerenter', keepControlsVisible);
+      controls.removeEventListener('pointerleave', scheduleControlsFade);
+      controls.removeEventListener('focusin', keepControlsVisible);
+      controls.removeEventListener('focusout', scheduleControlsFade);
+    };
+  }, [isFullscreen]);
+
   const togglePlayback = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -359,12 +511,16 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     }
   };
 
-  const enterFullscreen = () => {
-    videoRef.current?.parentElement?.requestFullscreen().catch(() => undefined);
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => undefined);
+    } else {
+      frameRef.current?.requestFullscreen().catch(() => undefined);
+    }
   };
 
   return (
-    <div className="video-frame relative">
+    <div ref={frameRef} className="video-frame relative">
       <video
         ref={videoRef}
         className="block h-auto max-h-[calc(100vh-7rem)] w-full bg-black object-contain aspect-video"
@@ -375,7 +531,10 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
         onClick={useCustomControls ? togglePlayback : undefined}
       />
       {useCustomControls && (
-        <div className="absolute inset-x-0 bottom-0 z-10 flex items-center gap-1 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-3 pb-3 pt-10 text-white">
+        <div
+          ref={controlsRef}
+          className={`player-controls absolute inset-x-0 bottom-0 z-10 flex items-center gap-1 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-3 pb-3 pt-10 text-white transition-opacity duration-300 ${isFullscreen && !controlsVisible ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+        >
           <button type="button" onClick={togglePlayback} aria-label={isPlaying ? 'Pause' : 'Play'} title={isPlaying ? 'Pause' : 'Play'} className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
             {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
           </button>
@@ -392,8 +551,8 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
           <button type="button" onClick={enterPictureInPicture} aria-label="Picture in Picture" title="Picture in Picture" className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
             <PictureInPicture2 className="h-5 w-5" />
           </button>
-          <button type="button" onClick={enterFullscreen} aria-label="Full screen" title="Full screen" className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
-            <Maximize className="h-5 w-5" />
+          <button type="button" onClick={toggleFullscreen} aria-label={isFullscreen ? 'Exit full screen' : 'Full screen'} title={isFullscreen ? 'Exit full screen' : 'Full screen'} className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
+            {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}
           </button>
         </div>
       )}

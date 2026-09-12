@@ -11,7 +11,7 @@
     "test:stream-soak": "playwright test e2e/stream-switch-soak.spec.mjs --config playwright.config.mjs"
   },
   "dependencies": {
-    "hls.js": "^1.6.0-beta.2",
+    "hls.js": "1.6.19",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
