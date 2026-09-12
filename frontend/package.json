@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:stream-soak": "playwright test e2e/stream-switch-soak.spec.mjs --config playwright.config.mjs"
   },
   "dependencies": {
     "hls.js": "^1.6.0-beta.2",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
+    "@playwright/test": "^1.63.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",

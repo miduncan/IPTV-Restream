@@ -46,3 +46,7 @@ Thumbs.db
 
 
 .devcontainer/
+
+# Local Playwright stream-switch soak test output
+/frontend/test-results/
+/frontend/playwright-report/
