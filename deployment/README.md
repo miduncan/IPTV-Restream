@@ -9,10 +9,10 @@ needed on the server.
 
 Create an Ubuntu Droplet, point your domain at it, and install Docker Engine
 with the Compose plugin. The SSH user used for deployment must be able to run
-`docker` without `sudo`. The supplied manifest publishes HTTP on port 80;
-allow that port through the Droplet firewall. For a public deployment,
-terminate HTTPS with a DigitalOcean Load Balancer or another TLS reverse proxy
-in front of the Droplet.
+`docker` without `sudo`. Allow inbound TCP ports 80 and 443 through the Droplet
+firewall. Nginx Proxy Manager terminates HTTPS and forwards requests to the app.
+Its admin interface is bound to the Droplet's loopback interface so it is not
+publicly exposed.
 
 Create the deployment environment on the Droplet:
 
@@ -64,6 +64,27 @@ workflow publishes images tagged with the commit SHA and `latest`, copies the
 small Compose manifest, pulls the exact SHA-tagged images, and recreates only
 containers whose image changed. The persistent `channels` volume and the
 Droplet's `.env` remain in place.
+
+## Configure the domain and HTTPS
+
+After the first deployment, open an SSH tunnel from your computer:
+
+```bash
+ssh -L 8181:127.0.0.1:81 your-user@your-droplet.example.com
+```
+
+Keep that session open and visit `http://localhost:8181`. In Nginx Proxy
+Manager, create a **Proxy Host** with:
+
+- **Domain Names:** your public domain
+- **Scheme:** `http`
+- **Forward Hostname/IP:** `iptv_restream_nginx`
+- **Forward Port:** `80`
+- **Websockets Support:** enabled
+
+On the **SSL** tab, request a new Let's Encrypt certificate and enable **Force
+SSL**. The domain's DNS A record must point to the Droplet before requesting the
+certificate, and ports 80 and 443 must be reachable from the internet.
 
 To roll back, rerun a previous successful workflow or run the Compose manifest
 with a previous commit SHA as `IMAGE_TAG`.

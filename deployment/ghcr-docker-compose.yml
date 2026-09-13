@@ -30,8 +30,20 @@ services:
     restart: unless-stopped
     volumes:
       - streams_data:/streams
+    networks:
+      - app-network
+
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
     ports:
-      - "80:80" # Configure exposed port, if 80 is already in use e.g. 8080:80
+      - "80:80"
+      - "443:443"
+      # Keep the admin interface private; access it through an SSH tunnel.
+      - "127.0.0.1:81:81"
+    volumes:
+      - nginx_proxy_manager_data:/data
+      - nginx_proxy_manager_letsencrypt:/etc/letsencrypt
     networks:
       - app-network
 
@@ -42,6 +54,8 @@ volumes:
       type: tmpfs
       device: tmpfs
   channels:
+  nginx_proxy_manager_data:
+  nginx_proxy_manager_letsencrypt:
 
 # Internal docker network
 networks:
