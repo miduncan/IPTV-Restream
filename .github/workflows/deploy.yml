@@ -103,3 +103,10 @@ jobs:
           IMAGE_REGISTRY="${IMAGE_REGISTRY,,}"
           ssh "$DEPLOY_USER@$DEPLOY_HOST" \
             "cd '$DEPLOY_DIRECTORY' && IMAGE_REGISTRY='$IMAGE_REGISTRY' IMAGE_TAG='$IMAGE_TAG' docker compose --env-file .env -f compose.yml pull && IMAGE_REGISTRY='$IMAGE_REGISTRY' IMAGE_TAG='$IMAGE_TAG' docker compose --env-file .env -f compose.yml up -d --remove-orphans"
+
+      - name: Remove unused images
+        shell: bash
+        env:
+          DEPLOY_HOST: ${{ secrets.DIGITALOCEAN_HOST }}
+          DEPLOY_USER: ${{ secrets.DIGITALOCEAN_USER }}
+        run: ssh "$DEPLOY_USER@$DEPLOY_HOST" "docker image prune --all --force"

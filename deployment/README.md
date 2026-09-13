@@ -63,7 +63,10 @@ Push to `main` (or manually run **Build and deploy** in GitHub Actions). The
 workflow publishes images tagged with the commit SHA and `latest`, copies the
 small Compose manifest, pulls the exact SHA-tagged images, and recreates only
 containers whose image changed. The persistent `channels` volume and the
-Droplet's `.env` remain in place.
+Droplet's `.env` remain in place. After the containers start successfully, the
+workflow removes images not used by any container to keep small Droplet disks
+from filling up. It never prunes containers or volumes; older releases remain
+available in GHCR and can be pulled again for a rollback.
 
 ## Configure the domain and HTTPS
 
