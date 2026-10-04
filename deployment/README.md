@@ -32,6 +32,11 @@ AUTH_ADMIN_USERNAME=admin
 AUTH_ADMIN_PASSWORD=replace-with-a-different-long-random-passphrase
 ```
 
+Nginx Proxy Manager is pinned by digest in the production Compose manifest, so
+deployments can safely pull every service without unexpectedly upgrading it.
+Update the pinned digest explicitly during a separate, backed-up maintenance
+window.
+
 The workflow never replaces this file. If the GHCR packages are private, also
 log in to the registry once as the deployment user using a GitHub personal
 access token with `read:packages`:
@@ -61,12 +66,13 @@ ssh-keyscan -H your-droplet.example.com
 
 Push to `main` (or manually run **Build and deploy** in GitHub Actions). The
 workflow publishes images tagged with the commit SHA and `latest`, copies the
-small Compose manifest, pulls the exact SHA-tagged images, and recreates only
-containers whose image changed. The persistent `channels` volume and the
-Droplet's `.env` remain in place. After the containers start successfully, the
-workflow removes images not used by any container to keep small Droplet disks
-from filling up. It never prunes containers or volumes; older releases remain
-available in GHCR and can be pulled again for a rollback.
+small Compose manifest, reports available disk space, pulls the exact
+SHA-tagged application images, and recreates only containers whose image
+changed. The persistent `channels` volume and the Droplet's `.env` remain in
+place. The workflow removes images not used by any container before the pull
+and after every deployment attempt to keep small Droplet disks from filling
+up. It never prunes containers or volumes; older releases remain available in
+GHCR and can be pulled again for a rollback.
 
 ## Configure the domain and HTTPS
 

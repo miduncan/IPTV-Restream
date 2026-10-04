@@ -109,9 +109,10 @@ jobs:
         run: |
           IMAGE_REGISTRY="${IMAGE_REGISTRY,,}"
           ssh "$DEPLOY_USER@$DEPLOY_HOST" \
-            "cd '$DEPLOY_DIRECTORY' && IMAGE_REGISTRY='$IMAGE_REGISTRY' IMAGE_TAG='$IMAGE_TAG' docker compose --env-file .env -f compose.yml pull && IMAGE_REGISTRY='$IMAGE_REGISTRY' IMAGE_TAG='$IMAGE_TAG' docker compose --env-file .env -f compose.yml up -d --remove-orphans"
+            "cd '$DEPLOY_DIRECTORY' && df -h / && docker system df && IMAGE_REGISTRY='$IMAGE_REGISTRY' IMAGE_TAG='$IMAGE_TAG' docker compose --env-file .env -f compose.yml pull && IMAGE_REGISTRY='$IMAGE_REGISTRY' IMAGE_TAG='$IMAGE_TAG' docker compose --env-file .env -f compose.yml up -d --pull never --remove-orphans"
 
       - name: Remove unused images
+        if: always()
         shell: bash
         env:
           DEPLOY_HOST: ${{ secrets.DIGITALOCEAN_HOST }}

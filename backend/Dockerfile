@@ -1,16 +1,15 @@
-# Backend Dockerfile
-FROM node:20
+FROM node:20-bookworm-slim
 
-# Install ffmpeg
-RUN apt-get update && apt-get install -y ffmpeg
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Install dependencies
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci --omit=dev \
+    && npm cache clean --force
 
-# Copy source code
 COPY . .
 
 EXPOSE 5000
