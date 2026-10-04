@@ -28,6 +28,16 @@ interface FloatingReaction {
   duration: number;
 }
 
+interface PlaybackFragment {
+  sequence: number;
+  start: number;
+}
+
+interface QueuedReaction {
+  reaction: VideoReaction;
+  expiresAt: number;
+}
+
 const REACTIONS = [
   { emoji: '🏈', label: 'Touchdown' },
   { emoji: '🙌', label: 'Celebrate' },
@@ -73,6 +83,8 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
   const reactionIdRef = useRef(0);
   const reactionTimersRef = useRef<number[]>([]);
   const pendingReactionRef = useRef<string | null>(null);
+  const currentFragmentRef = useRef<PlaybackFragment | null>(null);
+  const queuedReactionsRef = useRef<QueuedReaction[]>([]);
   const { addToast, removeToast, clearToasts } = useContext(ToastContext);
 
   const displayReaction = useCallback((emoji: string, userName: string) => {
@@ -96,13 +108,56 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     reactionTimersRef.current.push(timer);
   }, []);
 
+  const flushQueuedReactions = useCallback(() => {
+    const currentFragment = currentFragmentRef.current;
+    const video = videoRef.current;
+    if (!currentFragment || !video) return;
+
+    const now = performance.now();
+    queuedReactionsRef.current = queuedReactionsRef.current.filter(({ reaction, expiresAt }) => {
+      if (expiresAt <= now || reaction.channelId !== channel?.id) return false;
+      const playback = reaction.playback;
+      if (!playback) return false;
+
+      const reachedSegment = currentFragment.sequence > playback.segmentSequence;
+      const reachedOffset = currentFragment.sequence === playback.segmentSequence
+        && video.currentTime >= currentFragment.start + playback.segmentOffset - 0.15;
+      if (reachedSegment || reachedOffset) {
+        displayReaction(reaction.emoji, reaction.user.name);
+        return false;
+      }
+      return true;
+    });
+  }, [channel?.id, displayReaction]);
+
   useEffect(() => () => {
     reactionTimersRef.current.forEach((timer) => window.clearTimeout(timer));
   }, []);
 
   useEffect(() => {
     const reactionListener = (reaction: VideoReaction) => {
-      displayReaction(reaction.emoji, reaction.user.name);
+      if (reaction.channelId !== undefined && reaction.channelId !== channel?.id) return;
+      if (!syncEnabled || !reaction.playback) {
+        displayReaction(reaction.emoji, reaction.user.name);
+        return;
+      }
+
+      const currentFragment = currentFragmentRef.current;
+      const video = videoRef.current;
+      if (currentFragment && video) {
+        const reachedSegment = currentFragment.sequence > reaction.playback.segmentSequence;
+        const reachedOffset = currentFragment.sequence === reaction.playback.segmentSequence
+          && video.currentTime >= currentFragment.start + reaction.playback.segmentOffset - 0.15;
+        if (reachedSegment || reachedOffset) {
+          displayReaction(reaction.emoji, reaction.user.name);
+          return;
+        }
+      }
+
+      queuedReactionsRef.current = [
+        ...queuedReactionsRef.current.slice(-49),
+        { reaction, expiresAt: performance.now() + 2 * 60 * 1000 },
+      ];
     };
     const usernameChangedListener = (event: Event) => {
       setUsername((event as CustomEvent<string>).detail);
@@ -114,7 +169,25 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       socketService.unsubscribeFromEvent('video-reaction', reactionListener);
       window.removeEventListener(USERNAME_CHANGED_EVENT, usernameChangedListener);
     };
-  }, [displayReaction]);
+  }, [channel?.id, displayReaction, syncEnabled]);
+
+  useEffect(() => {
+    currentFragmentRef.current = null;
+    queuedReactionsRef.current = [];
+  }, [channel?.id]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.addEventListener('timeupdate', flushQueuedReactions);
+    video.addEventListener('seeked', flushQueuedReactions);
+    video.addEventListener('playing', flushQueuedReactions);
+    return () => {
+      video.removeEventListener('timeupdate', flushQueuedReactions);
+      video.removeEventListener('seeked', flushQueuedReactions);
+      video.removeEventListener('playing', flushQueuedReactions);
+    };
+  }, [flushQueuedReactions]);
 
   useEffect(() => {
     if (!reactionsOpen) return;
@@ -247,6 +320,11 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       });
 
       hlsRef.current = hls;
+      hls.on(Hls.Events.FRAG_CHANGED, (_event, { frag }) => {
+        if (typeof frag.sn !== 'number') return;
+        currentFragmentRef.current = { sequence: frag.sn, start: frag.start };
+        flushQueuedReactions();
+      });
       hls.loadSource(sourceLinks[channel.mode]);
       hls.attachMedia(video);
 
@@ -454,7 +532,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       }
     };
 
-  }, [channel?.id, channel?.url, channel?.mode, syncEnabled, useCustomControls, addToast, clearToasts, removeToast]);
+  }, [channel?.id, channel?.url, channel?.mode, syncEnabled, useCustomControls, addToast, clearToasts, flushQueuedReactions, removeToast]);
 
   useEffect(() => {
     const video = videoRef.current as AirPlayVideoElement | null;
@@ -574,7 +652,16 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     displayReaction(emoji, userName);
     if (!socketService.isConnected()) return;
 
-    socketService.sendReaction(userName, emoji).catch((error) => {
+    const video = videoRef.current;
+    const fragment = currentFragmentRef.current;
+    const playback = syncEnabled && video && fragment
+      ? {
+          segmentSequence: fragment.sequence,
+          segmentOffset: Math.max(0, video.currentTime - fragment.start),
+        }
+      : undefined;
+
+    socketService.sendReaction(userName, emoji, channel?.id, playback).catch((error) => {
       addToast({
         type: 'error',
         title: 'Reaction not shared',

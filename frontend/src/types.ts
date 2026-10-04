@@ -47,8 +47,14 @@ export interface VideoReaction {
   emoji: string;
   user: User;
   timestamp: string;
+  channelId?: number;
+  playback?: VideoReactionPlayback;
 }
 
+export interface VideoReactionPlayback {
+  segmentSequence: number;
+  segmentOffset: number;
+}
 
 export interface CustomHeader {
   key: string;
