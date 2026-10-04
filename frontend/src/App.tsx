@@ -267,22 +267,27 @@ function AppContent() {
             className={sidebarView === 'channels' ? 'flex min-h-0 flex-1 flex-col' : 'hidden'}
           >
               <div className="border-b border-[#233242] p-4">
-                <div className="relative mb-3">
-                  <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#617386]" />
-                  <input type="search" placeholder="Search channels" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="admin-input w-full py-2 pl-9 pr-3 text-sm" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="relative">
+                <div className="channel-toolbar">
+                  <div className="relative min-w-0 flex-1">
+                    <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#617386]" />
+                    <input type="search" placeholder="Search channels" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="admin-input w-full py-2 pl-9 pr-3 text-sm" />
+                  </div>
+                  <div className="channel-filter relative">
                     <button
+                      type="button"
                       onClick={() => {
                         setIsGroupDropdownOpen(!isGroupDropdownOpen);
                       }}
-                      className="sidebar-filter group"
+                      className="sidebar-filter sidebar-filter-responsive group"
+                      aria-expanded={isGroupDropdownOpen}
+                      aria-label={`Filter channels by category. Current filter: ${selectedGroup === 'Category' ? 'All categories' : selectedGroup}`}
+                      title={selectedGroup === 'Category' ? 'All categories' : selectedGroup}
                     >
                       <ListFilter className="h-4 w-4 text-[#4EA1FF]" />
-                      <span className="max-w-[112px] truncate">{selectedGroup === 'Category' ? 'All categories' : selectedGroup}</span>
-                      <ChevronDown className={`h-3.5 w-3.5 text-[#617386] transition-transform duration-200 ${isGroupDropdownOpen ?
+                      <span className="sidebar-filter-label truncate">{selectedGroup === 'Category' ? 'All categories' : selectedGroup}</span>
+                      <ChevronDown className={`sidebar-filter-chevron h-3.5 w-3.5 text-[#617386] transition-transform duration-200 ${isGroupDropdownOpen ?
                         "rotate-180" : ""}`} />
+                      {selectedGroup !== 'Category' && <span className="sidebar-filter-indicator" aria-hidden="true" />}
                     </button>
 
                     {isGroupDropdownOpen && (

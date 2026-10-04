@@ -149,6 +149,70 @@
 
 .sidebar-filter:hover { border-color: #496177; color: #eaf0f6; }
 
+.channel-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar-filter-responsive {
+  position: relative;
+  width: 2.25rem;
+  justify-content: center;
+  padding: 0;
+}
+
+.sidebar-filter-label,
+.sidebar-filter-chevron {
+  display: none;
+}
+
+.sidebar-filter-indicator {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  border: 1px solid #101a24;
+  border-radius: 50%;
+  background: #70e0ae;
+}
+
+@media (max-width: 399px) {
+  .channel-toolbar {
+    display: grid;
+  }
+
+  .channel-filter,
+  .sidebar-filter-responsive {
+    width: 100%;
+  }
+
+  .sidebar-filter-responsive {
+    justify-content: flex-start;
+    padding: 0 0.65rem;
+  }
+
+  .sidebar-filter-label {
+    display: block;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .sidebar-filter-chevron {
+    display: block;
+    margin-left: auto;
+  }
+
+  .sidebar-filter-indicator {
+    display: none;
+  }
+
+  .channel-filter .sidebar-menu {
+    width: 100%;
+  }
+}
+
 .sidebar-menu {
   position: absolute;
   top: calc(100% + 0.35rem);
