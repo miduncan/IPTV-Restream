@@ -158,6 +158,7 @@ class XtreamService {
       playlistName: "Xtream",
       source: "xtream",
       sourceId: stream.streamId,
+      tags: Array.isArray(overrides.tags) ? overrides.tags : [],
     };
   }
 }

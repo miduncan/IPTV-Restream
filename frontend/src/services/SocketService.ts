@@ -234,6 +234,7 @@ class SocketService {
     avatar: string,
     mode: ChannelMode,
     headersJson: string,
+    tags: string[],
   ) {
     if (!this.socket || !this.socket.connected) {
       this.connect();
@@ -243,7 +244,7 @@ class SocketService {
       }
     }
 
-    this.socket.emit('add-channel', { name, url, avatar, mode, headersJson });
+    this.socket.emit('add-channel', { name, url, avatar, mode, headersJson, tags });
   }
 
   // Set current channel

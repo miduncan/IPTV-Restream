@@ -11,6 +11,7 @@ export interface Channel {
   avatar: string;
   mode: ChannelMode;
   headers: CustomHeader[];
+  tags: string[];
   group: string;
   playlist: string;
   playlistName: string;

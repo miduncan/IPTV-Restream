@@ -23,6 +23,7 @@ database.exec(`
     playlist_update INTEGER NOT NULL DEFAULT 0,
     source TEXT,
     source_id TEXT,
+    tags_json TEXT NOT NULL DEFAULT '[]',
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
   );
@@ -33,29 +34,35 @@ database.exec(`
 
 `);
 
+const channelColumns = new Set(database.pragma("table_info(channels)").map((column) => column.name));
+if (!channelColumns.has("tags_json")) {
+  database.exec("ALTER TABLE channels ADD COLUMN tags_json TEXT NOT NULL DEFAULT '[]'");
+}
+
 const selectAllStatement = database.prepare(`
   SELECT id, name, url, avatar, mode, headers_json AS headersJson,
          group_name AS groupName, playlist, playlist_name AS playlistName,
-         playlist_update AS playlistUpdate, source, source_id AS sourceId
+         playlist_update AS playlistUpdate, source, source_id AS sourceId,
+         tags_json AS tagsJson
   FROM channels
   ORDER BY id
 `);
 const insertStatement = database.prepare(`
   INSERT INTO channels (
     name, url, avatar, mode, headers_json, group_name, playlist,
-    playlist_name, playlist_update, source, source_id, created_at, updated_at
+    playlist_name, playlist_update, source, source_id, tags_json, created_at, updated_at
   ) VALUES (
     @name, @url, @avatar, @mode, @headersJson, @groupName, @playlist,
-    @playlistName, @playlistUpdate, @source, @sourceId, @createdAt, @updatedAt
+    @playlistName, @playlistUpdate, @source, @sourceId, @tagsJson, @createdAt, @updatedAt
   )
 `);
 const insertWithIdStatement = database.prepare(`
   INSERT INTO channels (
     id, name, url, avatar, mode, headers_json, group_name, playlist,
-    playlist_name, playlist_update, source, source_id, created_at, updated_at
+    playlist_name, playlist_update, source, source_id, tags_json, created_at, updated_at
   ) VALUES (
     @id, @name, @url, @avatar, @mode, @headersJson, @groupName, @playlist,
-    @playlistName, @playlistUpdate, @source, @sourceId, @createdAt, @updatedAt
+    @playlistName, @playlistUpdate, @source, @sourceId, @tagsJson, @createdAt, @updatedAt
   )
 `);
 const updateStatement = database.prepare(`
@@ -64,7 +71,7 @@ const updateStatement = database.prepare(`
     headers_json = @headersJson, group_name = @groupName,
     playlist = @playlist, playlist_name = @playlistName,
     playlist_update = @playlistUpdate, source = @source,
-    source_id = @sourceId, updated_at = @updatedAt
+    source_id = @sourceId, tags_json = @tagsJson, updated_at = @updatedAt
   WHERE id = @id
 `);
 const deleteStatement = database.prepare("DELETE FROM channels WHERE id = ?");
@@ -83,6 +90,7 @@ function toRecord(channel) {
     playlistUpdate: channel.playlistUpdate ? 1 : 0,
     source: channel.source ?? null,
     sourceId: channel.sourceId == null ? null : String(channel.sourceId),
+    tagsJson: JSON.stringify(Array.isArray(channel.tags) ? channel.tags : []),
     createdAt: timestamp,
     updatedAt: timestamp,
   };
@@ -90,10 +98,16 @@ function toRecord(channel) {
 
 function fromRow(row) {
   let headers = [];
+  let tags = [];
   try {
     headers = JSON.parse(row.headersJson);
   } catch {
     headers = [];
+  }
+  try {
+    tags = JSON.parse(row.tagsJson);
+  } catch {
+    tags = [];
   }
   return Channel.from({
     id: Number(row.id),
@@ -109,6 +123,7 @@ function fromRow(row) {
     playlistUpdate: Boolean(row.playlistUpdate),
     source: row.source,
     sourceId: row.sourceId,
+    tags: Array.isArray(tags) ? tags : [],
   });
 }
 

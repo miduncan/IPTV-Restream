@@ -1,5 +1,5 @@
 class Channel {
-    constructor(name, url, avatar, mode, headers = [], group = null, playlist = null, playlistName = null, playlistUpdate = false, source = null, sourceId = null) {
+    constructor(name, url, avatar, mode, headers = [], group = null, playlist = null, playlistName = null, playlistUpdate = false, source = null, sourceId = null, tags = []) {
         this.id = null;
         this.name = name;
         this.url = url;
@@ -13,6 +13,7 @@ class Channel {
         this.playlistUpdate = playlistUpdate;
         this.source = source;
         this.sourceId = sourceId;
+        this.tags = tags;
     }
 
     restream() {

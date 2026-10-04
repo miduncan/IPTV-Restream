@@ -3,6 +3,7 @@ import { Plus, Trash2, X } from 'lucide-react';
 import socketService from '../../services/SocketService';
 import { CustomHeader, Channel, ChannelMode } from '../../types';
 import CustomHeaderInput from './CustomHeaderInput';
+import TagInput from './TagInput';
 import { ToastContext } from '../notifications/ToastContext';
 import { ModeTooltipContent, Tooltip } from '../Tooltip';
 
@@ -14,6 +15,7 @@ interface ChannelModalProps {
   sourceDescription?: string;
   onAddChannel?: (channel: ChannelFormValues) => Promise<void>;
   onUpdateChannel?: (channelId: number, channel: ChannelFormValues) => Promise<void>;
+  tagSuggestions?: string[];
 }
 
 export interface ChannelFormValues {
@@ -22,9 +24,10 @@ export interface ChannelFormValues {
   avatar: string;
   mode: ChannelMode;
   headers: CustomHeader[];
+  tags: string[];
 }
 
-function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDescription, onAddChannel, onUpdateChannel }: ChannelModalProps) {
+function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDescription, onAddChannel, onUpdateChannel, tagSuggestions = [] }: ChannelModalProps) {
   const [type, setType] = useState<'channel' | 'playlist'>('playlist');
   const [isEditMode, setIsEditMode] = useState(false);
   const [inputMethod, setInputMethod] = useState<'url' | 'text'>('url');
@@ -34,6 +37,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
   const [avatar, setAvatar] = useState('');
   const [mode, setMode] = useState<ChannelMode>('proxy');
   const [headers, setHeaders] = useState<CustomHeader[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
 
   const [playlistName, setPlaylistName] = useState('');
   const [playlistUrl, setPlaylistUrl] = useState('');
@@ -51,6 +55,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
       setAvatar(channel.avatar);
       setMode(channel.mode);
       setHeaders(channel.headers);
+      setTags(channel.tags || []);
       setPlaylistName(channel.playlistName);
       setPlaylistUpdate(channel.playlistUpdate);
       setIsEditMode(true);
@@ -76,6 +81,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
       setAvatar(preset?.avatar || '');
       setMode(preset?.mode || 'proxy');
       setHeaders(preset?.headers || []);
+      setTags(preset?.tags || []);
       setPlaylistName('');
       setPlaylistUrl('');
       setPlaylistText('');
@@ -121,6 +127,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
             avatar: avatar.trim(),
             mode,
             headers,
+            tags,
           });
         } catch (error) {
           setSubmitError(error instanceof Error ? error.message : 'Could not add channel');
@@ -135,6 +142,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
           avatar.trim() || 'https://via.placeholder.com/64',
           mode,
           JSON.stringify(headers),
+          tags,
         );
       }
     } else if (type === 'playlist') {
@@ -172,6 +180,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
           avatar: avatar.trim(),
           mode,
           headers,
+          tags,
         });
       } catch (error) {
         setSubmitError(error instanceof Error ? error.message : 'Could not update channel');
@@ -186,6 +195,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
         avatar: avatar.trim() || 'https://via.placeholder.com/64',
         mode: mode,
         headers: headers,
+        tags: tags,
       });
     } else if (type === 'playlist') {
       const newPlaylist = inputMethod === 'url' ? playlistUrl.trim() : playlistText.trim();
@@ -307,6 +317,13 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
                   className="w-full bg-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter channel avatar URL"
                 />
+              </div>
+              <div>
+                <label htmlFor="tags" className="block text-sm font-medium mb-1">
+                  Tags
+                </label>
+                <TagInput tags={tags} suggestions={tagSuggestions} onChange={setTags} />
+                <p className="mt-1.5 text-xs text-gray-400">Choose an existing tag or type a new one and press Enter.</p>
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">

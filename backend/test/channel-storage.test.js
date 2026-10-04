@@ -10,7 +10,7 @@ process.env.SETTINGS_DB_PATH = path.join(testDirectory, "storage.db");
 const Channel = require("../models/Channel");
 const ChannelStorage = require("../services/ChannelStorage");
 
-function createChannel(name, sourceId = null) {
+function createChannel(name, sourceId = null, tags = []) {
   return new Channel(
     name,
     `https://provider.example/live/user/pass/${sourceId || name}.ts`,
@@ -22,7 +22,8 @@ function createChannel(name, sourceId = null) {
     sourceId ? "Xtream" : null,
     false,
     sourceId ? "xtream" : null,
-    sourceId
+    sourceId,
+    tags
   );
 }
 
@@ -53,12 +54,14 @@ test("SQLite rejects duplicate Xtream source identities", () => {
 });
 
 test("channel updates and deletions are persisted", () => {
-  const channel = createChannel("Before");
+  const channel = createChannel("Before", null, ["News", "Local"]);
   channel.id = ChannelStorage.insert(channel);
   channel.name = "After";
+  channel.tags = ["News", "Featured"];
   ChannelStorage.update(channel);
 
   assert.equal(ChannelStorage.load()[0].name, "After");
+  assert.deepEqual(ChannelStorage.load()[0].tags, ["News", "Featured"]);
   ChannelStorage.delete(channel.id);
   assert.deepEqual(ChannelStorage.load(), []);
 });

@@ -123,6 +123,15 @@ function ChannelManager() {
     [catalog]
   );
 
+  const tagSuggestions = useMemo(() => {
+    const tagsByKey = new Map<string, string>();
+    currentChannels.flatMap((channel) => channel.tags || []).forEach((tag) => {
+      const trimmedTag = tag.trim();
+      if (trimmedTag) tagsByKey.set(trimmedTag.toLocaleLowerCase(), trimmedTag);
+    });
+    return Array.from(tagsByKey.values()).sort((left, right) => left.localeCompare(right));
+  }, [currentChannels]);
+
   const filteredChannels = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
     return catalog.filter((channel) =>
@@ -162,6 +171,7 @@ function ChannelManager() {
       avatar: values.avatar,
       mode: values.mode,
       headers: values.headers,
+      tags: values.tags,
     });
     setCatalog((channels) => channels.map((channel) => channel.streamId === selectedDirectoryChannel.streamId
       ? { ...channel, addedChannelId: response.channel.id, addedMode: response.channel.mode }
@@ -234,7 +244,9 @@ function ChannelManager() {
                 <ChannelLogo avatar={channel.avatar} name={channel.name} />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-[#EAF0F6]">{channel.name}</p>
-                  <p className="mt-0.5 truncate text-xs text-[#738496]">{channel.group || 'Uncategorized'} · {channel.mode}{channel.source !== 'xtream' ? ' · Legacy channel' : ''}</p>
+                  <p className="mt-0.5 truncate text-xs text-[#738496]">
+                    {channel.group || 'Uncategorized'} · {channel.mode}{channel.source !== 'xtream' ? ' · Legacy channel' : ''}{channel.tags?.length ? ` · ${channel.tags.join(', ')}` : ''}
+                  </p>
                 </div>
                 <button type="button" onClick={() => setEditingChannel(channel)} className="admin-icon-button flex h-9 w-9 items-center justify-center" aria-label={`Edit ${channel.name}`}>
                   <Pencil className="h-4 w-4" />
@@ -311,6 +323,7 @@ function ChannelManager() {
           preset={selectedPreset}
           sourceDescription={`${selectedDirectoryChannel.category} · Stream ${selectedDirectoryChannel.streamId}. The server builds the URL from your saved Xtream credentials.`}
           onAddChannel={addChannel}
+          tagSuggestions={tagSuggestions}
           onClose={() => setSelectedDirectoryChannel(null)}
         />
       )}
@@ -322,6 +335,7 @@ function ChannelManager() {
             ? `${editingChannel.group || 'Uncategorized'} · Stream ${editingChannel.sourceId}. The server builds the URL from your saved Xtream credentials.`
             : undefined}
           onUpdateChannel={updateChannel}
+          tagSuggestions={tagSuggestions}
           onClose={() => setEditingChannel(null)}
         />
       )}

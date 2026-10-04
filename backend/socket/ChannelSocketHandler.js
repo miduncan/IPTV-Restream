@@ -6,7 +6,7 @@ let latestChannelSwitchRevision = 0;
 
 module.exports = (io, socket) => {
   // Check if admin mode is required for channel modifications
-  socket.on("add-channel", ({ name, url, avatar, mode, headersJson }) => {
+  socket.on("add-channel", ({ name, url, avatar, mode, headersJson, tags }) => {
     try {
       // Check if user is authenticated as admin from the socket middleware
       if (!authService.hasRole(socket.user, "admin")) {
@@ -22,6 +22,7 @@ module.exports = (io, socket) => {
         avatar: avatar,
         mode: mode,
         headersJson: headersJson,
+        tags: tags,
       });
       io.emit("channel-added", newChannel); // Broadcast to all clients
     } catch (err) {

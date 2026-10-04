@@ -21,6 +21,7 @@ function serializeChannel(channel) {
     playlistUpdate: Boolean(channel.playlistUpdate),
     source: channel.source ?? null,
     sourceId: channel.sourceId ?? null,
+    tags: Array.isArray(channel.tags) ? channel.tags : [],
   };
 }
 
@@ -52,6 +53,7 @@ function getChannelUpdates(channel, body = {}) {
     avatar: String(body.avatar ?? "").trim() || "https://via.placeholder.com/64",
     mode,
     headers: Array.isArray(body.headers) ? body.headers : [],
+    tags: Array.isArray(body.tags) ? body.tags : channel.tags,
   };
 }
 

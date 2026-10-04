@@ -72,12 +72,13 @@ test("catalog combines live streams with live categories", async (t) => {
 test("channel construction ignores client URLs and uses saved credentials", () => {
   const channel = xtreamService.buildChannel(
     { streamId: "42", name: "World News", avatar: "", category: "News" },
-    { name: "News HD", mode: "restream", url: "https://attacker.example/stream" }
+    { name: "News HD", mode: "restream", url: "https://attacker.example/stream", tags: ["News"] }
   );
   assert.equal(channel.name, "News HD");
   assert.equal(channel.mode, "restream");
   assert.equal(channel.source, "xtream");
   assert.equal(channel.sourceId, "42");
+  assert.deepEqual(channel.tags, ["News"]);
   assert.equal(
     channel.url,
     "https://provider.example.com:8080/portal/live/viewer%20name/secret%2Fvalue/42.ts"

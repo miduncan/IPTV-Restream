@@ -10,6 +10,8 @@ import { ToastProvider, ToastContext } from './components/notifications/ToastCon
 import ToastContainer from './components/notifications/ToastContainer';
 import LogoutButton from './components/LogoutButton';
 
+const ALL_TAGS = 'All';
+
 function AppContent() {
 
   const [channels, setChannels] = useState<Channel[]>([]);
@@ -24,25 +26,29 @@ function AppContent() {
   const [epgByChannel, setEpgByChannel] = useState<Record<number, ChannelEpg>>({});
   const [epgRefreshVersion, setEpgRefreshVersion] = useState(0);
 
-  const [selectedGroup, setSelectedGroup] = useState<string>('Category');
-  const [isGroupDropdownOpen, setIsGroupDropdownOpen] = useState(false);
+  const [selectedTag, setSelectedTag] = useState<string>(ALL_TAGS);
+  const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
 
   const { addToast } = useContext(ToastContext);
 
   const filteredChannels = useMemo(() => {
-    const filteredByGroup = selectedGroup === 'Category' ? channels : channels.filter(channel =>
-      channel.group === selectedGroup
+    const filteredByTag = selectedTag === ALL_TAGS ? channels : channels.filter(channel =>
+      (channel.tags || []).includes(selectedTag)
     );
 
-    return filteredByGroup.filter(channel =>
+    return filteredByTag.filter(channel =>
       channel.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [channels, selectedGroup, searchQuery]);
+  }, [channels, selectedTag, searchQuery]);
 
-  const groups = useMemo(() => {
-    const uniqueGroups = new Set(channels.map(channel => channel.group).filter(group => group !== null));
-    return ['Category', ...Array.from(uniqueGroups)];
+  const tags = useMemo(() => {
+    const uniqueTags = new Set(channels.flatMap((channel) => channel.tags || []));
+    return [ALL_TAGS, ...Array.from(uniqueTags).sort((left, right) => left.localeCompare(right))];
   }, [channels]);
+
+  useEffect(() => {
+    if (!tags.includes(selectedTag)) setSelectedTag(ALL_TAGS);
+  }, [selectedTag, tags]);
 
   useEffect(() => {
     // Check if admin mode is enabled on the server
@@ -275,39 +281,37 @@ function AppContent() {
                   <div className="channel-filter relative">
                     <button
                       type="button"
-                      onClick={() => {
-                        setIsGroupDropdownOpen(!isGroupDropdownOpen);
-                      }}
+                      onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
                       className="sidebar-filter sidebar-filter-responsive group"
-                      aria-expanded={isGroupDropdownOpen}
-                      aria-label={`Filter channels by category. Current filter: ${selectedGroup === 'Category' ? 'All categories' : selectedGroup}`}
-                      title={selectedGroup === 'Category' ? 'All categories' : selectedGroup}
+                      aria-expanded={isTagDropdownOpen}
+                      aria-label={`Filter channels by tag. Current filter: ${selectedTag}`}
+                      title={selectedTag}
                     >
                       <ListFilter className="h-4 w-4 text-[#4EA1FF]" />
-                      <span className="sidebar-filter-label truncate">{selectedGroup === 'Category' ? 'All categories' : selectedGroup}</span>
-                      <ChevronDown className={`sidebar-filter-chevron h-3.5 w-3.5 text-[#617386] transition-transform duration-200 ${isGroupDropdownOpen ?
+                      <span className="sidebar-filter-label truncate">{selectedTag}</span>
+                      <ChevronDown className={`sidebar-filter-chevron h-3.5 w-3.5 text-[#617386] transition-transform duration-200 ${isTagDropdownOpen ?
                         "rotate-180" : ""}`} />
-                      {selectedGroup !== 'Category' && <span className="sidebar-filter-indicator" aria-hidden="true" />}
+                      {selectedTag !== ALL_TAGS && <span className="sidebar-filter-indicator" aria-hidden="true" />}
                     </button>
 
-                    {isGroupDropdownOpen && (
+                    {isTagDropdownOpen && (
                       <div className="sidebar-menu right-0">
                         <div className="max-h-72 overflow-y-auto scroll-container">
-                          {groups.map((group) => (
+                          {tags.map((tag) => (
                             <button
-                              key={group}
+                              key={tag}
                               onClick={() => {
-                                setSelectedGroup(group);
-                                setIsGroupDropdownOpen(false);
+                                setSelectedTag(tag);
+                                setIsTagDropdownOpen(false);
                               }}
-                              className={`sidebar-menu-item ${selectedGroup === group ? "text-[#8BC3FF] font-semibold" : "text-[#DCE6EF]"}`}
+                              className={`sidebar-menu-item ${selectedTag === tag ? "text-[#8BC3FF] font-semibold" : "text-[#DCE6EF]"}`}
                               style={{
                                 whiteSpace: 'normal',
                                 wordWrap: 'break-word',
                                 overflowWrap: 'anywhere',
                               }}
                             >
-                              {group === 'Category' ? 'All Categories' : group}
+                              {tag}
                             </button>
                           ))}
                         </div>

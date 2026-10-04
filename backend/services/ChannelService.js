@@ -2,6 +2,21 @@ const streamController = require('./restream/StreamController');
 const Channel = require('../models/Channel');
 const ChannelStorage = require('./ChannelStorage');
 
+function normalizeTags(tags) {
+    if (!Array.isArray(tags)) return [];
+
+    const normalized = [];
+    const seen = new Set();
+    for (const value of tags) {
+        const tag = String(value).trim();
+        const key = tag.toLocaleLowerCase();
+        if (!tag || seen.has(key)) continue;
+        seen.add(key);
+        normalized.push(tag);
+    }
+    return normalized;
+}
+
 
 class ChannelService {
     constructor() {
@@ -36,7 +51,7 @@ class ChannelService {
         return filtered;
     }
 
-    addChannel({ name, url, avatar, mode, headersJson, group = null, playlist = null, playlistName = null, playlistUpdate = false, source = null, sourceId = null }, save = true) {
+    addChannel({ name, url, avatar, mode, headersJson, group = null, playlist = null, playlistName = null, playlistUpdate = false, source = null, sourceId = null, tags = [] }, save = true) {
 
         let headers = headersJson;
         try {
@@ -45,7 +60,7 @@ class ChannelService {
         } catch (error) {
         }
 
-        const newChannel = new Channel(name, url, avatar, mode, headers, group, playlist, playlistName, playlistUpdate, source, sourceId);
+        const newChannel = new Channel(name, url, avatar, mode, headers, group, playlist, playlistName, playlistUpdate, source, sourceId, normalizeTags(tags));
         if(save) newChannel.id = ChannelStorage.insert(newChannel);
         this.channels.push(newChannel);
 
@@ -140,6 +155,9 @@ class ChannelService {
         }
 
         const channel = this.channels[channelIndex];
+        if (Object.prototype.hasOwnProperty.call(updatedAttributes, 'tags')) {
+            updatedAttributes = { ...updatedAttributes, tags: normalizeTags(updatedAttributes.tags) };
+        }
         const streamChanged = updatedAttributes.url != channel.url ||
             JSON.stringify(updatedAttributes.headers) != JSON.stringify(channel.headers) ||
             updatedAttributes.mode != channel.mode;

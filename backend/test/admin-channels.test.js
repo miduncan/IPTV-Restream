@@ -68,6 +68,7 @@ test("admin updates editable channel settings while preserving an Xtream URL", a
     headersJson: [],
     source: "xtream",
     sourceId: "42",
+    tags: ["Original"],
   });
   const emitted = [];
   const response = createResponse();
@@ -80,6 +81,7 @@ test("admin updates editable channel settings while preserving an Xtream URL", a
       avatar: "after.png",
       mode: "direct",
       headers: [{ key: "User-Agent", value: "Player" }],
+      tags: ["Sports", " sports ", "Featured"],
     },
     app: {
       get() {
@@ -93,6 +95,7 @@ test("admin updates editable channel settings while preserving an Xtream URL", a
   assert.equal(response.body.channel.url, originalUrl);
   assert.equal(response.body.channel.mode, "direct");
   assert.deepEqual(response.body.channel.headers, [{ key: "User-Agent", value: "Player" }]);
+  assert.deepEqual(response.body.channel.tags, ["Sports", "Featured"]);
   assert.equal(emitted[0][0], "channel-updated");
 });
 
