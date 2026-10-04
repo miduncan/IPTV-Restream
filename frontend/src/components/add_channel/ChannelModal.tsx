@@ -13,6 +13,7 @@ interface ChannelModalProps {
   channelOnly?: boolean;
   sourceDescription?: string;
   onAddChannel?: (channel: ChannelFormValues) => Promise<void>;
+  onUpdateChannel?: (channelId: number, channel: ChannelFormValues) => Promise<void>;
 }
 
 export interface ChannelFormValues {
@@ -23,7 +24,7 @@ export interface ChannelFormValues {
   headers: CustomHeader[];
 }
 
-function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDescription, onAddChannel }: ChannelModalProps) {
+function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDescription, onAddChannel, onUpdateChannel }: ChannelModalProps) {
   const [type, setType] = useState<'channel' | 'playlist'>('playlist');
   const [isEditMode, setIsEditMode] = useState(false);
   const [inputMethod, setInputMethod] = useState<'url' | 'text'>('url');
@@ -104,7 +105,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
     e.preventDefault();
 
     if (isEditMode && channel) {
-      handleUpdate(channel.id);
+      await handleUpdate(channel.id);
       return;
     }
 
@@ -158,8 +159,27 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
     onClose();
   };
 
-  const handleUpdate = (id: number) => {
-    if (type === 'channel') {
+  const handleUpdate = async (id: number) => {
+    if (type === 'channel' && (!name.trim() || !url.trim())) return;
+
+    if (type === 'channel' && onUpdateChannel) {
+      setIsSubmitting(true);
+      setSubmitError('');
+      try {
+        await onUpdateChannel(id, {
+          name: name.trim(),
+          url: url.trim(),
+          avatar: avatar.trim(),
+          mode,
+          headers,
+        });
+      } catch (error) {
+        setSubmitError(error instanceof Error ? error.message : 'Could not update channel');
+        setIsSubmitting(false);
+        return;
+      }
+      setIsSubmitting(false);
+    } else if (type === 'channel') {
       socketService.updateChannel(id, {
         name: name.trim(),
         url: url.trim(),
@@ -518,7 +538,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
 
           <div className="flex justify-end space-x-3">
             {submitError && <p className="mr-auto self-center text-sm text-red-400" role="alert">{submitError}</p>}
-            {isEditMode && (
+            {isEditMode && !onUpdateChannel && (
               <button
                 type="button"
                 onClick={handleDelete}
@@ -539,7 +559,7 @@ function ChannelModal({ onClose, channel, preset, channelOnly = false, sourceDes
               disabled={isSubmitting}
               className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              {isSubmitting ? 'Adding…' : isEditMode ? 'Update' : 'Add'}
+              {isSubmitting ? (isEditMode ? 'Updating…' : 'Adding…') : isEditMode ? 'Update' : 'Add'}
             </button>
           </div>
         </form>

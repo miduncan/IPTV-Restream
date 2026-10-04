@@ -7,8 +7,62 @@ function sendError(res, error, fallback) {
   res.status(error.statusCode || 502).json({ error: error.message || fallback });
 }
 
+function serializeChannel(channel) {
+  return {
+    id: channel.id,
+    name: channel.name,
+    url: channel.url,
+    avatar: channel.avatar,
+    group: channel.group,
+    mode: channel.mode,
+    headers: Array.isArray(channel.headers) ? channel.headers : [],
+    playlist: channel.playlist,
+    playlistName: channel.playlistName,
+    playlistUpdate: Boolean(channel.playlistUpdate),
+    source: channel.source ?? null,
+    sourceId: channel.sourceId ?? null,
+  };
+}
+
+function getChannelUpdates(channel, body = {}) {
+  const name = String(body.name ?? "").trim();
+  if (!name) {
+    const error = new Error("Channel name is required");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const mode = String(body.mode ?? "");
+  if (!["direct", "proxy", "restream"].includes(mode)) {
+    const error = new Error("Channel mode must be direct, proxy, or restream");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const url = channel.source === "xtream" ? channel.url : String(body.url ?? "").trim();
+  if (!url) {
+    const error = new Error("Stream URL is required");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  return {
+    name,
+    url,
+    avatar: String(body.avatar ?? "").trim() || "https://via.placeholder.com/64",
+    mode,
+    headers: Array.isArray(body.headers) ? body.headers : [],
+  };
+}
+
 module.exports = {
-  async list(req, res) {
+  list(req, res) {
+    res.json({
+      channels: ChannelService.getChannels().map(serializeChannel),
+    });
+  },
+
+  async catalog(req, res) {
     const currentChannels = ChannelService.getChannels();
     let catalog = [];
     let catalogError = null;
@@ -26,25 +80,16 @@ module.exports = {
     );
 
     res.json({
-        catalogError,
-        currentChannels: currentChannels.map((channel) => ({
-          id: channel.id,
-          name: channel.name,
-          avatar: channel.avatar,
-          group: channel.group,
-          mode: channel.mode,
-          source: channel.source ?? null,
-          sourceId: channel.sourceId ?? null,
-        })),
-        channels: catalog.map((entry) => {
-          const added = addedBySourceId.get(entry.streamId);
-          return {
-            ...entry,
-            addedChannelId: added?.id ?? null,
-            addedMode: added?.mode ?? null,
-          };
-        }),
-      });
+      catalogError,
+      channels: catalog.map((entry) => {
+        const added = addedBySourceId.get(entry.streamId);
+        return {
+          ...entry,
+          addedChannelId: added?.id ?? null,
+          addedMode: added?.mode ?? null,
+        };
+      }),
+    });
   },
 
   async add(req, res) {
@@ -88,6 +133,27 @@ module.exports = {
       return res.json({ currentChannel: currentChannel ?? null });
     } catch (error) {
       return sendError(res, error, "Could not remove channel");
+    }
+  },
+
+  async update(req, res) {
+    try {
+      const channelId = Number.parseInt(req.params.channelId, 10);
+      if (!Number.isInteger(channelId)) {
+        return res.status(400).json({ error: "Invalid channel ID" });
+      }
+
+      const channel = ChannelService.getChannelById(channelId);
+      if (!channel) return res.status(404).json({ error: "Channel not found" });
+
+      const updatedChannel = await ChannelService.updateChannel(
+        channelId,
+        getChannelUpdates(channel, req.body)
+      );
+      req.app.get("io")?.emit("channel-updated", updatedChannel);
+      return res.json({ channel: serializeChannel(updatedChannel) });
+    } catch (error) {
+      return sendError(res, error, "Could not update channel");
     }
   },
 };

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type UIEvent } from 'react';
-import { Check, ListVideo, Loader, Plus, Radio, RefreshCw, Search, Trash2 } from 'lucide-react';
+import { Check, ListVideo, Loader, Pencil, Plus, Radio, RefreshCw, Search, Trash2 } from 'lucide-react';
 import apiService, { ApiError } from '../../services/ApiService';
-import { ChannelMode } from '../../types';
+import { Channel, ChannelMode } from '../../types';
 import ChannelModal, { ChannelFormValues } from '../add_channel/ChannelModal';
 
 interface XtreamChannel {
@@ -14,20 +14,13 @@ interface XtreamChannel {
   addedMode: ChannelMode | null;
 }
 
-interface CurrentChannel {
-  id: number;
-  name: string;
-  avatar: string;
-  group: string | null;
-  mode: ChannelMode;
-  source: string | null;
-  sourceId: string | null;
+interface CatalogResponse {
+  channels: XtreamChannel[];
+  catalogError: string | null;
 }
 
-interface ChannelResponse {
-  channels: XtreamChannel[];
-  currentChannels: CurrentChannel[];
-  catalogError: string | null;
+interface CurrentChannelsResponse {
+  channels: Channel[];
 }
 
 const DIRECTORY_HEIGHT = 680;
@@ -80,34 +73,50 @@ function DirectoryRow({
 
 function ChannelManager() {
   const [catalog, setCatalog] = useState<XtreamChannel[]>([]);
-  const [currentChannels, setCurrentChannels] = useState<CurrentChannel[]>([]);
-  const [selected, setSelected] = useState<XtreamChannel | null>(null);
+  const [currentChannels, setCurrentChannels] = useState<Channel[]>([]);
+  const [selectedDirectoryChannel, setSelectedDirectoryChannel] = useState<XtreamChannel | null>(null);
+  const [editingChannel, setEditingChannel] = useState<Channel | null>(null);
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All categories');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isCatalogLoading, setIsCatalogLoading] = useState(true);
+  const [isLineupLoading, setIsLineupLoading] = useState(true);
   const [removingId, setRemovingId] = useState<number | null>(null);
-  const [error, setError] = useState('');
+  const [catalogError, setCatalogError] = useState('');
+  const [lineupError, setLineupError] = useState('');
   const [directoryScrollTop, setDirectoryScrollTop] = useState(0);
   const directoryRef = useRef<HTMLDivElement>(null);
 
-  const loadChannels = useCallback(async () => {
-    setIsLoading(true);
-    setError('');
+  const loadCurrentChannels = useCallback(async () => {
+    setIsLineupLoading(true);
+    setLineupError('');
     try {
-      const response = await apiService.request<ChannelResponse>('/admin/channels');
-      setCatalog(response.channels);
-      setCurrentChannels(response.currentChannels);
-      setError(response.catalogError || '');
+      const response = await apiService.request<CurrentChannelsResponse>('/admin/channels');
+      setCurrentChannels(response.channels);
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Could not load channels');
+      setLineupError(loadError instanceof Error ? loadError.message : 'Could not load current lineup');
     } finally {
-      setIsLoading(false);
+      setIsLineupLoading(false);
+    }
+  }, []);
+
+  const loadCatalog = useCallback(async () => {
+    setIsCatalogLoading(true);
+    setCatalogError('');
+    try {
+      const response = await apiService.request<CatalogResponse>('/admin/channels/xtream');
+      setCatalog(response.channels);
+      setCatalogError(response.catalogError || '');
+    } catch (loadError) {
+      setCatalogError(loadError instanceof Error ? loadError.message : 'Could not load Xtream channels');
+    } finally {
+      setIsCatalogLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    loadChannels();
-  }, [loadChannels]);
+    loadCurrentChannels();
+    loadCatalog();
+  }, [loadCatalog, loadCurrentChannels]);
 
   const categories = useMemo(
     () => ['All categories', ...Array.from(new Set(catalog.map((channel) => channel.category))).sort()],
@@ -123,8 +132,8 @@ function ChannelManager() {
   }, [catalog, category, query]);
 
   const selectedPreset = useMemo(
-    () => selected ? { name: selected.name, avatar: selected.avatar, mode: 'proxy' as ChannelMode, headers: [] } : null,
-    [selected]
+    () => selectedDirectoryChannel ? { name: selectedDirectoryChannel.name, avatar: selectedDirectoryChannel.avatar, mode: 'proxy' as ChannelMode, headers: [] } : null,
+    [selectedDirectoryChannel]
   );
 
   const shouldVirtualize = filteredChannels.length > VIRTUALIZE_THRESHOLD;
@@ -146,26 +155,40 @@ function ChannelManager() {
   };
 
   const addChannel = async (values: ChannelFormValues) => {
-    if (!selected) return;
-    await apiService.request('/admin/channels', 'POST', undefined, {
-      streamId: selected.streamId,
+    if (!selectedDirectoryChannel) return;
+    const response = await apiService.request<{ channel: Channel }>('/admin/channels', 'POST', undefined, {
+      streamId: selectedDirectoryChannel.streamId,
       name: values.name,
       avatar: values.avatar,
       mode: values.mode,
       headers: values.headers,
     });
-    await loadChannels();
+    setCatalog((channels) => channels.map((channel) => channel.streamId === selectedDirectoryChannel.streamId
+      ? { ...channel, addedChannelId: response.channel.id, addedMode: response.channel.mode }
+      : channel));
+    await loadCurrentChannels();
+  };
+
+  const updateChannel = async (channelId: number, values: ChannelFormValues) => {
+    const response = await apiService.request<{ channel: Channel }>(`/admin/channels/${channelId}`, 'PUT', undefined, values);
+    setCatalog((channels) => channels.map((channel) => channel.addedChannelId === channelId
+      ? { ...channel, addedMode: response.channel.mode }
+      : channel));
+    await loadCurrentChannels();
   };
 
   const removeChannel = async (channelId: number) => {
     setRemovingId(channelId);
-    setError('');
+    setLineupError('');
     try {
       await apiService.request(`/admin/channels/${channelId}`, 'DELETE');
-      await loadChannels();
+      setCatalog((channels) => channels.map((channel) => channel.addedChannelId === channelId
+        ? { ...channel, addedChannelId: null, addedMode: null }
+        : channel));
+      await loadCurrentChannels();
     } catch (removeError) {
       if (removeError instanceof ApiError && (removeError.status === 401 || removeError.status === 403)) window.location.reload();
-      setError(removeError instanceof Error ? removeError.message : 'Could not remove channel');
+      setLineupError(removeError instanceof Error ? removeError.message : 'Could not remove channel');
     } finally {
       setRemovingId(null);
     }
@@ -184,15 +207,15 @@ function ChannelManager() {
               Choose channels from the Xtream account configured in Settings.
             </p>
           </div>
-          <button type="button" onClick={loadChannels} disabled={isLoading} className="admin-secondary flex items-center justify-center gap-2 px-4 py-2.5 text-sm">
-            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} /> Refresh directory
+          <button type="button" onClick={loadCatalog} disabled={isCatalogLoading} className="admin-secondary flex items-center justify-center gap-2 px-4 py-2.5 text-sm">
+            <RefreshCw className={`h-4 w-4 ${isCatalogLoading ? 'animate-spin' : ''}`} /> Refresh directory
           </button>
         </div>
 
-        {error && (
+        {lineupError && (
           <div className="mt-6 flex items-center justify-between gap-4 rounded-lg border border-[#6f3a3a] bg-[#26191c] px-4 py-3 text-sm text-[#FFB2B2]" role="alert">
-            <span>{error}</span>
-            <button type="button" onClick={loadChannels} className="shrink-0 font-medium text-[#EAF0F6]">Try again</button>
+            <span>{lineupError}</span>
+            <button type="button" onClick={loadCurrentChannels} className="shrink-0 font-medium text-[#EAF0F6]">Try again</button>
           </div>
         )}
 
@@ -202,7 +225,9 @@ function ChannelManager() {
             <span className="text-xs text-[#738496]">{currentChannels.length} added</span>
           </div>
           <div className="admin-panel overflow-hidden">
-            {currentChannels.length === 0 ? (
+            {isLineupLoading ? (
+              <div className="flex items-center justify-center gap-3 px-5 py-8 text-sm text-[#91A0AF]"><Loader className="h-5 w-5 animate-spin text-[#4EA1FF]" /> Loading current lineup</div>
+            ) : currentChannels.length === 0 ? (
               <div className="admin-empty border-0 px-5 py-8 text-center text-sm text-[#91A0AF]">Your channel list is empty. Add a channel from the directory below.</div>
             ) : currentChannels.map((channel) => (
               <div key={channel.id} className="flex items-center gap-3 border-b border-[#233242] px-4 py-3 last:border-b-0 sm:px-5">
@@ -211,6 +236,9 @@ function ChannelManager() {
                   <p className="truncate text-sm font-medium text-[#EAF0F6]">{channel.name}</p>
                   <p className="mt-0.5 truncate text-xs text-[#738496]">{channel.group || 'Uncategorized'} · {channel.mode}{channel.source !== 'xtream' ? ' · Legacy channel' : ''}</p>
                 </div>
+                <button type="button" onClick={() => setEditingChannel(channel)} className="admin-icon-button flex h-9 w-9 items-center justify-center" aria-label={`Edit ${channel.name}`}>
+                  <Pencil className="h-4 w-4" />
+                </button>
                 <button type="button" onClick={() => removeChannel(channel.id)} disabled={removingId === channel.id} className="admin-icon-button flex h-9 w-9 items-center justify-center" aria-label={`Remove ${channel.name}`}>
                   {removingId === channel.id ? <Loader className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                 </button>
@@ -222,8 +250,14 @@ function ChannelManager() {
         <div className="mt-9">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-medium text-[#DCE6EF]">Xtream directory</h2>
-            {!isLoading && <span className="text-xs text-[#738496]">{filteredChannels.length} of {catalog.length}</span>}
+            {!isCatalogLoading && <span className="text-xs text-[#738496]">{filteredChannels.length} of {catalog.length}</span>}
           </div>
+          {catalogError && (
+            <div className="mb-3 flex items-center justify-between gap-4 rounded-lg border border-[#6f3a3a] bg-[#26191c] px-4 py-3 text-sm text-[#FFB2B2]" role="alert">
+              <span>{catalogError}</span>
+              <button type="button" onClick={loadCatalog} className="shrink-0 font-medium text-[#EAF0F6]">Try again</button>
+            </div>
+          )}
           <div className="mb-3 grid gap-3 sm:grid-cols-[minmax(0,1fr)_220px]">
             <label className="relative">
               <span className="sr-only">Search channels</span>
@@ -240,7 +274,7 @@ function ChannelManager() {
             onScroll={handleDirectoryScroll}
             className={`admin-panel overflow-y-auto scroll-container ${shouldVirtualize ? 'h-[680px]' : 'max-h-[680px]'}`}
           >
-            {isLoading ? (
+            {isCatalogLoading ? (
               <div className="flex items-center justify-center gap-3 px-5 py-16 text-sm text-[#91A0AF]"><Loader className="h-5 w-5 animate-spin text-[#4EA1FF]" /> Loading Xtream channels</div>
             ) : filteredChannels.length === 0 ? (
               <div className="px-5 py-12 text-center text-sm text-[#91A0AF]">No channels match this search and category.</div>
@@ -253,7 +287,7 @@ function ChannelManager() {
                       key={channel.streamId}
                       channel={channel}
                       isLast={index === filteredChannels.length - 1}
-                      onAdd={setSelected}
+                      onAdd={setSelectedDirectoryChannel}
                       style={{ position: 'absolute', insetInline: 0, top: index * DIRECTORY_ROW_HEIGHT }}
                     />
                   );
@@ -264,20 +298,31 @@ function ChannelManager() {
                 key={channel.streamId}
                 channel={channel}
                 isLast={index === filteredChannels.length - 1}
-                onAdd={setSelected}
+                onAdd={setSelectedDirectoryChannel}
               />
             ))}
           </div>
         </div>
       </div>
 
-      {selected && (
+      {selectedDirectoryChannel && (
         <ChannelModal
           channelOnly
           preset={selectedPreset}
-          sourceDescription={`${selected.category} · Stream ${selected.streamId}. The server builds the URL from your saved Xtream credentials.`}
+          sourceDescription={`${selectedDirectoryChannel.category} · Stream ${selectedDirectoryChannel.streamId}. The server builds the URL from your saved Xtream credentials.`}
           onAddChannel={addChannel}
-          onClose={() => setSelected(null)}
+          onClose={() => setSelectedDirectoryChannel(null)}
+        />
+      )}
+      {editingChannel && (
+        <ChannelModal
+          channelOnly
+          channel={editingChannel}
+          sourceDescription={editingChannel.source === 'xtream'
+            ? `${editingChannel.group || 'Uncategorized'} · Stream ${editingChannel.sourceId}. The server builds the URL from your saved Xtream credentials.`
+            : undefined}
+          onUpdateChannel={updateChannel}
+          onClose={() => setEditingChannel(null)}
         />
       )}
     </section>
