@@ -14,6 +14,7 @@
 
 .player-shell {
   background: #080d12;
+  min-height: 100dvh;
 }
 
 .player-header-action {
@@ -90,6 +91,20 @@
   flex-direction: column;
   border-top: 1px solid #233242;
   background: #0e1720;
+}
+
+@media (max-width: 1023px) {
+  .player-workspace {
+    height: calc(100vh - 4rem);
+    height: calc(100dvh - 4rem);
+    min-height: 0;
+    grid-template-rows: auto minmax(20rem, 1fr);
+  }
+
+  .player-sidebar {
+    min-height: 0;
+    overflow: hidden;
+  }
 }
 
 .sidebar-tabs {

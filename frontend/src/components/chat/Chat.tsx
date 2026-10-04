@@ -125,7 +125,7 @@ function Chat({ isActive }: { isActive: boolean }) {
 
       <div
         ref={messageListRef}
-        className="min-h-[22rem] flex-1 space-y-4 overflow-y-auto p-4 scroll-container vertical-scroll-container lg:min-h-0"
+        className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4 scroll-container vertical-scroll-container"
         onScroll={(event) => {
           const messageList = event.currentTarget;
           const distanceFromBottom = messageList.scrollHeight - messageList.scrollTop - messageList.clientHeight;
