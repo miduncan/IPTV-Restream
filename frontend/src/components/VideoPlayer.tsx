@@ -1,10 +1,13 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { Airplay, Maximize, Minimize, Pause, PictureInPicture2, Play, Volume2, VolumeX } from 'lucide-react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
+import { Airplay, Maximize, Minimize, Pause, PictureInPicture2, Play, SmilePlus, Volume2, VolumeX } from 'lucide-react';
 import Hls from 'hls.js';
-import { Channel, ChannelMode } from '../types';
+import { Channel, ChannelMode, VideoReaction } from '../types';
 import apiService, { ApiError } from '../services/ApiService';
 import socketService from '../services/SocketService';
+import { readStoredUsername, storeUsername, USERNAME_CHANGED_EVENT } from '../services/UsernameStorage';
 import { ToastContext } from './notifications/ToastContext';
+import UsernameModal from './chat/UsernameModal';
 
 interface VideoPlayerProps {
   channel: Channel | null;
@@ -14,6 +17,25 @@ interface VideoPlayerProps {
 interface AirPlaySession {
   playbackUrl: string;
 }
+
+interface FloatingReaction {
+  id: number;
+  emoji: string;
+  userName: string;
+  left: number;
+  drift: number;
+  rotation: number;
+  duration: number;
+}
+
+const REACTIONS = [
+  { emoji: '🏈', label: 'Touchdown' },
+  { emoji: '🙌', label: 'Celebrate' },
+  { emoji: '😬', label: 'Wince' },
+  { emoji: '👏', label: 'Great play' },
+  { emoji: '🚩', label: 'Penalty flag' },
+  { emoji: '👎', label: 'Boo' },
+] as const;
 
 type AirPlayVideoElement = HTMLVideoElement & {
   webkitCurrentPlaybackTargetIsWireless?: boolean;
@@ -44,7 +66,64 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
   const [controlsVisible, setControlsVisible] = useState(true);
   const [airPlaySupported, setAirPlaySupported] = useState(false);
   const [airPlayActive, setAirPlayActive] = useState(false);
+  const [reactionsOpen, setReactionsOpen] = useState(false);
+  const [floatingReactions, setFloatingReactions] = useState<FloatingReaction[]>([]);
+  const [username, setUsername] = useState(readStoredUsername);
+  const [isUsernameModalOpen, setIsUsernameModalOpen] = useState(false);
+  const reactionIdRef = useRef(0);
+  const reactionTimersRef = useRef<number[]>([]);
+  const pendingReactionRef = useRef<string | null>(null);
   const { addToast, removeToast, clearToasts, editToast } = useContext(ToastContext);
+
+  const displayReaction = useCallback((emoji: string, userName: string) => {
+    const id = reactionIdRef.current += 1;
+    const duration = 2100 + Math.random() * 650;
+    const reaction: FloatingReaction = {
+      id,
+      emoji,
+      userName,
+      left: 66 + Math.random() * 22,
+      drift: -48 + Math.random() * 96,
+      rotation: -12 + Math.random() * 24,
+      duration,
+    };
+
+    setFloatingReactions((current) => [...current.slice(-11), reaction]);
+    const timer = window.setTimeout(() => {
+      setFloatingReactions((current) => current.filter((item) => item.id !== id));
+      reactionTimersRef.current = reactionTimersRef.current.filter((item) => item !== timer);
+    }, duration + 250);
+    reactionTimersRef.current.push(timer);
+  }, []);
+
+  useEffect(() => () => {
+    reactionTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+  }, []);
+
+  useEffect(() => {
+    const reactionListener = (reaction: VideoReaction) => {
+      displayReaction(reaction.emoji, reaction.user.name);
+    };
+    const usernameChangedListener = (event: Event) => {
+      setUsername((event as CustomEvent<string>).detail);
+    };
+
+    socketService.subscribeToEvent('video-reaction', reactionListener);
+    window.addEventListener(USERNAME_CHANGED_EVENT, usernameChangedListener);
+    return () => {
+      socketService.unsubscribeFromEvent('video-reaction', reactionListener);
+      window.removeEventListener(USERNAME_CHANGED_EVENT, usernameChangedListener);
+    };
+  }, [displayReaction]);
+
+  useEffect(() => {
+    if (!reactionsOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setReactionsOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [reactionsOpen]);
 
   useEffect(() => {
     if (!videoRef.current || !channel?.url) return;
@@ -531,22 +610,81 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     }
   };
 
-  return (
-    <div ref={frameRef} className="video-frame relative">
-      <video
-        ref={videoRef}
-        className="block h-auto max-h-[calc(100vh-7rem)] w-full bg-black object-contain aspect-video"
-        muted
-        autoPlay
-        playsInline
-        controls={!useCustomControls}
-        onClick={useCustomControls ? togglePlayback : undefined}
-      />
-      {useCustomControls && (
-        <div
-          ref={controlsRef}
-          className={`player-controls absolute inset-x-0 bottom-0 z-10 flex items-center gap-1 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-3 pb-3 pt-10 text-white transition-opacity duration-300 ${isFullscreen && !controlsVisible ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+  const publishReaction = (emoji: string, userName: string) => {
+    displayReaction(emoji, userName);
+    if (!socketService.isConnected()) return;
+
+    socketService.sendReaction(userName, emoji).catch((error) => {
+      addToast({
+        type: 'error',
+        title: 'Reaction not shared',
+        message: error instanceof Error ? error.message : 'The reaction could not be shared.',
+        duration: 3000,
+      });
+    });
+  };
+
+  const sendReaction = (emoji: string) => {
+    const currentUsername = username || readStoredUsername();
+    if (!currentUsername) {
+      pendingReactionRef.current = emoji;
+      setIsUsernameModalOpen(true);
+      return;
+    }
+    publishReaction(emoji, currentUsername);
+  };
+
+  const reactionTray = (
+    <div className="reaction-tray" role="group" aria-label="Choose a reaction">
+      {REACTIONS.map(({ emoji, label }) => (
+        <button
+          key={label}
+          type="button"
+          className="reaction-choice"
+          aria-label={label}
+          title={label}
+          onClick={() => sendReaction(emoji)}
         >
+          <span aria-hidden="true">{emoji}</span>
+        </button>
+      ))}
+    </div>
+  );
+
+  return (
+    <div className="video-player-stack">
+      <div ref={frameRef} className="video-frame relative">
+        <video
+          ref={videoRef}
+          className="block h-auto max-h-[calc(100vh-7rem)] w-full bg-black object-contain aspect-video"
+          muted
+          autoPlay
+          playsInline
+          controls={!useCustomControls}
+          onClick={useCustomControls ? togglePlayback : undefined}
+        />
+        <div className="reaction-flight-path" aria-hidden="true">
+          {floatingReactions.map((reaction) => (
+            <span
+              key={reaction.id}
+              className="floating-reaction"
+              style={{
+                left: `${reaction.left}%`,
+                '--reaction-drift': `${reaction.drift}px`,
+                '--reaction-rotation': `${reaction.rotation}deg`,
+                '--reaction-duration': `${reaction.duration}ms`,
+              } as CSSProperties}
+            >
+              <span className="reaction-emoji">{reaction.emoji}</span>
+              <span className="reaction-identity">{reaction.userName}</span>
+            </span>
+          ))}
+        </div>
+        {useCustomControls && (
+          <div
+            ref={controlsRef}
+            className={`player-controls absolute inset-x-0 bottom-0 z-10 flex items-center gap-1 bg-gradient-to-t from-black/90 via-black/60 to-transparent px-3 pb-3 pt-10 text-white transition-opacity duration-300 ${isFullscreen && !controlsVisible ? 'pointer-events-none opacity-0' : 'opacity-100'}`}
+          >
           <button type="button" onClick={togglePlayback} aria-label={isPlaying ? 'Pause' : 'Play'} title={isPlaying ? 'Pause' : 'Play'} className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
             {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
           </button>
@@ -555,6 +693,19 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
           </button>
           <span className="ml-1 text-xs font-semibold uppercase tracking-wider text-white/80">Live</span>
           <div className="flex-1" />
+          <div className="reaction-control">
+            {reactionsOpen && reactionTray}
+            <button
+              type="button"
+              onClick={() => setReactionsOpen((open) => !open)}
+              aria-label="React to the video"
+              aria-expanded={reactionsOpen}
+              title="React"
+              className={`reaction-trigger ${reactionsOpen ? 'reaction-trigger-active' : ''}`}
+            >
+              <SmilePlus className="h-5 w-5" />
+            </button>
+          </div>
           {airPlaySupported && (
             <button type="button" onClick={showAirPlayPicker} aria-label="AirPlay" aria-pressed={airPlayActive} title="AirPlay" className={`rounded-md p-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF] ${airPlayActive ? 'bg-[#4EA1FF] text-[#07111B]' : 'hover:bg-white/15'}`}>
               <Airplay className="h-5 w-5" />
@@ -566,7 +717,44 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
           <button type="button" onClick={toggleFullscreen} aria-label={isFullscreen ? 'Exit full screen' : 'Full screen'} title={isFullscreen ? 'Exit full screen' : 'Full screen'} className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
             {isFullscreen ? <Minimize className="h-5 w-5" /> : <Maximize className="h-5 w-5" />}
           </button>
+          </div>
+        )}
+      </div>
+
+      {!useCustomControls && (
+        <div className="reaction-mobile-rail" role="toolbar" aria-label="Video reactions">
+          <div className="reaction-mobile-rail-controls">
+            {reactionsOpen && reactionTray}
+            <button
+              type="button"
+              className={`reaction-trigger ${reactionsOpen ? 'reaction-trigger-active' : ''}`}
+              aria-label="React to the video"
+              aria-expanded={reactionsOpen}
+              onClick={() => setReactionsOpen((open) => !open)}
+            >
+              <SmilePlus className="h-5 w-5" />
+            </button>
+          </div>
         </div>
+      )}
+      {isUsernameModalOpen && (
+        <UsernameModal
+          initialUsername=""
+          isEditing={false}
+          context="reactions"
+          onCancel={() => {
+            pendingReactionRef.current = null;
+            setIsUsernameModalOpen(false);
+          }}
+          onSave={(nextUsername) => {
+            storeUsername(nextUsername);
+            setUsername(nextUsername);
+            setIsUsernameModalOpen(false);
+            const pendingReaction = pendingReactionRef.current;
+            pendingReactionRef.current = null;
+            if (pendingReaction) publishReaction(pendingReaction, nextUsername);
+          }}
+        />
       )}
     </div>
   );

@@ -42,6 +42,13 @@ export interface ChatMessage {
   timestamp: string;
 }
 
+export interface VideoReaction {
+  id: string;
+  emoji: string;
+  user: User;
+  timestamp: string;
+}
+
 
 export interface CustomHeader {
   key: string;

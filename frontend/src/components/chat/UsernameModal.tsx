@@ -9,9 +9,10 @@ interface UsernameModalProps {
   isEditing: boolean;
   onCancel: () => void;
   onSave: (username: string) => void;
+  context?: 'chat' | 'reactions';
 }
 
-function UsernameModal({ initialUsername, isEditing, onCancel, onSave }: UsernameModalProps) {
+function UsernameModal({ initialUsername, isEditing, onCancel, onSave, context = 'chat' }: UsernameModalProps) {
   const [value, setValue] = useState(initialUsername);
   const [error, setError] = useState('');
   const titleId = useId();
@@ -83,7 +84,9 @@ function UsernameModal({ initialUsername, isEditing, onCancel, onSave }: Usernam
               {isEditing ? 'Change your username' : 'Choose a username'}
             </h2>
             <p id={descriptionId} className="mt-1 text-sm text-[#91A0AF]">
-              This is how you’ll appear in live chat.
+              {context === 'reactions'
+                ? 'This is how you’ll appear on reactions and in live chat.'
+                : 'This is how you’ll appear in live chat.'}
             </p>
           </div>
           <button
@@ -125,7 +128,7 @@ function UsernameModal({ initialUsername, isEditing, onCancel, onSave }: Usernam
               Cancel
             </button>
             <button type="submit" className="admin-primary px-4 py-2 text-sm">
-              {isEditing ? 'Save username' : 'Start chatting'}
+              {isEditing ? 'Save username' : context === 'reactions' ? 'Start reacting' : 'Start chatting'}
             </button>
           </div>
         </form>

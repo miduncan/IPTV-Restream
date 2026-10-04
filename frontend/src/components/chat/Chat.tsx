@@ -5,8 +5,7 @@ import { ChatMessage } from '../../types';
 import ChatMessageItem from './ChatMessageItem';
 import SystemMessage from './SystemMessage';
 import UsernameModal from './UsernameModal';
-
-const USERNAME_STORAGE_KEY = 'streamhub.chat.username';
+import { readStoredUsername, storeUsername, USERNAME_CHANGED_EVENT } from '../../services/UsernameStorage';
 
 function isSameDisplayedMinute(current: ChatMessage, previous?: ChatMessage) {
   if (!previous || current.kind !== 'chat' || previous.kind !== 'chat') return false;
@@ -19,15 +18,6 @@ function isSameDisplayedMinute(current: ChatMessage, previous?: ChatMessage) {
     && currentTime.getDate() === previousTime.getDate()
     && currentTime.getHours() === previousTime.getHours()
     && currentTime.getMinutes() === previousTime.getMinutes();
-}
-
-function readStoredUsername() {
-  try {
-    const value = window.localStorage.getItem(USERNAME_STORAGE_KEY)?.trim();
-    return value && value.length >= 2 && value.length <= 24 ? value : '';
-  } catch {
-    return '';
-  }
 }
 
 function Chat({ isActive }: { isActive: boolean }) {
@@ -43,6 +33,14 @@ function Chat({ isActive }: { isActive: boolean }) {
   const composerRef = useRef<HTMLInputElement>(null);
   const messageListRef = useRef<HTMLDivElement>(null);
   const shouldFollowMessagesRef = useRef(true);
+
+  useEffect(() => {
+    const usernameChangedListener = (event: Event) => {
+      setUsername((event as CustomEvent<string>).detail);
+    };
+    window.addEventListener(USERNAME_CHANGED_EVENT, usernameChangedListener);
+    return () => window.removeEventListener(USERNAME_CHANGED_EVENT, usernameChangedListener);
+  }, []);
 
   useEffect(() => {
     const messageListener = (message: ChatMessage) => {
@@ -95,11 +93,7 @@ function Chat({ isActive }: { isActive: boolean }) {
   };
 
   const saveUsername = (nextUsername: string) => {
-    try {
-      window.localStorage.setItem(USERNAME_STORAGE_KEY, nextUsername);
-    } catch {
-      // The username still works for this session when storage is unavailable.
-    }
+    storeUsername(nextUsername);
     setUsername(nextUsername);
     setIsUsernameModalOpen(false);
     setSendError('');

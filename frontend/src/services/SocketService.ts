@@ -227,6 +227,30 @@ class SocketService {
     });
   }
 
+  sendReaction(userName: string, emoji: string): Promise<string> {
+    if (!this.socket?.connected) {
+      return Promise.reject(new Error('Reactions are reconnecting. Try again in a moment.'));
+    }
+
+    return new Promise((resolve, reject) => {
+      this.socket?.timeout(5000).emit(
+        'send-reaction',
+        { userName, emoji },
+        (timeoutError: Error | null, response?: { ok: boolean; error?: string; reactionId?: string }) => {
+          if (timeoutError) {
+            reject(new Error('The reaction timed out. Try again.'));
+          } else if (!response?.ok) {
+            reject(new Error(response?.error || 'Reaction could not be sent.'));
+          } else if (typeof response.reactionId !== 'string') {
+            reject(new Error('The server returned an invalid reaction response.'));
+          } else {
+            resolve(response.reactionId);
+          }
+        }
+      );
+    });
+  }
+
   // Add channel
   addChannel(
     name: string,

@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const { Server } = require('socket.io');
 
 const ChatSocketHandler = require('./socket/ChatSocketHandler');
+const ReactionSocketHandler = require('./socket/ReactionSocketHandler');
 const ChannelSocketHandler = require('./socket/ChannelSocketHandler');
 const ClockSocketHandler = require('./socket/ClockSocketHandler');
 const PlaylistSocketHandler = require('./socket/PlaylistSocketHandler');
@@ -174,4 +175,5 @@ io.on('connection', socket => {
   ClockSocketHandler(socket);
   PlaylistSocketHandler(io, socket);
   ChatSocketHandler(io, socket);
+  ReactionSocketHandler(io, socket);
 })

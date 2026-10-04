@@ -59,6 +59,297 @@
   width: 100%;
   overflow: hidden;
   background: #05080b;
+  container-type: inline-size;
+}
+
+.video-player-stack {
+  width: 100%;
+  min-width: 0;
+}
+
+.reaction-control,
+.reaction-mobile-rail-controls {
+  position: relative;
+}
+
+.reaction-mobile-rail {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid #233242;
+  background: #0e1720;
+  padding: 0.35rem 0.75rem;
+}
+
+.reaction-mobile-rail-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.reaction-trigger {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: rgba(8, 13, 18, 0.72);
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(12px);
+  transition: transform 140ms ease, background-color 140ms ease, border-color 140ms ease;
+}
+
+.reaction-trigger:hover {
+  transform: scale(1.07);
+  border-color: rgba(139, 195, 255, 0.66);
+  background: rgba(21, 44, 66, 0.9);
+}
+
+.reaction-trigger-active {
+  border-color: #8bc3ff;
+  background: #4ea1ff;
+  color: #07111b;
+}
+
+.reaction-trigger:focus-visible,
+.reaction-choice:focus-visible {
+  outline: 2px solid #8bc3ff;
+  outline-offset: 2px;
+}
+
+.reaction-tray {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.65rem);
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  width: max-content;
+  border: 1px solid rgba(139, 195, 255, 0.3);
+  border-radius: 999px;
+  background: rgba(8, 17, 26, 0.92);
+  padding: 0.35rem;
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  backdrop-filter: blur(18px);
+  animation: reaction-tray-in 170ms cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+}
+
+.reaction-tray::before,
+.reaction-tray::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.reaction-tray::before {
+  right: 0.715rem;
+  bottom: -0.57rem;
+  width: 0.84rem;
+  height: 0.64rem;
+  background: rgba(139, 195, 255, 0.3);
+}
+
+.reaction-tray::after {
+  right: 0.77rem;
+  bottom: -0.49rem;
+  width: 0.73rem;
+  height: 0.55rem;
+  background: #09121b;
+}
+
+.reaction-choice {
+  display: grid;
+  width: 2.15rem;
+  height: 2.15rem;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+
+.reaction-choice:hover {
+  z-index: 1;
+  transform: translateY(-0.2rem) scale(1.22);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.reaction-choice:active {
+  transform: translateY(0) scale(0.92);
+}
+
+.reaction-flight-path {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floating-reaction {
+  --reaction-drift: 0px;
+  --reaction-rotation: 0deg;
+  --reaction-duration: 2400ms;
+  --reaction-start: 3.7rem;
+  position: absolute;
+  bottom: var(--reaction-start);
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.32), rgba(64, 126, 180, 0.13) 45%, rgba(8, 17, 26, 0.22));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.26), 0 0 22px rgba(78, 161, 255, 0.16);
+  font-size: 1.85rem;
+  animation: reaction-float var(--reaction-duration) linear both;
+  backdrop-filter: blur(3px);
+}
+
+.floating-reaction::before,
+.floating-reaction::after {
+  content: '';
+  position: absolute;
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 50%;
+  background: #8bc3ff;
+  box-shadow: 0 0 10px #4ea1ff;
+  animation: reaction-spark var(--reaction-duration) ease-out both;
+}
+
+.floating-reaction::before { left: -0.2rem; top: 0.85rem; }
+.floating-reaction::after { right: -0.05rem; bottom: 0.55rem; animation-delay: 70ms; }
+.reaction-emoji { animation: reaction-pop 420ms cubic-bezier(0.18, 1.7, 0.32, 1) both; }
+
+.reaction-identity {
+  position: absolute;
+  top: calc(100% + 0.3rem);
+  left: 50%;
+  max-width: 9rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(8, 17, 26, 0.82);
+  padding: 0.22rem 0.48rem;
+  color: #eaf0f6;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  line-height: 1;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  animation: reaction-identity var(--reaction-duration) linear both;
+  backdrop-filter: blur(8px);
+}
+
+@keyframes reaction-tray-in {
+  from { opacity: 0; transform: translateY(0.45rem) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes reaction-tray-in-left {
+  from { opacity: 0; transform: translate(0.4rem, -50%) scale(0.92); }
+  to { opacity: 1; transform: translate(0, -50%) scale(1); }
+}
+
+@keyframes reaction-tray-in-rail {
+  from { opacity: 0; transform: translateX(0.4rem) scale(0.92); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.reaction-mobile-rail .reaction-tray {
+  position: static;
+  gap: 0.1rem;
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(8, 13, 18, 0.72);
+  padding: 0.15rem 0.25rem;
+  box-shadow: none;
+  animation-name: reaction-tray-in-rail;
+  transform-origin: right center;
+}
+
+.reaction-mobile-rail .reaction-tray::before,
+.reaction-mobile-rail .reaction-tray::after {
+  display: none;
+}
+
+.reaction-mobile-rail .reaction-choice {
+  width: 1.9rem;
+  height: 1.9rem;
+  font-size: 1.15rem;
+}
+
+@container (max-width: 43.999rem) {
+  .floating-reaction {
+    --reaction-start: 1.15rem;
+  }
+}
+
+@container (min-width: 44rem) {
+  .reaction-control .reaction-tray {
+    top: 50%;
+    right: calc(100% + 0.3rem);
+    bottom: auto;
+    gap: 0.1rem;
+    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(8, 13, 18, 0.72);
+    padding: 0.15rem 0.25rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    animation-name: reaction-tray-in-left;
+    transform-origin: right center;
+  }
+
+  .reaction-control .reaction-tray::before,
+  .reaction-control .reaction-tray::after {
+    display: none;
+  }
+
+  .reaction-control .reaction-choice {
+    width: 1.9rem;
+    height: 1.9rem;
+    font-size: 1.15rem;
+  }
+}
+
+@keyframes reaction-pop {
+  0% { transform: scale(0.5) rotate(-10deg); }
+  65% { transform: scale(1.24) rotate(5deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes reaction-identity {
+  0% { opacity: 0; transform: translate(-50%, 0.25rem) scale(0.88); }
+  8%, 36% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  52%, 100% { opacity: 0; transform: translate(-50%, -0.15rem) scale(0.96); }
+}
+
+@keyframes reaction-float {
+  0% { bottom: var(--reaction-start); opacity: 0; transform: translate3d(0, 0.5rem, 0) scale(0.68) rotate(0); }
+  12% { bottom: 12%; opacity: 1; }
+  38% { bottom: 38%; transform: translate3d(calc(var(--reaction-drift) * -0.35), 0, 0) scale(1.06) rotate(calc(var(--reaction-rotation) * -0.4)); }
+  72% { bottom: 72%; opacity: 0.94; transform: translate3d(var(--reaction-drift), 0, 0) scale(0.94) rotate(var(--reaction-rotation)); }
+  100% { bottom: calc(100% + 3.5rem); opacity: 0; transform: translate3d(calc(var(--reaction-drift) * 0.65), 0, 0) scale(0.72) rotate(calc(var(--reaction-rotation) * 1.4)); }
+}
+
+@keyframes reaction-spark {
+  0%, 12% { opacity: 0; transform: scale(0.2); }
+  24% { opacity: 1; transform: translate(-0.3rem, -0.2rem) scale(1); }
+  62%, 100% { opacity: 0; transform: translate(-0.65rem, -1.2rem) scale(0.15); }
+}
+
+@keyframes reaction-reduced {
+  0%, 85% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: none; }
+}
+
+@keyframes reaction-identity-reduced {
+  0%, 45% { opacity: 1; transform: translateX(-50%); }
+  55%, 100% { opacity: 0; transform: translateX(-50%); }
 }
 
 .video-frame:fullscreen {
@@ -424,12 +715,21 @@ input:focus-visible + .admin-toggle {
 
   .player-header-action,
   .player-controls,
+  .reaction-trigger,
+  .reaction-choice,
   .sidebar-tab,
   .sidebar-tab-active,
   .sidebar-filter,
   .channel-row {
     transition: none;
   }
+
+  .reaction-tray,
+  .reaction-emoji { animation: none; }
+  .floating-reaction { animation: reaction-reduced var(--reaction-duration) linear both; }
+  .floating-reaction::before,
+  .floating-reaction::after { display: none; }
+  .reaction-identity { animation: reaction-identity-reduced var(--reaction-duration) linear both; }
 }
 
 
