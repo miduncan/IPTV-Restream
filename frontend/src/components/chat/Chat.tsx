@@ -8,6 +8,19 @@ import UsernameModal from './UsernameModal';
 
 const USERNAME_STORAGE_KEY = 'streamhub.chat.username';
 
+function isSameDisplayedMinute(current: ChatMessage, previous?: ChatMessage) {
+  if (!previous || current.kind !== 'chat' || previous.kind !== 'chat') return false;
+  if (current.user.name !== previous.user.name) return false;
+
+  const currentTime = new Date(current.timestamp);
+  const previousTime = new Date(previous.timestamp);
+  return currentTime.getFullYear() === previousTime.getFullYear()
+    && currentTime.getMonth() === previousTime.getMonth()
+    && currentTime.getDate() === previousTime.getDate()
+    && currentTime.getHours() === previousTime.getHours()
+    && currentTime.getMinutes() === previousTime.getMinutes();
+}
+
 function readStoredUsername() {
   try {
     const value = window.localStorage.getItem(USERNAME_STORAGE_KEY)?.trim();
@@ -125,7 +138,7 @@ function Chat({ isActive }: { isActive: boolean }) {
 
       <div
         ref={messageListRef}
-        className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4 scroll-container vertical-scroll-container"
+        className="min-h-0 flex-1 overflow-y-auto p-4 scroll-container vertical-scroll-container"
         onScroll={(event) => {
           const messageList = event.currentTarget;
           const distanceFromBottom = messageList.scrollHeight - messageList.scrollTop - messageList.clientHeight;
@@ -141,9 +154,16 @@ function Chat({ isActive }: { isActive: boolean }) {
             <p className="mt-1 text-xs leading-5 text-[#718396]">Start the conversation while you watch.</p>
           </div>
         )}
-        {messages.map((msg) => msg.kind === 'system' || msg.user.name === 'System'
+        {messages.map((msg, index) => msg.kind === 'system' || msg.user.name === 'System'
           ? <SystemMessage key={msg.id} msg={msg} />
-          : <ChatMessageItem key={msg.id} msg={msg} isCurrentUser={msg.user.name === username} />)}
+          : (
+            <ChatMessageItem
+              key={msg.id}
+              msg={msg}
+              isCurrentUser={msg.user.name === username}
+              isGrouped={isSameDisplayedMinute(msg, messages[index - 1])}
+            />
+          ))}
       </div>
 
       <form onSubmit={handleSendMessage} className="border-t border-[#233242] p-4">

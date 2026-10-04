@@ -5,7 +5,7 @@ export default memo(function SystemMessage({ msg }: {
   msg: ChatMessage;
 }) {
   return (
-    <article className="min-w-0" aria-label="System message">
+    <article className="mt-4 min-w-0 first:mt-0" aria-label="System message">
       <div className="flex items-baseline gap-2">
         <span className="text-sm font-semibold text-[#8BC3FF]">System</span>
         <time className="text-[0.6875rem] text-[#617386]" dateTime={msg.timestamp}>
