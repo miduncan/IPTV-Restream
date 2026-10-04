@@ -34,6 +34,12 @@ function Chat({ isActive }: { isActive: boolean }) {
   const messageListRef = useRef<HTMLDivElement>(null);
   const shouldFollowMessagesRef = useRef(true);
 
+  const scrollToLatest = useCallback(() => {
+    const messageList = messageListRef.current;
+    if (!isActive || !messageList || !shouldFollowMessagesRef.current) return;
+    messageList.scrollTop = messageList.scrollHeight;
+  }, [isActive]);
+
   useEffect(() => {
     const usernameChangedListener = (event: Event) => {
       setUsername((event as CustomEvent<string>).detail);
@@ -78,10 +84,17 @@ function Chat({ isActive }: { isActive: boolean }) {
   }, []);
 
   useLayoutEffect(() => {
+    scrollToLatest();
+  }, [messages, scrollToLatest]);
+
+  useLayoutEffect(() => {
     const messageList = messageListRef.current;
-    if (!isActive || !messageList || !shouldFollowMessagesRef.current) return;
-    messageList.scrollTop = messageList.scrollHeight;
-  }, [isActive, messages]);
+    if (!messageList) return;
+
+    const resizeObserver = new ResizeObserver(scrollToLatest);
+    resizeObserver.observe(messageList);
+    return () => resizeObserver.disconnect();
+  }, [scrollToLatest]);
 
   const openUsernameModal = useCallback((editing = false) => {
     setIsEditingUsername(editing);
