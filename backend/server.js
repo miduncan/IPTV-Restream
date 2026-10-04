@@ -5,7 +5,6 @@ const { Server } = require('socket.io');
 const ChatSocketHandler = require('./socket/ChatSocketHandler');
 const ReactionSocketHandler = require('./socket/ReactionSocketHandler');
 const ChannelSocketHandler = require('./socket/ChannelSocketHandler');
-const ClockSocketHandler = require('./socket/ClockSocketHandler');
 const PlaylistSocketHandler = require('./socket/PlaylistSocketHandler');
 const socketRoleMiddleware = require('./socket/middleware/roles');
 const ViewerPresence = require('./socket/ViewerPresence');
@@ -172,7 +171,6 @@ io.on('connection', socket => {
   })
 
   ChannelSocketHandler(io, socket);
-  ClockSocketHandler(socket);
   PlaylistSocketHandler(io, socket);
   ChatSocketHandler(io, socket);
   ReactionSocketHandler(io, socket);

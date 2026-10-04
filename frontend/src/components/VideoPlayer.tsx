@@ -73,7 +73,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
   const reactionIdRef = useRef(0);
   const reactionTimersRef = useRef<number[]>([]);
   const pendingReactionRef = useRef<string | null>(null);
-  const { addToast, removeToast, clearToasts, editToast } = useContext(ToastContext);
+  const { addToast, removeToast, clearToasts } = useContext(ToastContext);
 
   const displayReaction = useCallback((emoji: string, userName: string) => {
     const id = reactionIdRef.current += 1;
@@ -201,18 +201,27 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
         hlsRef.current.destroy();
       }
 
+      const targetDelay = channel.mode === 'restream'
+        ? envNumber(import.meta.env.VITE_STREAM_DELAY, 18)
+        : envNumber(import.meta.env.VITE_STREAM_PROXY_DELAY, 30);
+      const tolerance = envNumber(import.meta.env.VITE_SYNCHRONIZATION_TOLERANCE, 1.25);
+      const maxDeviation = envNumber(import.meta.env.VITE_SYNCHRONIZATION_MAX_DEVIATION, 5);
+      const adjustmentFactor = envNumber(import.meta.env.VITE_SYNCHRONIZATION_ADJUSTMENT, 0.02);
+      const maxAdjustment = envNumber(import.meta.env.VITE_SYNCHRONIZATION_MAX_ADJUSTMENT, 0.04);
+
       const hls = new Hls({
-        autoStartLoad: syncEnabled ? false : true,
+        autoStartLoad: true,
         liveDurationInfinity: true,
         // AirPlay cannot send a MediaSource blob URL to a TV. On supported
         // Apple devices, ManagedMediaSource makes hls.js attach its local
         // source as a <source> element so the native HLS alternative above is
         // selected for full video AirPlay.
         preferManagedMediaSource: canUseAirPlay && canUseManagedMediaSource,
-        // Prefer three target-duration segments behind the live edge. The
-        // backend publishes restream switches after at least two exist.
-        liveSyncDurationCount: 3,
-        liveMaxLatencyDurationCount: 6,
+        // Synchronize against the media timeline rather than wall-clock time.
+        // hls.js estimates the advancing edge between playlist refreshes.
+        ...(syncEnabled
+          ? { liveSyncDuration: targetDelay }
+          : { liveSyncDurationCount: 3, liveMaxLatencyDurationCount: 6 }),
         //debug: true,
         manifestLoadPolicy: {
           default: {
@@ -261,130 +270,80 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
         duration: 0,
       });
 
-      const tolerance = envNumber(import.meta.env.VITE_SYNCHRONIZATION_TOLERANCE, 1.25);
-      const maxDeviation = envNumber(import.meta.env.VITE_SYNCHRONIZATION_MAX_DEVIATION, 5);
+      let playbackStarted = false;
+      const startPlaybackWhenReady = () => {
+        if (playbackStarted) return;
+        const details = hls.latestLevelDetails;
+        if (!details) return;
 
-      let toastDurationSet = false;
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        if (channel.mode === 'restream') {
-          const now = socketService.serverNow();
-      
-          const fragments = hls.levels[0]?.details?.fragments;
-          const lastFragment = fragments?.[fragments.length - 1];
-          if (!lastFragment || !lastFragment.programDateTime) {
-            console.warn("No program date time found in fragment. Cannot synchronize.");
-            return;
-          }
-      
-          const timeDiff = (now - lastFragment.programDateTime) / 1000;
-          const videoLength = fragments.reduce((acc, fragment) => acc + fragment.duration, 0);
-          const targetDelay = envNumber(import.meta.env.VITE_STREAM_DELAY, 18);
-      
-          //Load stream if it is close to the target delay
-          const timeTolerance = tolerance + 1;
-
-          const delay = videoLength + timeDiff + timeTolerance;
-          if (delay >= targetDelay) {
-            hls.startLoad();
-            video.play();
-            console.log("Starting stream");
-            if (!toastDurationSet && toastStartId) {
-              removeToast(toastStartId);
-            }
-          } else {
-            console.log("Waiting for stream to load: ", delay, " < ", targetDelay);
-
-            if(!toastDurationSet && toastStartId) {
-              editToast(toastStartId, {duration: (1 + targetDelay - delay) * 1000});
-              toastDurationSet = true;
-            }
-      
-            // Reload manifest
-            setTimeout(() => {
-              hls.loadSource(import.meta.env.VITE_BACKEND_URL + '/streams/' + channel.id + "/" + channel.id + ".m3u8");
-            }, 1000); 
-          }
-        } else {
-          hls.startLoad();
-          video.play();
-
-          if (toastStartId) {
-            removeToast(toastStartId);
-          }
+        // A newly-created restream playlist grows from only a few segments.
+        // Keep the muted player paused while hls.js refreshes that playlist so
+        // playback can begin at the requested latency without a later jump.
+        if (channel.mode === 'restream' && details.totalduration < targetDelay) {
+          return;
         }
-      });
-      
-      
-      let timeMissingErrorShown = false;
-      hls.on(Hls.Events.FRAG_LOADED, (_event, data) => {
-        const newFrag = data.frag;
 
-        if(!newFrag.programDateTime) {
-          if(!timeMissingErrorShown) {
-            addToast({
-              type: 'error',
-              title: 'Synchronization Error',
-              message: `Playback can't be synchonized for this channel in ${channel.mode}. Change this channel to restream mode and try again.`,
-              duration: 5000,
-            });
-            console.warn("No program date time found in fragment. Cannot synchronize.");
-            timeMissingErrorShown = true;
-          }
-        }
-      });
+        playbackStarted = true;
+        video.play()
+          .then(() => {
+            if (toastStartId) removeToast(toastStartId);
+          })
+          .catch((error) => {
+            playbackStarted = false;
+            console.warn('Synchronized playback could not start:', error);
+          });
+      };
+      hls.on(Hls.Events.LEVEL_UPDATED, startPlaybackWhenReady);
 
-      const targetDelay = channel.mode == 'restream'
-        ? envNumber(import.meta.env.VITE_STREAM_DELAY, 18)
-        : envNumber(import.meta.env.VITE_STREAM_PROXY_DELAY, 30);
-      const adjustmentFactor = envNumber(import.meta.env.VITE_SYNCHRONIZATION_ADJUSTMENT, 0.02);
-      const maxAdjustment = envNumber(import.meta.env.VITE_SYNCHRONIZATION_MAX_ADJUSTMENT, 0.04);
-      const hardCorrectionCooldownMs = 15_000;
+      const hardCorrectionCooldownMs = 30_000;
+      const hardCorrectionSampleCount = 5;
       let smoothedDeviation: number | null = null;
-      let lastHardCorrectionAt = 0;
+      let consecutiveLargeDeviations = 0;
+      let lastHardCorrectionAt = performance.now();
 
       const correctPlayback = () => {
-        const playingDate = hls.playingDate;
-        if (!playingDate || video.paused || video.seeking || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
-          return;
-        }
-
-        const delay = (socketService.serverNow() - playingDate.getTime()) / 1000;
-        const rawDeviation = delay - targetDelay;
-        const now = performance.now();
-        const targetDuration = hls.latestLevelDetails?.targetduration || 6;
-        const minimumLiveLatency = targetDuration * 2;
-
-        // Never consume the live buffer just to reach a wall-clock target that
-        // is closer to the edge than the stream can sustain. This is especially
-        // important just after a channel switch, while the new playlist is
-        // still building its first few segments.
-        if (rawDeviation > tolerance && hls.latency <= minimumLiveLatency) {
-          video.playbackRate = 1;
-          smoothedDeviation = null;
-          return;
-        }
-
+        const details = hls.latestLevelDetails;
         if (
-          Math.abs(rawDeviation) > maxDeviation
-          && now - lastHardCorrectionAt >= hardCorrectionCooldownMs
+          !playbackStarted
+          || !details
+          || video.paused
+          || video.seeking
+          || video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA
         ) {
+          return;
+        }
+
+        // Short upstream playlists may not retain the configured delay. In
+        // that case, use the oldest sustainable point instead of continually
+        // trying to seek outside the available timeline.
+        const maximumAvailableDelay = Math.max(
+          details.targetduration,
+          details.totalduration - details.targetduration,
+        );
+        const effectiveTargetDelay = Math.min(targetDelay, maximumAvailableDelay);
+        const rawDeviation = hls.latency - effectiveTargetDelay;
+        const now = performance.now();
+
+        consecutiveLargeDeviations = Math.abs(rawDeviation) > maxDeviation
+          ? consecutiveLargeDeviations + 1
+          : 0;
+
+        if (consecutiveLargeDeviations >= hardCorrectionSampleCount
+          && now - lastHardCorrectionAt >= hardCorrectionCooldownMs) {
+          const targetTime = hls.liveSyncPosition;
           const seekableIndex = video.seekable.length - 1;
-          const safeLiveEdge = seekableIndex >= 0
-            ? video.seekable.end(seekableIndex) - minimumLiveLatency
-            : Number.NEGATIVE_INFINITY;
-          const targetTime = rawDeviation > 0
-            ? Math.min(video.currentTime + rawDeviation, safeLiveEdge)
-            : video.currentTime + rawDeviation;
           if (
-            seekableIndex >= 0
+            targetTime !== null
+            && seekableIndex >= 0
             && targetTime >= video.seekable.start(seekableIndex)
-            && targetTime <= safeLiveEdge
+            && targetTime <= video.seekable.end(seekableIndex)
           ) {
             video.currentTime = targetTime;
             video.playbackRate = 1;
             smoothedDeviation = null;
+            consecutiveLargeDeviations = 0;
             lastHardCorrectionAt = now;
-            console.log('Significant synchronization deviation detected. Adjusting current time.');
+            console.log('Sustained live-edge deviation detected. Realigning playback.');
             return;
           }
         }
@@ -435,6 +394,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       return () => {
         window.clearInterval(correctionTimer);
         video.playbackRate = 1;
+        if (toastStartId) removeToast(toastStartId);
         cleanup();
       };
     }
@@ -494,7 +454,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       }
     };
 
-  }, [channel?.id, channel?.url, channel?.mode, syncEnabled, useCustomControls, addToast, clearToasts, editToast, removeToast]);
+  }, [channel?.id, channel?.url, channel?.mode, syncEnabled, useCustomControls, addToast, clearToasts, removeToast]);
 
   useEffect(() => {
     const video = videoRef.current as AirPlayVideoElement | null;
@@ -655,10 +615,10 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     <div className="video-player-stack">
       <div ref={frameRef} className="video-frame relative">
         <video
-          ref={videoRef}
-          className="block h-auto max-h-[calc(100vh-7rem)] w-full bg-black object-contain aspect-video"
-          muted
-          autoPlay
+        ref={videoRef}
+        className="block h-auto max-h-[calc(100vh-7rem)] w-full bg-black object-contain aspect-video"
+        muted
+        autoPlay={!syncEnabled}
           playsInline
           controls={!useCustomControls}
           onClick={useCustomControls ? togglePlayback : undefined}
