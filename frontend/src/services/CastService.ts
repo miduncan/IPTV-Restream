@@ -13,6 +13,7 @@ interface CastContextLike {
   removeEventListener(type: string, listener: (event: CastSessionStateEvent) => void): void;
   endCurrentSession(stopCasting: boolean): void;
   getCurrentSession(): CastSessionLike | null;
+  requestSession(): Promise<unknown>;
   setOptions(options: { receiverApplicationId: string; autoJoinPolicy: string }): void;
 }
 
@@ -159,6 +160,12 @@ function endCurrentSession() {
   api.framework.CastContext.getInstance().endCurrentSession(true);
 }
 
+function requestSession() {
+  const api = castApi();
+  if (!api || !initialized) return Promise.reject(new Error('Google Cast is not initialized.'));
+  return api.framework.CastContext.getInstance().requestSession();
+}
+
 function hasCurrentSession() {
   const api = castApi();
   return Boolean(api && initialized && api.framework.CastContext.getInstance().getCurrentSession());
@@ -173,6 +180,7 @@ const castService = {
   hasCurrentSession,
   initialize,
   loadMedia,
+  requestSession,
   sessionStates,
   subscribeToSessionState,
 };

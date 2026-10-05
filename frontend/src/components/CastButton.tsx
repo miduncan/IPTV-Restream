@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import { Cast } from 'lucide-react';
 import type { Channel } from '../types';
 import castService from '../services/CastService';
 import { createReceiverPlaybackSession } from '../services/ReceiverPlaybackService';
@@ -11,13 +11,9 @@ interface CastButtonProps {
   onRemotePlaybackStarted: () => void;
 }
 
-const launcherStyle = {
-  '--connected-color': '#4EA1FF',
-  '--disconnected-color': 'currentColor',
-} as CSSProperties;
-
 function CastButton({ channel, onRemotePlaybackEnded, onRemotePlaybackStarted }: CastButtonProps) {
   const [sdkReady, setSdkReady] = useState(false);
+  const [connected, setConnected] = useState(false);
   const channelRef = useRef(channel);
   const activeChannelIdRef = useRef<number | null>(null);
   const loadGenerationRef = useRef(0);
@@ -35,6 +31,7 @@ function CastButton({ channel, onRemotePlaybackEnded, onRemotePlaybackStarted }:
       setSdkReady(true);
 
       unsubscribe = castService.subscribeToSessionState(event => {
+        setConnected(castService.hasCurrentSession());
         const states = castService.sessionStates();
         if (!states) return;
 
@@ -109,6 +106,7 @@ function CastButton({ channel, onRemotePlaybackEnded, onRemotePlaybackStarted }:
       });
 
       const selectedChannel = channelRef.current;
+      setConnected(castService.hasCurrentSession());
       if (castService.hasCurrentSession() && selectedChannel && !remotePlaybackStartedRef.current) {
         activeChannelIdRef.current = selectedChannel.id;
         remotePlaybackStartedRef.current = true;
@@ -139,12 +137,28 @@ function CastButton({ channel, onRemotePlaybackEnded, onRemotePlaybackStarted }:
   if (!sdkReady || !channel) return null;
 
   return (
-    <google-cast-launcher
+    <button
+      type="button"
       aria-label="Cast"
-      class="cast-launcher"
-      style={launcherStyle}
+      className="cast-launcher"
+      style={connected ? { color: '#4EA1FF' } : undefined}
       title="Cast"
-    />
+      onClick={() => {
+        void castService.requestSession().catch(error => {
+          // Closing the picker without selecting a device is expected.
+          if (error === 'cancel' || (typeof error === 'object' && error?.code === 'cancel')) return;
+          console.error('Could not open Google Cast:', error);
+          addToast({
+            type: 'error',
+            title: 'Could not open casting',
+            message: 'Please try opening the Cast device picker again.',
+            duration: 5000,
+          });
+        });
+      }}
+    >
+      <Cast size={20} aria-hidden="true" />
+    </button>
   );
 }
 
