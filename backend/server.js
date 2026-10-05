@@ -9,6 +9,7 @@ const PlaylistSocketHandler = require('./socket/PlaylistSocketHandler');
 const socketRoleMiddleware = require('./socket/middleware/roles');
 const ViewerPresence = require('./socket/ViewerPresence');
 const authService = require('./services/auth/AuthService');
+const corsMiddleware = require('./middleware/cors');
 
 const proxyController = require('./controllers/ProxyController');
 const centralChannelController = require('./controllers/CentralChannelController');
@@ -38,21 +39,7 @@ function isAllowedSocketOrigin(req) {
   }
 }
 
-// CORS middleware
-app.use((req, res, next) => {
-  const allowedOrigin = process.env.CORS_ORIGIN;
-  if (allowedOrigin && req.headers.origin === allowedOrigin) {
-    res.header('Access-Control-Allow-Origin', allowedOrigin);
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Vary', 'Origin');
-  }
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
+app.use(corsMiddleware);
 
 app.use(authController.attachUser);
 

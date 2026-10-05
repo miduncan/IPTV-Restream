@@ -2,7 +2,7 @@
 
 ## Status
 
-Deferred. AirPlay support and its receiver-facing HLS gateway are implemented. This document records the remaining Google Cast sender work so it can reuse that gateway rather than create a second streaming architecture.
+Implemented, pending production device validation. The initial Google Cast sender uses the Default Media Receiver and reuses the AirPlay receiver-facing HLS gateway rather than creating a second streaming architecture. The sender stops the current Cast session when the selected channel changes and restores local playback when casting ends.
 
 ## Product decisions
 

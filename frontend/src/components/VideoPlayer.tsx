@@ -3,19 +3,17 @@ import type { CSSProperties } from 'react';
 import { Airplay, Maximize, Minimize, Pause, PictureInPicture2, Play, SmilePlus, Volume2, VolumeX } from 'lucide-react';
 import Hls from 'hls.js';
 import { Channel, ChannelMode, VideoReaction } from '../types';
-import apiService, { ApiError } from '../services/ApiService';
+import { ApiError } from '../services/ApiService';
 import socketService from '../services/SocketService';
 import { readStoredUsername, storeUsername, USERNAME_CHANGED_EVENT } from '../services/UsernameStorage';
+import { createReceiverPlaybackSession } from '../services/ReceiverPlaybackService';
 import { ToastContext } from './notifications/ToastContext';
+import CastButton from './CastButton';
 import UsernameModal from './chat/UsernameModal';
 
 interface VideoPlayerProps {
   channel: Channel | null;
   syncEnabled: boolean;
-}
-
-interface AirPlaySession {
-  playbackUrl: string;
 }
 
 interface FloatingReaction {
@@ -85,7 +83,26 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
   const pendingReactionRef = useRef<string | null>(null);
   const currentFragmentRef = useRef<PlaybackFragment | null>(null);
   const queuedReactionsRef = useRef<QueuedReaction[]>([]);
+  const wasPlayingBeforeCastRef = useRef(false);
   const { addToast, removeToast, clearToasts } = useContext(ToastContext);
+
+  const suspendLocalPlayback = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    wasPlayingBeforeCastRef.current = !video.paused;
+    video.pause();
+    hlsRef.current?.stopLoad();
+  }, []);
+
+  const resumeLocalPlayback = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    hlsRef.current?.startLoad(-1);
+    if (wasPlayingBeforeCastRef.current) {
+      video.play().catch(error => console.warn('Local playback could not resume:', error));
+    }
+    wasPlayingBeforeCastRef.current = false;
+  }, []);
 
   const displayReaction = useCallback((emoji: string, userName: string) => {
     const id = reactionIdRef.current += 1;
@@ -219,23 +236,6 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     // varies by iOS/WebKit version and can degrade into audio-only routing.
     const preferNativeAirPlay = !useCustomControls && canUseAirPlay && canPlayNativeHls;
 
-    const createAirPlaySession = async () => {
-      const deadline = Date.now() + 90_000;
-      while (true) {
-        try {
-          return await apiService.request<AirPlaySession>('/airplay/sessions', 'POST');
-        } catch (error) {
-          const retryableStatus = error instanceof ApiError && [502, 503, 504].includes(error.status);
-          const retryableNetworkError = error instanceof TypeError;
-          if ((!retryableStatus && !retryableNetworkError) || Date.now() >= deadline) {
-            throw error;
-          }
-          await new Promise(resolve => window.setTimeout(resolve, 1_000));
-          if (cancelled) return null;
-        }
-      }
-    };
-
     const removeAirPlayAlternative = () => {
       video.querySelector('source[data-airplay-source]')?.remove();
     };
@@ -243,7 +243,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     const prepareAirPlayAlternative = async () => {
       if (!canUseAirPlay) return;
       try {
-        const session = await createAirPlaySession();
+        const session = await createReceiverPlaybackSession({ isCancelled: () => cancelled });
         if (cancelled || !session) return;
 
         removeAirPlayAlternative();
@@ -491,7 +491,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
         });
 
         try {
-          const session = await createAirPlaySession();
+          const session = await createReceiverPlaybackSession({ isCancelled: () => cancelled });
           if (cancelled || !session) return;
 
           video.src = session.playbackUrl;
@@ -758,6 +758,11 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
               <Airplay className="h-5 w-5" />
             </button>
           )}
+          <CastButton
+            channel={channel}
+            onRemotePlaybackEnded={resumeLocalPlayback}
+            onRemotePlaybackStarted={suspendLocalPlayback}
+          />
           <button type="button" onClick={enterPictureInPicture} aria-label="Picture in Picture" title="Picture in Picture" className="rounded-md p-2 hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4EA1FF]">
             <PictureInPicture2 className="h-5 w-5" />
           </button>
@@ -769,9 +774,14 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
       </div>
 
       {!useCustomControls && (
-        <div className="reaction-mobile-rail" role="toolbar" aria-label="Video reactions">
+        <div className="reaction-mobile-rail" role="toolbar" aria-label="Video controls">
           <div className="reaction-mobile-rail-controls">
             {reactionsOpen && reactionTray}
+            <CastButton
+              channel={channel}
+              onRemotePlaybackEnded={resumeLocalPlayback}
+              onRemotePlaybackStarted={suspendLocalPlayback}
+            />
             <button
               type="button"
               className={`reaction-trigger ${reactionsOpen ? 'reaction-trigger-active' : ''}`}

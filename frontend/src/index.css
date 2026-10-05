@@ -72,6 +72,24 @@
   position: relative;
 }
 
+.cast-launcher {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+}
+
+.cast-launcher:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.cast-launcher:focus-visible {
+  outline: 2px solid #4ea1ff;
+  outline-offset: 2px;
+}
+
 .reaction-mobile-rail {
   display: flex;
   min-height: 3rem;
