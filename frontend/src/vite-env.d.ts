@@ -5,7 +5,9 @@ import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 declare module 'react' {
   namespace JSX {
     interface IntrinsicElements {
-      'google-cast-launcher': DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>;
+      'google-cast-launcher': DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> & {
+        class?: string;
+      };
     }
   }
 }

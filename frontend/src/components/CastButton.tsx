@@ -141,7 +141,7 @@ function CastButton({ channel, onRemotePlaybackEnded, onRemotePlaybackStarted }:
   return (
     <google-cast-launcher
       aria-label="Cast"
-      className="cast-launcher"
+      class="cast-launcher"
       style={launcherStyle}
       title="Cast"
     />
