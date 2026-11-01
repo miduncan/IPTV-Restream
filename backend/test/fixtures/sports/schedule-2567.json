@@ -1,0 +1,850 @@
+{
+  "events": [
+    {
+      "id": "401754521",
+      "date": "2025-08-31T01:15Z",
+      "name": "East Texas A&M Lions at SMU Mustangs",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754521",
+          "date": "2025-08-31T01:15Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ACC Network"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2837",
+                "displayName": "East Texas A&M Lions",
+                "shortDisplayName": "E Texas A&M",
+                "abbreviation": "ETAM",
+                "location": "East Texas A&M"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754525",
+      "date": "2025-09-06T16:00Z",
+      "name": "Baylor Bears at SMU Mustangs",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754525",
+          "date": "2025-09-06T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 6,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final/2OT",
+              "shortDetail": "Final/2OT",
+              "altDetail": "2OT"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CW"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            },
+            {
+              "type": {
+                "id": "5",
+                "shortName": "Radio"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ERADM"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "239",
+                "displayName": "Baylor Bears",
+                "shortDisplayName": "Baylor",
+                "abbreviation": "BAY",
+                "location": "Baylor"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754615",
+      "date": "2025-09-13T19:30Z",
+      "name": "SMU Mustangs at Missouri State Bears",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754615",
+          "date": "2025-09-13T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBSSN"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2623",
+                "displayName": "Missouri State Bears",
+                "shortDisplayName": "Missouri St",
+                "abbreviation": "MOST",
+                "location": "Missouri State"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754636",
+      "date": "2025-09-20T16:00Z",
+      "name": "SMU Mustangs at TCU Horned Frogs",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754636",
+          "date": "2025-09-20T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN2"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2628",
+                "displayName": "TCU Horned Frogs",
+                "shortDisplayName": "TCU",
+                "abbreviation": "TCU",
+                "location": "TCU"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754555",
+      "date": "2025-10-04T19:30Z",
+      "name": "Syracuse Orange at SMU Mustangs",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754555",
+          "date": "2025-10-04T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ACC Network"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "183",
+                "displayName": "Syracuse Orange",
+                "shortDisplayName": "Syracuse",
+                "abbreviation": "SYR",
+                "location": "Syracuse"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754561",
+      "date": "2025-10-11T16:00Z",
+      "name": "Stanford Cardinal at SMU Mustangs",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754561",
+          "date": "2025-10-11T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CW"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "24",
+                "displayName": "Stanford Cardinal",
+                "shortDisplayName": "Stanford",
+                "abbreviation": "STAN",
+                "location": "Stanford"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754565",
+      "date": "2025-10-18T19:30Z",
+      "name": "SMU Mustangs at Clemson Tigers",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754565",
+          "date": "2025-10-18T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ACC Network"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "228",
+                "displayName": "Clemson Tigers",
+                "shortDisplayName": "Clemson",
+                "abbreviation": "CLEM",
+                "location": "Clemson"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752942",
+      "date": "2025-10-25T16:00Z",
+      "name": "SMU Mustangs at Wake Forest Demon Deacons",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752942",
+          "date": "2025-10-25T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CW"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "154",
+                "displayName": "Wake Forest Demon Deacons",
+                "shortDisplayName": "Wake Forest",
+                "abbreviation": "WAKE",
+                "location": "Wake Forest"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754581",
+      "date": "2025-11-01T16:00Z",
+      "name": "Miami Hurricanes at SMU Mustangs",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754581",
+          "date": "2025-11-01T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 5,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final/OT",
+              "shortDetail": "Final/OT",
+              "altDetail": "OT"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2390",
+                "displayName": "Miami Hurricanes",
+                "shortDisplayName": "Miami",
+                "abbreviation": "MIA",
+                "location": "Miami"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754584",
+      "date": "2025-11-08T17:00Z",
+      "name": "SMU Mustangs at Boston College Eagles",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754584",
+          "date": "2025-11-08T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ACC Network"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "103",
+                "displayName": "Boston College Eagles",
+                "shortDisplayName": "Boston College",
+                "abbreviation": "BC",
+                "location": "Boston College"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754602",
+      "date": "2025-11-22T17:00Z",
+      "name": "Louisville Cardinals at SMU Mustangs",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754602",
+          "date": "2025-11-22T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN2"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "97",
+                "displayName": "Louisville Cardinals",
+                "shortDisplayName": "Louisville",
+                "abbreviation": "LOU",
+                "location": "Louisville"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754609",
+      "date": "2025-11-30T01:00Z",
+      "name": "SMU Mustangs at California Golden Bears",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754609",
+          "date": "2025-11-30T01:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN2"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "25",
+                "displayName": "California Golden Bears",
+                "shortDisplayName": "California",
+                "abbreviation": "CAL",
+                "location": "California"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2567",
+                "displayName": "SMU Mustangs",
+                "shortDisplayName": "SMU",
+                "abbreviation": "SMU",
+                "location": "SMU"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1166 @@
+{
+  "events": [
+    {
+      "id": "401752677",
+      "date": "2025-08-30T16:00Z",
+      "name": "Texas Longhorns at Ohio State Buckeyes",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752677",
+          "date": "2025-08-30T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "194",
+                "displayName": "Ohio State Buckeyes",
+                "shortDisplayName": "Ohio State",
+                "abbreviation": "OSU",
+                "location": "Ohio State",
+                "name": "Buckeyes"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "251",
+                "displayName": "Texas Longhorns",
+                "shortDisplayName": "Texas",
+                "abbreviation": "TEX",
+                "location": "Texas",
+                "name": "Longhorns"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752807",
+      "date": "2025-08-30T19:30Z",
+      "name": "Nevada Wolf Pack at Penn State Nittany Lions",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752807",
+          "date": "2025-08-30T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBS"
+              },
+              "lang": "en",
+              "region": "us"
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Paramount+"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "CBS",
+                "Paramount+"
+              ]
+            }
+          ],
+          "broadcast": "CBS/Paramount+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "213",
+                "displayName": "Penn State Nittany Lions",
+                "shortDisplayName": "Penn State",
+                "abbreviation": "PSU",
+                "location": "Penn State",
+                "name": "Nittany Lions"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2440",
+                "displayName": "Nevada Wolf Pack",
+                "shortDisplayName": "Nevada",
+                "abbreviation": "NEV",
+                "location": "Nevada",
+                "name": "Wolf Pack"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752804",
+      "date": "2025-08-30T20:00Z",
+      "name": "Montana State Bobcats at Oregon Ducks",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752804",
+          "date": "2025-08-30T20:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "BTN"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "BTN"
+              ]
+            }
+          ],
+          "broadcast": "BTN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2483",
+                "displayName": "Oregon Ducks",
+                "shortDisplayName": "Oregon",
+                "abbreviation": "ORE",
+                "location": "Oregon",
+                "name": "Ducks"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "147",
+                "displayName": "Montana State Bobcats",
+                "shortDisplayName": "Montana St",
+                "abbreviation": "MTST",
+                "location": "Montana State",
+                "name": "Bobcats"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752808",
+      "date": "2025-08-30T23:30Z",
+      "name": "New Mexico Lobos at Michigan Wolverines",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752808",
+          "date": "2025-08-30T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "NBC"
+              },
+              "lang": "en",
+              "region": "us"
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Peacock"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "NBC",
+                "Peacock"
+              ]
+            }
+          ],
+          "broadcast": "NBC/Peacock",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "130",
+                "displayName": "Michigan Wolverines",
+                "shortDisplayName": "Michigan",
+                "abbreviation": "MICH",
+                "location": "Michigan",
+                "name": "Wolverines"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "167",
+                "displayName": "New Mexico Lobos",
+                "shortDisplayName": "New Mexico",
+                "abbreviation": "UNM",
+                "location": "New Mexico",
+                "name": "Lobos"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752806",
+      "date": "2025-08-30T18:30Z",
+      "name": "Old Dominion Monarchs at Indiana Hoosiers",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752806",
+          "date": "2025-08-30T18:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "FS1"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "FS1"
+              ]
+            }
+          ],
+          "broadcast": "FS1",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "84",
+                "displayName": "Indiana Hoosiers",
+                "shortDisplayName": "Indiana",
+                "abbreviation": "IU",
+                "location": "Indiana",
+                "name": "Hoosiers"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "295",
+                "displayName": "Old Dominion Monarchs",
+                "shortDisplayName": "Old Dominion",
+                "abbreviation": "ODU",
+                "location": "Old Dominion",
+                "name": "Monarchs"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752797",
+      "date": "2025-08-30T16:00Z",
+      "name": "Florida Atlantic Owls at Maryland Terrapins",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752797",
+          "date": "2025-08-30T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "BTN"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "BTN"
+              ]
+            }
+          ],
+          "broadcast": "BTN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "120",
+                "displayName": "Maryland Terrapins",
+                "shortDisplayName": "Maryland",
+                "abbreviation": "MD",
+                "location": "Maryland",
+                "name": "Terrapins"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2226",
+                "displayName": "Florida Atlantic Owls",
+                "shortDisplayName": "FAU",
+                "abbreviation": "FAU",
+                "location": "Florida Atlantic",
+                "name": "Owls"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752801",
+      "date": "2025-08-30T16:00Z",
+      "name": "Ball State Cardinals at Purdue Boilermakers",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752801",
+          "date": "2025-08-30T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "BTN"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "BTN"
+              ]
+            }
+          ],
+          "broadcast": "BTN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2509",
+                "displayName": "Purdue Boilermakers",
+                "shortDisplayName": "Purdue",
+                "abbreviation": "PUR",
+                "location": "Purdue",
+                "name": "Boilermakers"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2050",
+                "displayName": "Ball State Cardinals",
+                "shortDisplayName": "Ball State",
+                "abbreviation": "BALL",
+                "location": "Ball State",
+                "name": "Cardinals"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752803",
+      "date": "2025-08-30T16:00Z",
+      "name": "Northwestern Wildcats at Tulane Green Wave",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752803",
+          "date": "2025-08-30T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPNU",
+                "logo": "https://a.espncdn.com/guid/8c9e5134-a2bf-39f1-9380-3ec6c75ed106/logos/default.png",
+                "darkLogo": ""
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPNU"
+              ]
+            }
+          ],
+          "broadcast": "ESPNU",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2655",
+                "displayName": "Tulane Green Wave",
+                "shortDisplayName": "Tulane",
+                "abbreviation": "TULN",
+                "location": "Tulane",
+                "name": "Green Wave"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "77",
+                "displayName": "Northwestern Wildcats",
+                "shortDisplayName": "Northwestern",
+                "abbreviation": "NU",
+                "location": "Northwestern",
+                "name": "Wildcats"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752799",
+      "date": "2025-08-30T22:00Z",
+      "name": "UAlbany Great Danes at Iowa Hawkeyes",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752799",
+          "date": "2025-08-30T22:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "FS1"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "FS1"
+              ]
+            }
+          ],
+          "broadcast": "FS1",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2294",
+                "displayName": "Iowa Hawkeyes",
+                "shortDisplayName": "Iowa",
+                "abbreviation": "IOWA",
+                "location": "Iowa",
+                "name": "Hawkeyes"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "399",
+                "displayName": "UAlbany Great Danes",
+                "shortDisplayName": "UAlbany",
+                "abbreviation": "ALB",
+                "location": "UAlbany",
+                "name": "Great Danes"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752798",
+      "date": "2025-08-30T23:30Z",
+      "name": "Missouri State Bears at USC Trojans",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752798",
+          "date": "2025-08-30T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "BTN"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "BTN"
+              ]
+            }
+          ],
+          "broadcast": "BTN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "30",
+                "displayName": "USC Trojans",
+                "shortDisplayName": "USC",
+                "abbreviation": "USC",
+                "location": "USC",
+                "name": "Trojans"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2623",
+                "displayName": "Missouri State Bears",
+                "shortDisplayName": "Missouri St",
+                "abbreviation": "MOST",
+                "location": "Missouri State",
+                "name": "Bears"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752800",
+      "date": "2025-08-31T03:00Z",
+      "name": "Utah Utes at UCLA Bruins",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752800",
+          "date": "2025-08-31T03:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "26",
+                "displayName": "UCLA Bruins",
+                "shortDisplayName": "UCLA",
+                "abbreviation": "UCLA",
+                "location": "UCLA",
+                "name": "Bruins"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "254",
+                "displayName": "Utah Utes",
+                "shortDisplayName": "Utah",
+                "abbreviation": "UTAH",
+                "location": "Utah",
+                "name": "Utes"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752805",
+      "date": "2025-08-31T03:00Z",
+      "name": "Colorado State Rams at Washington Huskies",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752805",
+          "date": "2025-08-31T03:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "BTN"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "BTN"
+              ]
+            }
+          ],
+          "broadcast": "BTN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "264",
+                "displayName": "Washington Huskies",
+                "shortDisplayName": "Washington",
+                "abbreviation": "WASH",
+                "location": "Washington",
+                "name": "Huskies"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "36",
+                "displayName": "Colorado State Rams",
+                "shortDisplayName": "Colorado St",
+                "abbreviation": "CSU",
+                "location": "Colorado State",
+                "name": "Rams"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

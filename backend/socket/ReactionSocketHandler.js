@@ -12,8 +12,9 @@ module.exports = (_io, socket) => {
       if (!ALLOWED_REACTIONS.has(payload.emoji)) {
         throw new Error('Choose one of the available reactions.');
       }
+      // Saved channels have positive IDs; provider channels selected from Games use negative IDs.
       if (payload.channelId !== undefined
-        && (!Number.isSafeInteger(payload.channelId) || payload.channelId <= 0)) {
+        && (!Number.isSafeInteger(payload.channelId) || payload.channelId === 0)) {
         throw new Error('Reaction channel is invalid.');
       }
 

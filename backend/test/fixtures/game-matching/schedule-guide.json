@@ -1,0 +1,19 @@
+{
+  "catalog": [
+    {"streamId":"1","name":"Sports Event 1"},
+    {"streamId":"2","name":"Seattle Seahawks vs Buffalo Bills"},
+    {"streamId":"3","name":"Sports Event 3"},
+    {"streamId":"4","name":"Seattle Seahawks vs Buffalo Bills alternate"},
+    {"streamId":"5","name":"Seattle Seahawks only"},
+    {"streamId":"6","name":"Sports Event 6"}
+  ],
+  "serverInfo": {"timestamp_now":1793217600,"time_now":"2026-10-28 22:00:00"},
+  "guides": {
+    "1":[{"id":"match","title":"U2VhdHRsZSBTZWFoYXdrcyB2cyBCdWZmYWxvIEJpbGxz","description":"","start":"2026-10-28 22:30:00","end":"2026-10-29 02:30:00"}],
+    "2":[],
+    "3":[{"id":"single","title":"Seattle Seahawks coverage","start_timestamp":1793219400,"stop_timestamp":1793233800}],
+    "4":[{"id":"conflict","title":"Kansas City Chiefs vs Denver Broncos","start_timestamp":1793219400,"stop_timestamp":1793233800}],
+    "5":[],
+    "6":[{"id":"old","title":"Seattle Seahawks vs Buffalo Bills","start_timestamp":1793046600,"stop_timestamp":1793061000}]
+  }
+}

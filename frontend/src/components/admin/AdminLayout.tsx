@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { ArrowLeft, ListVideo, Radio, Settings2 } from 'lucide-react';
 import LogoutButton from '../LogoutButton';
 
-export type AdminSection = 'settings' | 'channels';
+export type AdminSection = 'settings' | 'channels' | 'matching';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -36,6 +36,9 @@ function AdminLayout({ children, activeSection, onSectionChange }: AdminLayoutPr
             </button>
             <button type="button" onClick={() => onSectionChange('channels')} aria-current={activeSection === 'channels' ? 'page' : undefined} className={`${activeSection === 'channels' ? 'admin-nav-active' : 'admin-nav'} mt-1 flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm font-medium`}>
               <ListVideo className="h-4 w-4" /> Channels
+            </button>
+            <button type="button" onClick={() => onSectionChange('matching')} aria-current={activeSection === 'matching' ? 'page' : undefined} className={`${activeSection === 'matching' ? 'admin-nav-active' : 'admin-nav'} mt-1 flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm font-medium`}>
+              <Radio className="h-4 w-4" /> Game matching
             </button>
           </nav>
           <div className="mt-8 space-y-3 px-3 text-xs text-[#91A0AF] md:mt-12">

@@ -3,7 +3,7 @@ import { AlertTriangle, X } from 'lucide-react';
 import { Channel } from '../types';
 
 interface ChannelChangeModalProps {
-  channel: Channel | null;
+  channel: Pick<Channel, 'name'> | null;
   onCancel: () => void;
   onConfirm: (dontShowAgain: boolean) => void;
 }

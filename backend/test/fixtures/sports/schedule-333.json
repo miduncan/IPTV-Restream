@@ -1,0 +1,901 @@
+{
+  "events": [
+    {
+      "id": "401752665",
+      "date": "2025-08-30T19:30Z",
+      "name": "Alabama Crimson Tide at Florida State Seminoles",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752665",
+          "date": "2025-08-30T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "52",
+                "displayName": "Florida State Seminoles",
+                "shortDisplayName": "Florida St",
+                "abbreviation": "FSU",
+                "location": "Florida State"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752681",
+      "date": "2025-09-06T23:45Z",
+      "name": "UL Monroe Warhawks at Alabama Crimson Tide",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752681",
+          "date": "2025-09-06T23:45Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "SEC Network"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2433",
+                "displayName": "UL Monroe Warhawks",
+                "shortDisplayName": "UL Monroe",
+                "abbreviation": "ULM",
+                "location": "UL Monroe"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752696",
+      "date": "2025-09-13T16:00Z",
+      "name": "Wisconsin Badgers at Alabama Crimson Tide",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752696",
+          "date": "2025-09-13T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "275",
+                "displayName": "Wisconsin Badgers",
+                "shortDisplayName": "Wisconsin",
+                "abbreviation": "WIS",
+                "location": "Wisconsin"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752718",
+      "date": "2025-09-27T23:30Z",
+      "name": "Alabama Crimson Tide at Georgia Bulldogs",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752718",
+          "date": "2025-09-27T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "61",
+                "displayName": "Georgia Bulldogs",
+                "shortDisplayName": "Georgia",
+                "abbreviation": "UGA",
+                "location": "Georgia"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752726",
+      "date": "2025-10-04T19:30Z",
+      "name": "Vanderbilt Commodores at Alabama Crimson Tide",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752726",
+          "date": "2025-10-04T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "238",
+                "displayName": "Vanderbilt Commodores",
+                "shortDisplayName": "Vanderbilt",
+                "abbreviation": "VAN",
+                "location": "Vanderbilt"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752734",
+      "date": "2025-10-11T16:00Z",
+      "name": "Alabama Crimson Tide at Missouri Tigers",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752734",
+          "date": "2025-10-11T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "142",
+                "displayName": "Missouri Tigers",
+                "shortDisplayName": "Missouri",
+                "abbreviation": "MIZ",
+                "location": "Missouri"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752738",
+      "date": "2025-10-18T23:30Z",
+      "name": "Tennessee Volunteers at Alabama Crimson Tide",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752738",
+          "date": "2025-10-18T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2633",
+                "displayName": "Tennessee Volunteers",
+                "shortDisplayName": "Tennessee",
+                "abbreviation": "TENN",
+                "location": "Tennessee"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752751",
+      "date": "2025-10-25T19:30Z",
+      "name": "Alabama Crimson Tide at South Carolina Gamecocks",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752751",
+          "date": "2025-10-25T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2579",
+                "displayName": "South Carolina Gamecocks",
+                "shortDisplayName": "South Carolina",
+                "abbreviation": "SC",
+                "location": "South Carolina"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752759",
+      "date": "2025-11-09T00:30Z",
+      "name": "LSU Tigers at Alabama Crimson Tide",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752759",
+          "date": "2025-11-09T00:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "99",
+                "displayName": "LSU Tigers",
+                "shortDisplayName": "LSU",
+                "abbreviation": "LSU",
+                "location": "LSU"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752765",
+      "date": "2025-11-15T20:30Z",
+      "name": "Oklahoma Sooners at Alabama Crimson Tide",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752765",
+          "date": "2025-11-15T20:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "201",
+                "displayName": "Oklahoma Sooners",
+                "shortDisplayName": "Oklahoma",
+                "abbreviation": "OU",
+                "location": "Oklahoma"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752773",
+      "date": "2025-11-22T19:00Z",
+      "name": "Eastern Illinois Panthers at Alabama Crimson Tide",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752773",
+          "date": "2025-11-22T19:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "SECN+"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2197",
+                "displayName": "Eastern Illinois Panthers",
+                "shortDisplayName": "E Illinois",
+                "abbreviation": "EIU",
+                "location": "Eastern Illinois"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752784",
+      "date": "2025-11-30T00:30Z",
+      "name": "Alabama Crimson Tide at Auburn Tigers",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752784",
+          "date": "2025-11-30T00:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2",
+                "displayName": "Auburn Tigers",
+                "shortDisplayName": "Auburn",
+                "abbreviation": "AUB",
+                "location": "Auburn"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401777351",
+      "date": "2025-12-06T21:00Z",
+      "name": "Georgia Bulldogs at Alabama Crimson Tide",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401777351",
+          "date": "2025-12-06T21:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "333",
+                "displayName": "Alabama Crimson Tide",
+                "shortDisplayName": "Alabama",
+                "abbreviation": "ALA",
+                "location": "Alabama"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "61",
+                "displayName": "Georgia Bulldogs",
+                "shortDisplayName": "Georgia",
+                "abbreviation": "UGA",
+                "location": "Georgia"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

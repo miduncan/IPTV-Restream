@@ -1,0 +1,574 @@
+{
+  "events": [
+    {
+      "id": "401757225",
+      "date": "2025-08-30T23:30Z",
+      "name": "UTEP Miners at Utah State Aggies",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401757225",
+          "date": "2025-08-30T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBSSN"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "CBSSN"
+              ]
+            }
+          ],
+          "broadcast": "CBSSN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "328",
+                "displayName": "Utah State Aggies",
+                "shortDisplayName": "Utah State",
+                "abbreviation": "USU",
+                "location": "Utah State",
+                "name": "Aggies"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2638",
+                "displayName": "UTEP Miners",
+                "shortDisplayName": "UTEP",
+                "abbreviation": "UTEP",
+                "location": "UTEP",
+                "name": "Miners"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401761594",
+      "date": "2025-08-31T00:00Z",
+      "name": "Eastern Michigan Eagles at Texas State Bobcats",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401761594",
+          "date": "2025-08-31T00:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "326",
+                "displayName": "Texas State Bobcats",
+                "shortDisplayName": "Texas St",
+                "abbreviation": "TXST",
+                "location": "Texas State",
+                "name": "Bobcats"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2199",
+                "displayName": "Eastern Michigan Eagles",
+                "shortDisplayName": "E Michigan",
+                "abbreviation": "EMU",
+                "location": "Eastern Michigan",
+                "name": "Eagles"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401760361",
+      "date": "2025-08-31T01:30Z",
+      "name": "Georgia Southern Eagles at Fresno State Bulldogs",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401760361",
+          "date": "2025-08-31T01:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "FS1"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "FS1"
+              ]
+            }
+          ],
+          "broadcast": "FS1",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "278",
+                "displayName": "Fresno State Bulldogs",
+                "shortDisplayName": "Fresno St",
+                "abbreviation": "FRES",
+                "location": "Fresno State",
+                "name": "Bulldogs"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "290",
+                "displayName": "Georgia Southern Eagles",
+                "shortDisplayName": "GA Southern",
+                "abbreviation": "GASO",
+                "location": "Georgia Southern",
+                "name": "Eagles"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752947",
+      "date": "2025-08-31T02:00Z",
+      "name": "Idaho Vandals at Washington State Cougars",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752947",
+          "date": "2025-08-31T02:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CW",
+                "logo": "https://a.espncdn.com/guid/1cea662c-18ca-3bbe-a88d-fb4e42bb8ecb/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/1cea662c-18ca-3bbe-a88d-fb4e42bb8ecb/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "CW"
+              ]
+            }
+          ],
+          "broadcast": "CW",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "265",
+                "displayName": "Washington State Cougars",
+                "shortDisplayName": "Washington St",
+                "abbreviation": "WSU",
+                "location": "Washington State",
+                "name": "Cougars"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "70",
+                "displayName": "Idaho Vandals",
+                "shortDisplayName": "Idaho",
+                "abbreviation": "IDHO",
+                "location": "Idaho",
+                "name": "Vandals"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752936",
+      "date": "2025-08-31T02:30Z",
+      "name": "California Golden Bears at Oregon State Beavers",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752936",
+          "date": "2025-08-31T02:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN",
+                "logo": "https://a.espncdn.com/guid/335fd2d2-97b9-336b-81ee-573eb6bdcffc/logos/default.png",
+                "darkLogo": ""
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN"
+              ]
+            }
+          ],
+          "broadcast": "ESPN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "204",
+                "displayName": "Oregon State Beavers",
+                "shortDisplayName": "Oregon St",
+                "abbreviation": "ORST",
+                "location": "Oregon State",
+                "name": "Beavers"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "25",
+                "displayName": "California Golden Bears",
+                "shortDisplayName": "California",
+                "abbreviation": "CAL",
+                "location": "California",
+                "name": "Golden Bears"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752805",
+      "date": "2025-08-31T03:00Z",
+      "name": "Colorado State Rams at Washington Huskies",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752805",
+          "date": "2025-08-31T03:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "BTN"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "BTN"
+              ]
+            }
+          ],
+          "broadcast": "BTN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "264",
+                "displayName": "Washington Huskies",
+                "shortDisplayName": "Washington",
+                "abbreviation": "WASH",
+                "location": "Washington",
+                "name": "Huskies"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "36",
+                "displayName": "Colorado State Rams",
+                "shortDisplayName": "Colorado St",
+                "abbreviation": "CSU",
+                "location": "Colorado State",
+                "name": "Rams"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

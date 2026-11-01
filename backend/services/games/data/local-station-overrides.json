@@ -1,0 +1,544 @@
+{
+  "marketAliases": {
+    "Atlanta, GA": "Atlanta",
+    "Baltimore, MD": "Baltimore",
+    "Boston, MA": "Boston",
+    "Boston, MA (Manchester)": "Boston",
+    "Buffalo, NY": "Buffalo",
+    "Charlotte, NC": "Charlotte",
+    "Chicago, IL": "Chicago",
+    "Cincinnati, OH": "Cincinnati",
+    "Cleveland / Akron (Canton), OH": "Cleveland",
+    "Cleveland-Akron, OH": "Cleveland",
+    "Cleveland-Akron, OH (Canton)": "Cleveland",
+    "Cleveland-Akron-Canton, OH": "Cleveland",
+    "Dallas / Ft. Worth, TX": "Dallas/FortWorth",
+    "Dallas-Ft. Worth, TX": "Dallas/FortWorth",
+    "Denver, CO": "Denver",
+    "Detroit, MI": "Detroit",
+    "Green Bay / Appleton, WI": "GreenBay/Appleton",
+    "Green Bay, WI": "GreenBay/Appleton",
+    "Green Bay-Appleton, WI": "GreenBay/Appleton",
+    "Houston, TX": "Houston",
+    "Indianapolis, IN": "Indianapolis",
+    "Jacksonville, FL": "Jacksonville",
+    "Kansas City, MO": "KansasCity",
+    "Las Vegas, NV": "LasVegas",
+    "Los Angeles, CA": "LosAngeles",
+    "Los Angeles-Bakersfield, CA": "LosAngeles",
+    "Miami-Fort Lauderdale, FL": "Miami/FortLauderdale",
+    "Miami/Fort Lauderdale, FL": "Miami/FortLauderdale",
+    "Minneapolis, MN": "Minneapolis/StPaul",
+    "Minneapolis-St. Paul, MN": "Minneapolis/StPaul",
+    "Nashville, TN": "Nashville",
+    "New Orleans, LA": "NewOrleans",
+    "New York, NY": "NewYork",
+    "Philadelphia, PA": "Philadelphia",
+    "Phoenix / Flagstaff, AZ": "Phoenix",
+    "Phoenix, AZ": "Phoenix",
+    "Phoenix, AZ (Prescott)": "Phoenix",
+    "Phoenix-Prescott, AZ": "Phoenix",
+    "Pittsburgh, PA": "Pittsburgh",
+    "Sacramento, CA": "Sacramento/Stockton/Modesto",
+    "Sacramento-Stockton-Modesto, CA": "Sacramento/Stockton/Modesto",
+    "San Francisco, CA": "SanFrancisco/Oakland/SanJose",
+    "San Francisco-Oakland-San Jose, CA": "SanFrancisco/Oakland/SanJose",
+    "Seattle, WA": "Seattle/Tacoma",
+    "Seattle-Tacoma, WA": "Seattle/Tacoma",
+    "Spokane, WA": "Spokane",
+    "Tampa, FL": "Tampa/StPetersburg",
+    "Tampa-St. Petersburg, FL (Sarasota)": "Tampa/StPetersburg",
+    "Tampa-St. Petersburg-Sarasota, FL": "Tampa/StPetersburg",
+    "Washington DC / Hagerstown MD (3)": "WashingtonDC",
+    "Washington, D.C.": "WashingtonDC",
+    "Washington, D.C. (Hagerstown, MD)": "WashingtonDC",
+    "Washington, DC": "WashingtonDC"
+  },
+  "cityAliases": {
+    "Spokane": [
+      "Spokane"
+    ],
+    "Phoenix": [
+      "Phoenix"
+    ],
+    "Atlanta": [
+      "Atlanta"
+    ],
+    "Baltimore": [
+      "Baltimore"
+    ],
+    "Buffalo": [
+      "Buffalo"
+    ],
+    "Charlotte": [
+      "Charlotte"
+    ],
+    "Chicago": [
+      "Chicago"
+    ],
+    "Cincinnati": [
+      "Cincinnati"
+    ],
+    "Cleveland": [
+      "Cleveland"
+    ],
+    "Dallas/FortWorth": [
+      "Dallas",
+      "Fort Worth"
+    ],
+    "Denver": [
+      "Denver"
+    ],
+    "Detroit": [
+      "Detroit"
+    ],
+    "GreenBay/Appleton": [
+      "Green Bay",
+      "Appleton"
+    ],
+    "Houston": [
+      "Houston"
+    ],
+    "Indianapolis": [
+      "Indianapolis"
+    ],
+    "Jacksonville": [
+      "Jacksonville"
+    ],
+    "KansasCity": [
+      "Kansas City"
+    ],
+    "LasVegas": [
+      "Las Vegas"
+    ],
+    "LosAngeles": [
+      "Los Angeles"
+    ],
+    "Miami/FortLauderdale": [
+      "Miami",
+      "Fort Lauderdale"
+    ],
+    "Minneapolis/StPaul": [
+      "Minneapolis",
+      "St Paul"
+    ],
+    "Boston": [
+      "Boston"
+    ],
+    "NewOrleans": [
+      "New Orleans"
+    ],
+    "NewYork": [
+      "New York"
+    ],
+    "Philadelphia": [
+      "Philadelphia"
+    ],
+    "Pittsburgh": [
+      "Pittsburgh"
+    ],
+    "SanFrancisco/Oakland/SanJose": [
+      "San Francisco",
+      "Oakland",
+      "San Jose"
+    ],
+    "Seattle/Tacoma": [
+      "Seattle",
+      "Tacoma"
+    ],
+    "Tampa/StPetersburg": [
+      "Tampa",
+      "St Petersburg"
+    ],
+    "Nashville": [
+      "Nashville"
+    ],
+    "WashingtonDC": [
+      "Washington DC"
+    ]
+  },
+  "stations": [
+    {
+      "callsign": "KXLY",
+      "network": "ABC",
+      "market": "Spokane",
+      "number": 4,
+      "numberSourceUrl": "https://www.kxlybrands.com/television-advertising",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "KSAZ",
+      "network": "FOX",
+      "market": "Phoenix",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WAGA",
+      "network": "FOX",
+      "market": "Atlanta",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WBFF",
+      "network": "FOX",
+      "market": "Baltimore",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WUTV",
+      "network": "FOX",
+      "market": "Buffalo",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WJZY",
+      "network": "FOX",
+      "market": "Charlotte",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WFLD",
+      "network": "FOX",
+      "market": "Chicago",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WXIX",
+      "network": "FOX",
+      "market": "Cincinnati",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WJW",
+      "network": "FOX",
+      "market": "Cleveland",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "KDFW",
+      "network": "FOX",
+      "market": "Dallas/FortWorth",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "KDVR",
+      "network": "FOX",
+      "market": "Denver",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WJBK",
+      "network": "FOX",
+      "market": "Detroit",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WLUK",
+      "network": "FOX",
+      "market": "GreenBay/Appleton",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "KRIV",
+      "network": "FOX",
+      "market": "Houston",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WXIN",
+      "network": "FOX",
+      "market": "Indianapolis",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WFOX",
+      "network": "FOX",
+      "market": "Jacksonville",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WDAF",
+      "network": "FOX",
+      "market": "KansasCity",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "KVVU",
+      "network": "FOX",
+      "market": "LasVegas",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "KTTV",
+      "network": "FOX",
+      "market": "LosAngeles",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WSVN",
+      "network": "FOX",
+      "market": "Miami/FortLauderdale",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry",
+        "https://wsvn.com/abc-miami-18/"
+      ],
+      "number": 7,
+      "numberSourceUrl": "https://wsvn.com/abc-miami-18/"
+    },
+    {
+      "callsign": "KMSP",
+      "network": "FOX",
+      "market": "Minneapolis/StPaul",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WFXT",
+      "network": "FOX",
+      "market": "Boston",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WVUE",
+      "network": "FOX",
+      "market": "NewOrleans",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WNYW",
+      "network": "FOX",
+      "market": "NewYork",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WTXF",
+      "network": "FOX",
+      "market": "Philadelphia",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WPGH",
+      "network": "FOX",
+      "market": "Pittsburgh",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "KTVU",
+      "network": "FOX",
+      "market": "SanFrancisco/Oakland/SanJose",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "KCPQ",
+      "network": "FOX",
+      "market": "Seattle/Tacoma",
+      "number": 13,
+      "numberSourceUrl": "https://www.fox13seattle.com/about-us-contact-fox13-and-fox13",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WTVT",
+      "network": "FOX",
+      "market": "Tampa/StPetersburg",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WZTV",
+      "network": "FOX",
+      "market": "Nashville",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "WTTG",
+      "network": "FOX",
+      "market": "WashingtonDC",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry"
+      ]
+    },
+    {
+      "callsign": "KIRO",
+      "network": "CBS",
+      "market": "Seattle/Tacoma",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry",
+        "https://www.cbsnews.com/news/cbs-tv-stations-affiliates/"
+      ]
+    },
+    {
+      "callsign": "KPIX",
+      "network": "CBS",
+      "market": "SanFrancisco/Oakland/SanJose",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry",
+        "https://www.cbsnews.com/news/cbs-tv-stations-affiliates/"
+      ]
+    },
+    {
+      "callsign": "WBZ",
+      "network": "CBS",
+      "market": "Boston",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry",
+        "https://www.cbsnews.com/news/cbs-tv-stations-affiliates/"
+      ]
+    },
+    {
+      "callsign": "WUPA",
+      "network": "CBS",
+      "market": "Atlanta",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry",
+        "https://www.cbsnews.com/news/cbs-tv-stations-affiliates/",
+        "https://www.paramountpressexpress.com/cbs-news-and-stations/shows/stations/releases/?view=111660-cbs-atlanta-senior-leadership-team-announced-as-network-programming-moves-to-wupa-channel-69-on-aug-16"
+      ],
+      "number": 69,
+      "numberSourceUrl": "https://www.paramountpressexpress.com/cbs-news-and-stations/shows/stations/releases/?view=111660-cbs-atlanta-senior-leadership-team-announced-as-network-programming-moves-to-wupa-channel-69-on-aug-16"
+    },
+    {
+      "callsign": "KCBS",
+      "network": "CBS",
+      "market": "LosAngeles",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry",
+        "https://www.cbsnews.com/news/cbs-tv-stations-affiliates/"
+      ]
+    },
+    {
+      "callsign": "WCBS",
+      "network": "CBS",
+      "market": "NewYork",
+      "primary": true,
+      "sourceUrls": [
+        "https://support.fubo.tv/hc/en-us/articles/115005151127-What-Local-Channels-does-Fubo-Carry",
+        "https://www.cbsnews.com/news/cbs-tv-stations-affiliates/"
+      ]
+    },
+    {
+      "callsign": "KOVR",
+      "network": "CBS",
+      "market": "Sacramento/Stockton/Modesto",
+      "sourceUrls": [
+        "https://www.cbsnews.com/sacramento/contact-us/"
+      ],
+      "primary": true,
+      "number": 13,
+      "numberSourceUrl": "https://www.cbsnews.com/sacramento/contact-us/"
+    },
+    {
+      "callsign": "KQCA",
+      "network": "The CW",
+      "market": "Sacramento/Stockton/Modesto",
+      "sourceUrls": [
+        "https://001media.cwtv.com/channel-finder/search/?zipcode=95814"
+      ],
+      "primary": true,
+      "number": 58,
+      "numberSourceUrl": "https://001media.cwtv.com/channel-finder/search/?zipcode=95814"
+    },
+    {
+      "callsign": "KCRA",
+      "network": "NBC",
+      "market": "Sacramento/Stockton/Modesto",
+      "number": 3,
+      "numberSourceUrl": "https://www.astound.com/business/wp-content/uploads/2026/02/Astound-TV-Biz-Chnl-LineUp-West-Coast-South-WestSac-1.21.26.pdf",
+      "primary": true,
+      "sourceUrls": [
+        "https://www.astound.com/business/wp-content/uploads/2026/02/Astound-TV-Biz-Chnl-LineUp-West-Coast-South-WestSac-1.21.26.pdf"
+      ]
+    }
+  ]
+}

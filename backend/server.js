@@ -23,6 +23,8 @@ const streamController = require('./services/restream/StreamController');
 const RestreamIdleManager = require('./services/restream/RestreamIdleManager');
 const ChannelService = require('./services/ChannelService');
 const PlaylistUpdater = require('./services/PlaylistUpdater');
+const gamesService = require('./services/games');
+const gamesController = require('./controllers/GamesController').createGamesController(gamesService);
 
 dotenv.config();
 
@@ -65,7 +67,16 @@ adminRouter.post('/channels', adminChannelController.add);
 adminRouter.put('/channels/:channelId', adminChannelController.update);
 adminRouter.delete('/channels/:channelId', adminChannelController.remove);
 adminRouter.delete('/epg-cache', epgController.clear);
+adminRouter.get('/games/matching', gamesController.history);
+adminRouter.get('/games/matching/categories', gamesController.categories);
+adminRouter.put('/games/matching/categories', gamesController.updateCategories);
+adminRouter.post('/games/matching', gamesController.runMatching);
+adminRouter.post('/games/matching/cancel', gamesController.cancelMatching);
+adminRouter.get('/games/settings', gamesController.getSettings);
+adminRouter.put('/games/settings', gamesController.updateSettings);
 app.use('/api/admin', adminRouter);
+app.get('/api/games', gamesController.list);
+app.get('/api/games/:gameId/candidates', gamesController.getCandidates);
 
 // Channel routes
 const apiRouter = express.Router();
@@ -117,6 +128,7 @@ const server = app.listen(PORT, () => {
   console.log(`Server listening on Port ${PORT}`);
   PlaylistUpdater.startScheduler();
   PlaylistUpdater.registerChannelsPlaylist(ChannelService.getChannels());
+  gamesService.start();
 });
 
 

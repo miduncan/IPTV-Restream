@@ -1,43 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Channel, ChannelEpg } from "../types";
-import socketService from "../services/SocketService";
-import ChannelChangeModal from "./ChannelChangeModal";
 
 interface ChannelListProps {
   channels: Channel[];
   selectedChannel: Channel | null;
   epgByChannel: Record<number, ChannelEpg>;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  onChannelSelectCheckPermission: () => boolean;
-}
-
-const SKIP_CHANNEL_CHANGE_CONFIRMATION_KEY = "streamhub:skip-channel-change-confirmation";
-
-function shouldSkipChannelChangeConfirmation() {
-  try {
-    return window.localStorage.getItem(SKIP_CHANNEL_CHANGE_CONFIRMATION_KEY) === "true";
-  } catch {
-    return false;
-  }
-}
-
-function saveChannelChangeConfirmationPreference() {
-  try {
-    window.localStorage.setItem(SKIP_CHANNEL_CHANGE_CONFIRMATION_KEY, "true");
-  } catch {
-    // Switching channels should still work when browser storage is unavailable.
-  }
+  onSelectChannel: (channel: Channel) => void;
 }
 
 function ChannelList({
   channels,
   selectedChannel,
   epgByChannel,
-  setSearchQuery,
-  onChannelSelectCheckPermission,
+  onSelectChannel,
 }: ChannelListProps) {
   const [now, setNow] = useState(() => Date.now());
-  const [pendingChannel, setPendingChannel] = useState<Channel | null>(null);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(Date.now()), 30_000);
@@ -48,36 +25,6 @@ function ChannelList({
     hour: "numeric",
     minute: "2-digit",
   }).format(new Date(value));
-
-  const changeChannel = useCallback((channel: Channel) => {
-    void socketService.setCurrentChannel(channel.id).catch(() => {
-      // SocketService reports a user-facing error through the shared app-error event.
-    });
-    setSearchQuery("");
-  }, [setSearchQuery]);
-
-  const onSelectChannel = (channel: Channel) => {
-    if (channel.id === selectedChannel?.id) return;
-    if (!onChannelSelectCheckPermission()) return;
-
-    if (shouldSkipChannelChangeConfirmation()) {
-      changeChannel(channel);
-      return;
-    }
-
-    setPendingChannel(channel);
-  };
-
-  const cancelChannelChange = useCallback(() => {
-    setPendingChannel(null);
-  }, []);
-
-  const confirmChannelChange = useCallback((dontShowAgain: boolean) => {
-    if (!pendingChannel) return;
-    if (dontShowAgain) saveChannelChangeConfirmationPreference();
-    changeChannel(pendingChannel);
-    setPendingChannel(null);
-  }, [changeChannel, pendingChannel]);
 
   return (
     <div className="space-y-1">
@@ -141,11 +88,7 @@ function ChannelList({
           {isSelected && <span className="status-light mt-1.5 shrink-0 bg-[#44D492] text-[#44D492]" aria-label="Currently playing" />}
         </button>;
       })}
-      <ChannelChangeModal
-        channel={pendingChannel}
-        onCancel={cancelChannelChange}
-        onConfirm={confirmChannelChange}
-      />
+
     </div>
   );
 }

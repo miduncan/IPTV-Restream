@@ -10,3 +10,19 @@
 - Use `make dev` for the normal development stack. Its bind-mounted frontend and backend source directories provide live reload, so code-only changes do not require a rebuild or container recreation.
 - Use `make dev-build` only when dependencies, Dockerfiles, or other image inputs changed, and obtain explicit approval first because it can rebuild or recreate development services.
 - Before any command that could interrupt or change the running development environment, explain the expected impact and obtain explicit approval, even if the code change itself was already requested.
+
+## Agent skills
+
+### Issue tracker
+
+Use GitHub Issues in miduncan/IPTV-Restream. Read
+docs/agents/issue-tracker.md before tracker operations.
+
+### Triage labels
+
+Read docs/agents/triage-labels.md before applying triage roles.
+
+### Domain docs
+
+Single-context layout. Read docs/agents/domain.md before
+exploring domain concepts or architectural decisions.

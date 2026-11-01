@@ -46,7 +46,9 @@ async function fetchJson(url) {
     if (error.name === "AbortError") {
       throw new Error("Xtream API request timed out");
     }
-    throw error;
+    // Fetch failures can embed the credential-bearing player API URL.
+    if (/^Xtream API returned HTTP \d+$/.test(error.message)) throw error;
+    throw new Error('Could not load the Xtream API response');
   } finally {
     clearTimeout(timeout);
   }
@@ -63,11 +65,27 @@ class XtreamService {
     return credentials;
   }
 
-  async fetchCatalog() {
+  getGuideCacheKey() {
+    const crypto = require("node:crypto");
+    return crypto.createHash("sha256").update(JSON.stringify(this.getCredentials())).digest("hex");
+  }
+
+  async fetchXmlTv(context) {
     const { url, username, password } = this.getCredentials();
+    const endpoint = new URL(`${url.replace(/\/+$/, "")}/xmltv.php`);
+    endpoint.searchParams.set("username", username); endpoint.searchParams.set("password", password);
+    const response = await context.fetch(endpoint);
+    if (!response.ok || !response.body) { await response.body?.cancel(); throw new Error("Bulk XMLTV is unavailable"); }
+    return response.body;
+  }
+
+  async fetchCatalog(context) {
+    const { url, username, password } = this.getCredentials();
+    const loadJson = context ? endpoint => context.fetchJson(endpoint) : fetchJson;
     const [streams, categories] = await Promise.all([
-      fetchJson(getPlayerApiUrl(url, username, password, "get_live_streams")),
-      fetchJson(getPlayerApiUrl(url, username, password, "get_live_categories")).catch((error) => {
+      loadJson(getPlayerApiUrl(url, username, password, "get_live_streams")),
+      loadJson(getPlayerApiUrl(url, username, password, "get_live_categories")).catch((error) => {
+        if (context?.signal.aborted || /budget|redirect limit/.test(error.message)) throw error;
         console.warn("Could not load Xtream categories:", error.message);
         return [];
       }),
@@ -88,8 +106,10 @@ class XtreamService {
       try {
         const streamId = normalizeStreamId(stream.stream_id);
         const categoryId = String(stream.category_id ?? "");
+        const epgId = (typeof stream.epg_channel_id === "string" || Number.isSafeInteger(stream.epg_channel_id)) ? String(stream.epg_channel_id).trim() : null;
         return [{
           streamId,
+          epgChannelId: epgId && epgId.length <= 1024 ? epgId : null,
           name: String(stream.name || `Stream ${streamId}`),
           avatar: String(stream.stream_icon || ""),
           categoryId,
@@ -125,6 +145,19 @@ class XtreamService {
     return response?.server_info && typeof response.server_info === "object"
       ? response.server_info
       : null;
+  }
+
+  async fetchScheduleEpg(streamId) {
+    const normalizedId = normalizeStreamId(streamId);
+    const { url, username, password } = this.getCredentials();
+    const response = await fetchJson(addQueryParameters(
+      getPlayerApiUrl(url, username, password, "get_simple_data_table"),
+      { stream_id: normalizedId }
+    ));
+    if (!Array.isArray(response?.epg_listings)) {
+      throw new Error("Schedule EPG is unavailable from this provider");
+    }
+    return response.epg_listings;
   }
 
   async findStream(streamId) {

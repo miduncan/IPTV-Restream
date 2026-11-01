@@ -54,7 +54,7 @@ test("catalog combines live streams with live categories", async (t) => {
     const body = action === "get_live_categories"
       ? [{ category_id: "7", category_name: "News" }]
       : [
-          { stream_id: 42, name: "World News", stream_icon: "https://img.example/news.png", category_id: "7" },
+          { stream_id: 42, epg_channel_id: "world.news", name: "World News", stream_icon: "https://img.example/news.png", category_id: "7" },
           { stream_id: "invalid", name: "Broken entry", category_id: "7" },
         ];
     return { ok: true, json: async () => body };
@@ -62,6 +62,7 @@ test("catalog combines live streams with live categories", async (t) => {
 
   assert.deepEqual(await xtreamService.fetchCatalog(), [{
     streamId: "42",
+    epgChannelId: "world.news",
     name: "World News",
     avatar: "https://img.example/news.png",
     categoryId: "7",
@@ -116,4 +117,16 @@ test("server info requests use the player API without an action", async (t) => {
 
 test.after(() => {
   fs.rmSync(testDirectory, { recursive: true, force: true });
+});
+
+test('schedule EPG requests use the full schedule action without the short-guide listing limit', async t => {
+  const originalFetch = global.fetch;
+  t.after(() => { global.fetch = originalFetch; });
+  let requestedUrl;
+  const listings = Array.from({ length: 25 }, (_, index) => ({ id: String(index), title: `Programme ${index}` }));
+  global.fetch = async url => { requestedUrl = new URL(url); return { ok: true, json: async () => ({ epg_listings: listings }) }; };
+  assert.deepEqual(await xtreamService.fetchScheduleEpg('42'), listings);
+  assert.equal(requestedUrl.searchParams.get('action'), 'get_simple_data_table');
+  assert.equal(requestedUrl.searchParams.get('stream_id'), '42');
+  assert.equal(requestedUrl.searchParams.has('limit'), false);
 });

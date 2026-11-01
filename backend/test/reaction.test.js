@@ -83,3 +83,29 @@ test('reactions reject invalid usernames and unsupported emoji', () => {
   assert.match(invalidEmojiResponse.error, /available reactions/);
   assert.equal(invalidEmoji.broadcasts.length, 0);
 });
+
+test('reactions on Games provider channels preserve the negative channel identity and playback position', () => {
+  const { listener, broadcasts } = setup();
+  let acknowledgement;
+  listener({
+    userName: 'Maya', emoji: '🏈', channelId: -41,
+    playback: { segmentSequence: 8401, segmentOffset: 1.25 },
+  }, response => { acknowledgement = response; });
+
+  assert.equal(acknowledgement.ok, true);
+  assert.equal(broadcasts.length, 1);
+  assert.equal(broadcasts[0].payload.channelId, -41);
+  assert.equal(broadcasts[0].payload.id, acknowledgement.reactionId);
+  assert.deepEqual(broadcasts[0].payload.playback, { segmentSequence: 8401, segmentOffset: 1.25 });
+});
+
+test('reactions reject zero, fractional, unsafe and nonnumeric channel identities', () => {
+  for (const channelId of [0, 1.5, -1.5, Number.MAX_SAFE_INTEGER + 1, Number.MIN_SAFE_INTEGER - 1, '41', '-41', null, Number.NaN, Infinity]) {
+    const { listener, broadcasts } = setup();
+    let acknowledgement;
+    listener({ userName: 'Maya', emoji: '🏈', channelId }, response => { acknowledgement = response; });
+    assert.equal(acknowledgement.ok, false);
+    assert.equal(acknowledgement.error, 'Reaction channel is invalid.');
+    assert.equal(broadcasts.length, 0);
+  }
+});

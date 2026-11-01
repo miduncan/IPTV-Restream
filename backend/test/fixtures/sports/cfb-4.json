@@ -1,0 +1,782 @@
+{
+  "events": [
+    {
+      "id": "401756850",
+      "date": "2025-08-31T02:00Z",
+      "name": "Northern Arizona Lumberjacks at Arizona State Sun Devils",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401756850",
+          "date": "2025-08-31T02:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "9",
+                "displayName": "Arizona State Sun Devils",
+                "shortDisplayName": "Arizona St",
+                "abbreviation": "ASU",
+                "location": "Arizona State",
+                "name": "Sun Devils"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2464",
+                "displayName": "Northern Arizona Lumberjacks",
+                "shortDisplayName": "N Arizona",
+                "abbreviation": "NAU",
+                "location": "Northern Arizona",
+                "name": "Lumberjacks"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401756855",
+      "date": "2025-08-30T23:00Z",
+      "name": "North Dakota Fighting Hawks at Kansas State Wildcats",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401756855",
+          "date": "2025-08-30T23:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2306",
+                "displayName": "Kansas State Wildcats",
+                "shortDisplayName": "Kansas St",
+                "abbreviation": "KSU",
+                "location": "Kansas State",
+                "name": "Wildcats"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "155",
+                "displayName": "North Dakota Fighting Hawks",
+                "shortDisplayName": "North Dakota",
+                "abbreviation": "UND",
+                "location": "North Dakota",
+                "name": "Fighting Hawks"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401756853",
+      "date": "2025-08-30T19:30Z",
+      "name": "South Dakota Coyotes at Iowa State Cyclones",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401756853",
+          "date": "2025-08-30T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "66",
+                "displayName": "Iowa State Cyclones",
+                "shortDisplayName": "Iowa State",
+                "abbreviation": "ISU",
+                "location": "Iowa State",
+                "name": "Cyclones"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "233",
+                "displayName": "South Dakota Coyotes",
+                "shortDisplayName": "South Dakota",
+                "abbreviation": "SDAK",
+                "location": "South Dakota",
+                "name": "Coyotes"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401756877",
+      "date": "2025-08-30T23:30Z",
+      "name": "Arkansas-Pine Bluff Golden Lions at Texas Tech Red Raiders",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401756877",
+          "date": "2025-08-30T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2641",
+                "displayName": "Texas Tech Red Raiders",
+                "shortDisplayName": "Texas Tech",
+                "abbreviation": "TTU",
+                "location": "Texas Tech",
+                "name": "Red Raiders"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2029",
+                "displayName": "Arkansas-Pine Bluff Golden Lions",
+                "shortDisplayName": "AR-Pine Bluff",
+                "abbreviation": "UAPB",
+                "location": "Arkansas-Pine Bluff",
+                "name": "Golden Lions"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401756878",
+      "date": "2025-08-30T18:00Z",
+      "name": "Robert Morris Colonials at West Virginia Mountaineers",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401756878",
+          "date": "2025-08-30T18:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "277",
+                "displayName": "West Virginia Mountaineers",
+                "shortDisplayName": "West Virginia",
+                "abbreviation": "WVU",
+                "location": "West Virginia",
+                "name": "Mountaineers"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2523",
+                "displayName": "Robert Morris Colonials",
+                "shortDisplayName": "Robert Morris",
+                "abbreviation": "RMU",
+                "location": "Robert Morris",
+                "name": "Colonials"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401756851",
+      "date": "2025-08-31T00:00Z",
+      "name": "Portland State Vikings at BYU Cougars",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401756851",
+          "date": "2025-08-31T00:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "252",
+                "displayName": "BYU Cougars",
+                "shortDisplayName": "BYU",
+                "abbreviation": "BYU",
+                "location": "BYU",
+                "name": "Cougars"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2502",
+                "displayName": "Portland State Vikings",
+                "shortDisplayName": "Portland St",
+                "abbreviation": "PRST",
+                "location": "Portland State",
+                "name": "Vikings"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401756849",
+      "date": "2025-08-31T02:30Z",
+      "name": "Hawai'i Rainbow Warriors at Arizona Wildcats",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401756849",
+          "date": "2025-08-31T02:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "TNT"
+              },
+              "lang": "en",
+              "region": "us"
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "HBO Max"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "TNT",
+                "HBO Max"
+              ]
+            }
+          ],
+          "broadcast": "TNT/HBO Max",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "12",
+                "displayName": "Arizona Wildcats",
+                "shortDisplayName": "Arizona",
+                "abbreviation": "ARIZ",
+                "location": "Arizona",
+                "name": "Wildcats"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "62",
+                "displayName": "Hawai'i Rainbow Warriors",
+                "shortDisplayName": "Hawai'i",
+                "abbreviation": "HAW",
+                "location": "Hawai'i",
+                "name": "Rainbow Warriors"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752800",
+      "date": "2025-08-31T03:00Z",
+      "name": "Utah Utes at UCLA Bruins",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752800",
+          "date": "2025-08-31T03:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "26",
+                "displayName": "UCLA Bruins",
+                "shortDisplayName": "UCLA",
+                "abbreviation": "UCLA",
+                "location": "UCLA",
+                "name": "Bruins"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "254",
+                "displayName": "Utah Utes",
+                "shortDisplayName": "Utah",
+                "abbreviation": "UTAH",
+                "location": "Utah",
+                "name": "Utes"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

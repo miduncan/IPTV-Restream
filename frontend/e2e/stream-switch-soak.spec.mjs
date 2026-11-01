@@ -58,7 +58,7 @@ async function signInIfRequired(page) {
   await page.goto('/');
   await page.waitForFunction(() => (
     Boolean(document.querySelector('input[name="username"]'))
-    || Boolean(document.querySelector('[role="tab"][aria-controls="channels-panel"]'))
+    || Boolean(document.querySelector('[aria-label="More sidebar options"]'))
   ));
   const usernameInput = page.getByRole('textbox', { name: 'Username' });
   if (!await usernameInput.isVisible().catch(() => false)) return;
@@ -71,7 +71,7 @@ async function signInIfRequired(page) {
   await usernameInput.fill(username);
   await page.getByLabel('Password').fill(password);
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await expect(page.getByRole('tab', { name: /Channels/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'More sidebar options' })).toBeVisible();
 }
 
 async function jsonResponse(response, description) {
@@ -238,7 +238,8 @@ test('channel switches remain playable with synchronization disabled', async ({ 
     description: publicChannels.map(channel => `${channel.id}: ${channel.name}`).join(', '),
   });
 
-  await page.getByRole('tab', { name: /Channels/ }).click();
+  await page.getByRole('button', { name: 'More sidebar options' }).click();
+  await page.getByRole('menuitemradio', { name: /Channels/ }).click();
   const cycles = [];
   for (let index = 0; index < iterations; index += 1) {
     await assertSyncDisabled(page, `before cycle ${index + 1}`);

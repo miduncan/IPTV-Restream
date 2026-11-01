@@ -1,0 +1,599 @@
+{
+  "events": [
+    {
+      "id": "401752801",
+      "date": "2025-08-30T16:00Z",
+      "name": "Ball State Cardinals at Purdue Boilermakers",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752801",
+          "date": "2025-08-30T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "BTN"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "BTN"
+              ]
+            }
+          ],
+          "broadcast": "BTN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2509",
+                "displayName": "Purdue Boilermakers",
+                "shortDisplayName": "Purdue",
+                "abbreviation": "PUR",
+                "location": "Purdue",
+                "name": "Boilermakers"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2050",
+                "displayName": "Ball State Cardinals",
+                "shortDisplayName": "Ball State",
+                "abbreviation": "BALL",
+                "location": "Ball State",
+                "name": "Cardinals"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401762792",
+      "date": "2025-08-30T16:00Z",
+      "name": "Merrimack Warriors at Kent State Golden Flashes",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401762792",
+          "date": "2025-08-30T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2309",
+                "displayName": "Kent State Golden Flashes",
+                "shortDisplayName": "Kent State",
+                "abbreviation": "KENT",
+                "location": "Kent State",
+                "name": "Golden Flashes"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2771",
+                "displayName": "Merrimack Warriors",
+                "shortDisplayName": "Merrimack",
+                "abbreviation": "MRMK",
+                "location": "Merrimack",
+                "name": "Warriors"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752670",
+      "date": "2025-08-30T16:45Z",
+      "name": "Toledo Rockets at Kentucky Wildcats",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752670",
+          "date": "2025-08-30T16:45Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "SEC Network",
+                "logo": "https://a.espncdn.com/guid/4658b4d2-a8e1-3630-9475-13af31514cfe/logos/default.png",
+                "darkLogo": ""
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "SEC Network"
+              ]
+            }
+          ],
+          "broadcast": "SEC Network",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "96",
+                "displayName": "Kentucky Wildcats",
+                "shortDisplayName": "Kentucky",
+                "abbreviation": "UK",
+                "location": "Kentucky",
+                "name": "Wildcats"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2649",
+                "displayName": "Toledo Rockets",
+                "shortDisplayName": "Toledo",
+                "abbreviation": "TOL",
+                "location": "Toledo",
+                "name": "Rockets"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401762456",
+      "date": "2025-08-30T19:30Z",
+      "name": "Temple Owls at Massachusetts Minutemen",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401762456",
+          "date": "2025-08-30T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "113",
+                "displayName": "Massachusetts Minutemen",
+                "shortDisplayName": "UMass",
+                "abbreviation": "MASS",
+                "location": "Massachusetts",
+                "name": "Minutemen"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "218",
+                "displayName": "Temple Owls",
+                "shortDisplayName": "Temple",
+                "abbreviation": "TEM",
+                "location": "Temple",
+                "name": "Owls"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401767130",
+      "date": "2025-08-30T23:00Z",
+      "name": "Sacramento State Hornets at South Dakota State Jackrabbits",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401767130",
+          "date": "2025-08-30T23:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            },
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "2",
+                "type": "Home"
+              },
+              "media": {
+                "shortName": "Midco Sports Net"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            },
+            {
+              "market": "home",
+              "names": [
+                "Midco Sports Net"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2571",
+                "displayName": "South Dakota State Jackrabbits",
+                "shortDisplayName": "S Dakota St",
+                "abbreviation": "SDST",
+                "location": "South Dakota State",
+                "name": "Jackrabbits"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "16",
+                "displayName": "Sacramento State Hornets",
+                "shortDisplayName": "Sacramento St",
+                "abbreviation": "SAC",
+                "location": "Sacramento State",
+                "name": "Hornets"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401761594",
+      "date": "2025-08-31T00:00Z",
+      "name": "Eastern Michigan Eagles at Texas State Bobcats",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401761594",
+          "date": "2025-08-31T00:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "326",
+                "displayName": "Texas State Bobcats",
+                "shortDisplayName": "Texas St",
+                "abbreviation": "TXST",
+                "location": "Texas State",
+                "name": "Bobcats"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2199",
+                "displayName": "Eastern Michigan Eagles",
+                "shortDisplayName": "E Michigan",
+                "abbreviation": "EMU",
+                "location": "Eastern Michigan",
+                "name": "Eagles"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

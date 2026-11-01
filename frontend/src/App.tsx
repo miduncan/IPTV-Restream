@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo, useContext } from 'react';
-import { Search, Radio, ChevronDown, Shield, MessageSquare, ListVideo, ListFilter } from 'lucide-react';
+import { useState, useEffect, useMemo, useContext, useCallback } from 'react';
+import { Search, Radio, ChevronDown, Shield, ListFilter } from 'lucide-react';
 import VideoPlayer from './components/VideoPlayer';
 import ChannelList from './components/ChannelList';
 import Chat from './components/chat/Chat';
@@ -9,6 +9,11 @@ import apiService from './services/ApiService';
 import { ToastProvider, ToastContext } from './components/notifications/ToastContext';
 import ToastContainer from './components/notifications/ToastContainer';
 import LogoutButton from './components/LogoutButton';
+import GamesPanel from './components/GamesPanel';
+import SidebarNavigation from './components/SidebarNavigation';
+import ResizableSidebar from './components/ResizableSidebar';
+import ChannelChangeModal from './components/ChannelChangeModal';
+import useChannelSelection from './hooks/useChannelSelection';
 
 const ALL_TAGS = 'All';
 
@@ -20,7 +25,7 @@ function AppContent() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [channelSelectRequiresAdmin, setChannelSelectRequiresAdmin] = useState(false);
-  const [sidebarView, setSidebarView] = useState<'channels' | 'chat'>('chat');
+  const [sidebarView, setSidebarView] = useState<'channels' | 'chat' | 'games'>('chat');
   const [syncEnabled, setSyncEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [epgByChannel, setEpgByChannel] = useState<Record<number, ChannelEpg>>({});
@@ -30,6 +35,25 @@ function AppContent() {
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
 
   const { addToast } = useContext(ToastContext);
+  const checkChannelSelectionPermission = useCallback(() => {
+    if (channelSelectRequiresAdmin && !isAdmin) {
+      addToast({
+        type: 'error',
+        title: 'Admin access required',
+        message: 'Sign in with the admin site credentials to switch channels.',
+        duration: 4000,
+      });
+      return false;
+    }
+    return true;
+  }, [channelSelectRequiresAdmin, isAdmin, addToast]);
+  const clearChannelSearch = useCallback(() => setSearchQuery(''), []);
+  const { requestChannelChange, pendingChannel, cancelChannelChange, confirmChannelChange } = useChannelSelection({
+    selectedChannel,
+    checkPermission: checkChannelSelectionPermission,
+    onChangeStarted: clearChannelSearch,
+  });
+
 
   const filteredChannels = useMemo(() => {
     const filteredByTag = selectedTag === ALL_TAGS ? channels : channels.filter(channel =>
@@ -219,7 +243,7 @@ function AppContent() {
 
   return (
     <main className="player-shell min-h-screen text-[#EAF0F6]">
-      <header className="admin-header flex h-16 items-center justify-between px-4 sm:px-6">
+      <header className="admin-header player-header flex items-center justify-between px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <div className="signal-mark signal-mark-small shrink-0"><Radio className="h-4 w-4" /></div>
           <a href="/" className="font-semibold tracking-[-0.02em]">StreamHub</a>
@@ -255,20 +279,13 @@ function AppContent() {
           <VideoPlayer channel={playbackChannel} syncEnabled={syncEnabled} />
         </section>
 
-        <aside className="player-sidebar">
-          <div className="sidebar-tabs" role="tablist" aria-label="Player sidebar">
-            <button id="chat-tab" type="button" role="tab" aria-controls="chat-panel" aria-selected={sidebarView === 'chat'} onClick={() => setSidebarView('chat')} className={sidebarView === 'chat' ? 'sidebar-tab-active' : 'sidebar-tab'}>
-              <MessageSquare className="h-4 w-4" /> Live chat
-            </button>
-            <button id="channels-tab" type="button" role="tab" aria-controls="channels-panel" aria-selected={sidebarView === 'channels'} onClick={() => setSidebarView('channels')} className={sidebarView === 'channels' ? 'sidebar-tab-active' : 'sidebar-tab'}>
-              <ListVideo className="h-4 w-4" /> Channels <span>{filteredChannels.length}</span>
-            </button>
-          </div>
+        <ResizableSidebar>
+          <SidebarNavigation activeView={sidebarView} onChange={setSidebarView} channelCount={filteredChannels.length} />
 
           <div
             id="channels-panel"
-            role="tabpanel"
-            aria-labelledby="channels-tab"
+            role="region"
+            aria-label="Channels"
             hidden={sidebarView !== 'channels'}
             className={sidebarView === 'channels' ? 'flex min-h-0 flex-1 flex-col' : 'hidden'}
           >
@@ -325,21 +342,16 @@ function AppContent() {
                 channels={filteredChannels}
                 selectedChannel={selectedChannel}
                 epgByChannel={epgByChannel}
-                setSearchQuery={setSearchQuery}
-                onChannelSelectCheckPermission={() => {
-                  if (channelSelectRequiresAdmin && !isAdmin) {
-                    addToast({
-                      type: 'error',
-                      title: 'Admin access required',
-                      message: 'Sign in with the admin site credentials to switch channels.',
-                      duration: 4000,
-                    });
-                    return false;
-                  }
-                  return true;
+                onSelectChannel={channel => {
+                  void requestChannelChange({ kind: 'saved', id: channel.id, name: channel.name }).catch(() => {
+                    // SocketService reports selection failures through the shared app-error event.
+                  });
                 }}
               />
             </div>
+          </div>
+          <div id="games-panel" role="tabpanel" aria-labelledby="games-tab" hidden={sidebarView !== 'games'} className={sidebarView === 'games' ? 'flex min-h-0 flex-1 flex-col' : 'hidden'}>
+            <GamesPanel isActive={sidebarView === 'games'} canSelect={!channelSelectRequiresAdmin || isAdmin} onSelectCandidate={candidate => requestChannelChange({ kind: 'provider', sourceId: candidate.sourceId, name: candidate.name })} />
           </div>
           <div
             id="chat-panel"
@@ -350,9 +362,10 @@ function AppContent() {
           >
             <Chat isActive={sidebarView === 'chat'} />
           </div>
-        </aside>
+        </ResizableSidebar>
       </div>
 
+      <ChannelChangeModal channel={pendingChannel} onCancel={cancelChannelChange} onConfirm={confirmChannelChange} />
       <ToastContainer />
     </main>
   );

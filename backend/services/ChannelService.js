@@ -1,6 +1,7 @@
 const streamController = require('./restream/StreamController');
 const Channel = require('../models/Channel');
 const ChannelStorage = require('./ChannelStorage');
+const ProviderChannel = require('../models/ProviderChannel');
 
 function normalizeTags(tags) {
     if (!Array.isArray(tags)) return [];
@@ -36,10 +37,6 @@ class ChannelService {
         return this.channels;
     }
 
-    getChannelById(id) {
-        return this.channels.find(channel => channel.id === id);
-    }
-
     getFilteredChannels({ playlistName, group }) {
         let filtered = this.channels;
         if (playlistName) {
@@ -68,8 +65,40 @@ class ChannelService {
     }
 
     setCurrentChannel(id) {
+        return this.switchChannel(id);
+    }
+
+    async resolveProviderChannel(streamId) {
+        if (typeof streamId !== 'string' || !/^[1-9]\d*$/.test(streamId) || !Number.isSafeInteger(Number(streamId))) {
+            throw new Error('Invalid provider channel identity');
+        }
+        const xtreamService = require('./XtreamService');
+        let stream;
+        try {
+            stream = await xtreamService.findStream(streamId);
+        } catch (error) {
+            // Network errors may include the credential-bearing request URL.
+            throw new Error(error.statusCode === 404
+                ? 'The selected channel is no longer available from Xtream'
+                : 'Could not resolve the provider channel');
+        }
+        const attributes = xtreamService.buildChannel(stream, { mode: 'restream' });
+        const channel = Object.assign(new ProviderChannel(), attributes, {
+            id: -Number(streamId), headers: [], sessionUrl: null,
+        });
+        return channel;
+    }
+
+    setCurrentProviderChannel(channel) {
+        if (!(channel instanceof ProviderChannel)) throw new Error('Invalid provider channel');
+        return this.switchChannel(channel);
+    }
+
+    switchChannel(channelOrId) {
         const switchOperation = this.channelSwitchQueue.then(() =>
-            this.performChannelSwitch(id)
+            this.performChannelSwitch(typeof channelOrId === 'number'
+                ? this.channels.find(channel => channel.id === channelOrId)
+                : channelOrId)
         );
 
         // Keep later switches moving even if one request fails, while still
@@ -78,10 +107,15 @@ class ChannelService {
         return switchOperation;
     }
 
-    async performChannelSwitch(id) {
-        const nextChannel = this.channels.find(channel => channel.id === id);
+    async performChannelSwitch(nextChannel) {
         if (!nextChannel) {
             throw new Error('Channel does not exist');
+        }
+
+        // Resolve reuse inside the queue: an earlier request for this feed
+        // may still have been warming when this request was enqueued.
+        if (nextChannel instanceof ProviderChannel && this.currentChannel?.id === nextChannel.id && this.currentChannel.url === nextChannel.url) {
+            nextChannel = this.currentChannel;
         }
 
         if (this.currentChannel === nextChannel && nextChannel.restream()) {
@@ -120,7 +154,8 @@ class ChannelService {
     }
 
     getChannelById(id) {
-        return this.channels.find(channel => channel.id === id);
+        return this.channels.find(channel => channel.id === id)
+            || (this.currentChannel?.id === id ? this.currentChannel : undefined);
     }
 
     async deleteChannel(id, save = true) {

@@ -16,6 +16,40 @@
 **Channels** - Browse an Xtream provider's live-channel directory and choose the channels available in the player. <br>
 **Live chat** - chat with other viewers using a display name saved in your browser.
 
+## Games picker
+
+The **Games** sidebar tab shows NFL and every college-football game involving
+an FBS team, including FCS opponents. Games appear live, within one hour before
+kickoff, or briefly after finishing. Each viewer can filter NFL/CFB independently.
+Choose a game to inspect ranked provider feeds, then click **Watch** to switch
+shared playback immediately using the existing permissions. Playing a discovered
+feed does not add it to saved Channels. Scores rank evidence; they are not
+probabilities of carriage.
+
+Configure the Xtream connection in `/admin/`, then use the **Games** section of
+Settings to choose shared leagues, broadcast regions, and estimated durations.
+Admins can select **Run matching now** in Games at any time. Enable **daily
+matching** to run immediately, then daily at the configured time and timezone
+(default **06:00 America/Los_Angeles**). The first run replaces that day's daily
+run. Automatic matching starts off; the manual button remains available while
+it is disabled. Matching uses one bulk XMLTV guide download: normally **three
+provider requests** (channels, categories, guide), or two when reusing a fresh
+guide cache. It never falls back to one request per channel. The Games panel
+shows provider request counts, guide bytes/programmes and elapsed time; admins
+can use **Cancel matching** without stopping the server. Status updates refresh
+separately without rescanning channels.
+
+Sports discovery requires no paid subscription or API key. ESPN's public feeds
+are undocumented; Canadian and UK broadcast assignments remain unverified.
+Provider guide coverage may be incomplete, and NFL affiliate-market evidence is
+a relevance heuristic rather than proof of carriage. Games displays coverage and
+freshness limitations, preserves previous results on failed runs, and leaves
+selection of another feed to the viewer after playback failure.
+
+See [source validation](docs/game-picker-source.md),
+[matching evidence](docs/game-picker-matching.md), and
+[scheduling/restart policy](docs/game-picker-scheduler.md) for details.
+
 ## 🚀 Run
 
 ### Run with Docker (Preferred)

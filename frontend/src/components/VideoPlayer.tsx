@@ -216,7 +216,7 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
   }, [reactionsOpen]);
 
   useEffect(() => {
-    if (!videoRef.current || !channel?.url) return;
+    if (!videoRef.current || !channel?.mode || (channel.mode === 'direct' && !channel.url)) return;
     const video = videoRef.current as AirPlayVideoElement;
     let cancelled = false;
     setAirPlaySupported(false);
@@ -224,8 +224,8 @@ function VideoPlayer({ channel, syncEnabled }: VideoPlayerProps) {
     const sourceLinks: Record<ChannelMode, string> = {
       direct: channel.url,
       //TODO: needs update for multi-channel streaming
-      proxy: import.meta.env.VITE_BACKEND_URL + '/proxy/channel',
-      restream: import.meta.env.VITE_BACKEND_URL + '/streams/' + channel.id + "/" + channel.id + ".m3u8",
+      proxy: (import.meta.env.VITE_BACKEND_URL || '') + '/proxy/channel',
+      restream: (import.meta.env.VITE_BACKEND_URL || '') + '/streams/' + channel.id + "/" + channel.id + ".m3u8",
     };
 
     const canPlayNativeHls = Boolean(video.canPlayType('application/vnd.apple.mpegurl'));

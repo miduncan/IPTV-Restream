@@ -30,7 +30,7 @@ module.exports = (io, socket) => {
     }
   });
 
-  socket.on("set-current-channel", async (id, acknowledge) => {
+  const selectChannel = async (id, acknowledge, provider = false) => {
     const reply = typeof acknowledge === "function" ? acknowledge : () => {};
     let revision;
     try {
@@ -44,17 +44,26 @@ module.exports = (io, socket) => {
         return;
       }
 
-      const requestedChannel = ChannelService.getChannelById(id);
+      revision = ++latestChannelSwitchRevision;
+      const requestedChannel = provider
+        ? await ChannelService.resolveProviderChannel(id)
+        : ChannelService.getChannelById(id);
       if (!requestedChannel) {
         throw new Error("Channel does not exist");
       }
 
-      revision = ++latestChannelSwitchRevision;
+      // A slow catalog lookup must not supersede a later viewer choice.
+      if (revision !== latestChannelSwitchRevision) {
+        reply({ ok: false, error: "A newer channel was selected" });
+        return;
+      }
       // Update every client's selection immediately. Playback remains empty
       // until channel-selected announces that the new stream is ready.
       io.emit("channel-switching", { channel: requestedChannel, revision });
 
-      const nextChannel = await ChannelService.setCurrentChannel(id);
+      const nextChannel = provider
+        ? await ChannelService.setCurrentProviderChannel(requestedChannel)
+        : await ChannelService.setCurrentChannel(id);
       if (revision === latestChannelSwitchRevision) {
         broadcastChannelSelection(io, nextChannel);
       }
@@ -70,7 +79,9 @@ module.exports = (io, socket) => {
       socket.emit("app-error", { message: err.message });
       reply({ ok: false, error: err.message });
     }
-  });
+  };
+  socket.on("set-current-channel", (id, acknowledge) => selectChannel(id, acknowledge));
+  socket.on("set-current-provider-channel", (streamId, acknowledge) => selectChannel(streamId, acknowledge, true));
 
   socket.on("delete-channel", async (id) => {
     try {

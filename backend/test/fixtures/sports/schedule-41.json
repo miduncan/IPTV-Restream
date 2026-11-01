@@ -1,0 +1,834 @@
+{
+  "events": [
+    {
+      "id": "401757167",
+      "date": "2025-08-30T18:00Z",
+      "name": "Central Connecticut Blue Devils at UConn Huskies",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757167",
+          "date": "2025-08-30T18:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2115",
+                "displayName": "Central Connecticut Blue Devils",
+                "shortDisplayName": "C Connecticut",
+                "abbreviation": "CCSU",
+                "location": "Central Connecticut"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754618",
+      "date": "2025-09-06T16:00Z",
+      "name": "UConn Huskies at Syracuse Orange",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754618",
+          "date": "2025-09-06T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 5,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final/OT",
+              "shortDetail": "Final/OT",
+              "altDetail": "OT"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ACCNX"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "183",
+                "displayName": "Syracuse Orange",
+                "shortDisplayName": "Syracuse",
+                "abbreviation": "SYR",
+                "location": "Syracuse"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757168",
+      "date": "2025-09-13T19:00Z",
+      "name": "UConn Huskies at Delaware Blue Hens",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757168",
+          "date": "2025-09-13T19:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 5,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final/OT",
+              "shortDetail": "Final/OT",
+              "altDetail": "OT"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "48",
+                "displayName": "Delaware Blue Hens",
+                "shortDisplayName": "Delaware",
+                "abbreviation": "DEL",
+                "location": "Delaware"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757169",
+      "date": "2025-09-20T19:30Z",
+      "name": "Ball State Cardinals at UConn Huskies",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757169",
+          "date": "2025-09-20T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBSSN"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2050",
+                "displayName": "Ball State Cardinals",
+                "shortDisplayName": "Ball State",
+                "abbreviation": "BALL",
+                "location": "Ball State"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757170",
+      "date": "2025-09-27T19:30Z",
+      "name": "UConn Huskies at Buffalo Bulls",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757170",
+          "date": "2025-09-27T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2084",
+                "displayName": "Buffalo Bulls",
+                "shortDisplayName": "Buffalo",
+                "abbreviation": "BUFF",
+                "location": "Buffalo"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757171",
+      "date": "2025-10-04T19:30Z",
+      "name": "Florida International Panthers at UConn Huskies",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757171",
+          "date": "2025-10-04T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBSSN"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2229",
+                "displayName": "Florida International Panthers",
+                "shortDisplayName": "FIU",
+                "abbreviation": "FIU",
+                "location": "Florida International"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754569",
+      "date": "2025-10-18T16:00Z",
+      "name": "UConn Huskies at Boston College Eagles",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754569",
+          "date": "2025-10-18T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ACC Network"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "103",
+                "displayName": "Boston College Eagles",
+                "shortDisplayName": "Boston College",
+                "abbreviation": "BC",
+                "location": "Boston College"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757172",
+      "date": "2025-10-25T19:00Z",
+      "name": "UConn Huskies at Rice Owls",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757172",
+          "date": "2025-10-25T19:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 6,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final/2OT",
+              "shortDetail": "Final/2OT",
+              "altDetail": "2OT"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "242",
+                "displayName": "Rice Owls",
+                "shortDisplayName": "Rice",
+                "abbreviation": "RICE",
+                "location": "Rice"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757173",
+      "date": "2025-11-01T16:00Z",
+      "name": "UAB Blazers at UConn Huskies",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757173",
+          "date": "2025-11-01T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBSSN"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "5",
+                "displayName": "UAB Blazers",
+                "shortDisplayName": "UAB",
+                "abbreviation": "UAB",
+                "location": "UAB"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754590",
+      "date": "2025-11-08T20:30Z",
+      "name": "Duke Blue Devils at UConn Huskies",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754590",
+          "date": "2025-11-08T20:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBSSN"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "150",
+                "displayName": "Duke Blue Devils",
+                "shortDisplayName": "Duke",
+                "abbreviation": "DUKE",
+                "location": "Duke"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757174",
+      "date": "2025-11-15T17:00Z",
+      "name": "Air Force Falcons at UConn Huskies",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757174",
+          "date": "2025-11-15T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBSSN"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2005",
+                "displayName": "Air Force Falcons",
+                "shortDisplayName": "Air Force",
+                "abbreviation": "AFA",
+                "location": "Air Force"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757175",
+      "date": "2025-11-22T20:00Z",
+      "name": "UConn Huskies at Florida Atlantic Owls",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757175",
+          "date": "2025-11-22T20:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2226",
+                "displayName": "Florida Atlantic Owls",
+                "shortDisplayName": "FAU",
+                "abbreviation": "FAU",
+                "location": "Florida Atlantic"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1152 @@
+{
+  "events": [
+    {
+      "id": "401752669",
+      "date": "2025-08-30T19:30Z",
+      "name": "Marshall Thundering Herd at Georgia Bulldogs",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752669",
+          "date": "2025-08-30T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN",
+                "logo": "https://a.espncdn.com/guid/335fd2d2-97b9-336b-81ee-573eb6bdcffc/logos/default.png",
+                "darkLogo": ""
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN"
+              ]
+            }
+          ],
+          "broadcast": "ESPN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "61",
+                "displayName": "Georgia Bulldogs",
+                "shortDisplayName": "Georgia",
+                "abbreviation": "UGA",
+                "location": "Georgia",
+                "name": "Bulldogs"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "276",
+                "displayName": "Marshall Thundering Herd",
+                "shortDisplayName": "Marshall",
+                "abbreviation": "MRSH",
+                "location": "Marshall",
+                "name": "Thundering Herd"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752806",
+      "date": "2025-08-30T18:30Z",
+      "name": "Old Dominion Monarchs at Indiana Hoosiers",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752806",
+          "date": "2025-08-30T18:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "FS1"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "FS1"
+              ]
+            }
+          ],
+          "broadcast": "FS1",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "84",
+                "displayName": "Indiana Hoosiers",
+                "shortDisplayName": "Indiana",
+                "abbreviation": "IU",
+                "location": "Indiana",
+                "name": "Hoosiers"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "295",
+                "displayName": "Old Dominion Monarchs",
+                "shortDisplayName": "Old Dominion",
+                "abbreviation": "ODU",
+                "location": "Old Dominion",
+                "name": "Monarchs"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752672",
+      "date": "2025-08-30T23:45Z",
+      "name": "Georgia State Panthers at Ole Miss Rebels",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752672",
+          "date": "2025-08-30T23:45Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "SEC Network",
+                "logo": "https://a.espncdn.com/guid/4658b4d2-a8e1-3630-9475-13af31514cfe/logos/default.png",
+                "darkLogo": ""
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "SEC Network"
+              ]
+            }
+          ],
+          "broadcast": "SEC Network",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "145",
+                "displayName": "Ole Miss Rebels",
+                "shortDisplayName": "Ole Miss",
+                "abbreviation": "MISS",
+                "location": "Ole Miss",
+                "name": "Rebels"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2247",
+                "displayName": "Georgia State Panthers",
+                "shortDisplayName": "Georgia St",
+                "abbreviation": "GAST",
+                "location": "Georgia State",
+                "name": "Panthers"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752673",
+      "date": "2025-08-30T16:00Z",
+      "name": "Mississippi State Bulldogs at Southern Miss Golden Eagles",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401752673",
+          "date": "2025-08-30T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN",
+                "logo": "https://a.espncdn.com/guid/335fd2d2-97b9-336b-81ee-573eb6bdcffc/logos/default.png",
+                "darkLogo": ""
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN"
+              ]
+            }
+          ],
+          "broadcast": "ESPN",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2572",
+                "displayName": "Southern Miss Golden Eagles",
+                "shortDisplayName": "Southern Miss",
+                "abbreviation": "USM",
+                "location": "Southern Miss",
+                "name": "Golden Eagles"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "344",
+                "displayName": "Mississippi State Bulldogs",
+                "shortDisplayName": "Mississippi St",
+                "abbreviation": "MSST",
+                "location": "Mississippi State",
+                "name": "Bulldogs"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754616",
+      "date": "2025-08-30T22:00Z",
+      "name": "Coastal Carolina Chanticleers at Virginia Cavaliers",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401754616",
+          "date": "2025-08-30T22:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ACCNX",
+                "logo": "https://a.espncdn.com/guid/f3b48d90-e60f-37fd-9581-5a763786784c/logos/default.png",
+                "darkLogo": ""
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ACCNX"
+              ]
+            }
+          ],
+          "broadcast": "ACCNX",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "258",
+                "displayName": "Virginia Cavaliers",
+                "shortDisplayName": "Virginia",
+                "abbreviation": "UVA",
+                "location": "Virginia",
+                "name": "Cavaliers"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "324",
+                "displayName": "Coastal Carolina Chanticleers",
+                "shortDisplayName": "Coastal",
+                "abbreviation": "CCU",
+                "location": "Coastal Carolina",
+                "name": "Chanticleers"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401761590",
+      "date": "2025-08-30T22:00Z",
+      "name": "Weber State Wildcats at James Madison Dukes",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401761590",
+          "date": "2025-08-30T22:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "256",
+                "displayName": "James Madison Dukes",
+                "shortDisplayName": "James Madison",
+                "abbreviation": "JMU",
+                "location": "James Madison",
+                "name": "Dukes"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2692",
+                "displayName": "Weber State Wildcats",
+                "shortDisplayName": "Weber St",
+                "abbreviation": "WEB",
+                "location": "Weber State",
+                "name": "Wildcats"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401761591",
+      "date": "2025-08-30T23:00Z",
+      "name": "Southeast Missouri State Redhawks at Arkansas State Red Wolves",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401761591",
+          "date": "2025-08-30T23:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2032",
+                "displayName": "Arkansas State Red Wolves",
+                "shortDisplayName": "Arkansas St",
+                "abbreviation": "ARST",
+                "location": "Arkansas State",
+                "name": "Red Wolves"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2546",
+                "displayName": "Southeast Missouri State Redhawks",
+                "shortDisplayName": "SE Missouri",
+                "abbreviation": "SEMO",
+                "location": "Southeast Missouri State",
+                "name": "Redhawks"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401761593",
+      "date": "2025-08-30T23:00Z",
+      "name": "Morgan State Bears at South Alabama Jaguars",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401761593",
+          "date": "2025-08-30T23:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "6",
+                "displayName": "South Alabama Jaguars",
+                "shortDisplayName": "South Alabama",
+                "abbreviation": "USA",
+                "location": "South Alabama",
+                "name": "Jaguars"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2415",
+                "displayName": "Morgan State Bears",
+                "shortDisplayName": "Morgan St",
+                "abbreviation": "MORG",
+                "location": "Morgan State",
+                "name": "Bears"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401761595",
+      "date": "2025-08-30T23:00Z",
+      "name": "Nicholls Colonels at Troy Trojans",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401761595",
+          "date": "2025-08-30T23:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2653",
+                "displayName": "Troy Trojans",
+                "shortDisplayName": "Troy",
+                "abbreviation": "TROY",
+                "location": "Troy",
+                "name": "Trojans"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2447",
+                "displayName": "Nicholls Colonels",
+                "shortDisplayName": "Nicholls",
+                "abbreviation": "NICH",
+                "location": "Nicholls",
+                "name": "Colonels"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757221",
+      "date": "2025-08-30T23:30Z",
+      "name": "SE Louisiana Lions at Louisiana Tech Bulldogs",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401757221",
+          "date": "2025-08-30T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2348",
+                "displayName": "Louisiana Tech Bulldogs",
+                "shortDisplayName": "Louisiana Tech",
+                "abbreviation": "LT",
+                "location": "Louisiana Tech",
+                "name": "Bulldogs"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2545",
+                "displayName": "SE Louisiana Lions",
+                "shortDisplayName": "SE Louisiana",
+                "abbreviation": "SELA",
+                "location": "SE Louisiana",
+                "name": "Lions"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401761592",
+      "date": "2025-08-31T00:00Z",
+      "name": "Rice Owls at Louisiana Ragin' Cajuns",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401761592",
+          "date": "2025-08-31T00:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN+",
+                "logo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default.png",
+                "darkLogo": "https://a.espncdn.com/guid/322a7e47-3cdb-3b5c-ab1b-678e1f2c27e5/logos/default-dark.png"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "ESPN+"
+              ]
+            }
+          ],
+          "broadcast": "ESPN+",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "309",
+                "displayName": "Louisiana Ragin' Cajuns",
+                "shortDisplayName": "Louisiana",
+                "abbreviation": "UL",
+                "location": "Louisiana",
+                "name": "Ragin' Cajuns"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "242",
+                "displayName": "Rice Owls",
+                "shortDisplayName": "Rice",
+                "abbreviation": "RICE",
+                "location": "Rice",
+                "name": "Owls"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401760361",
+      "date": "2025-08-31T01:30Z",
+      "name": "Georgia Southern Eagles at Fresno State Bulldogs",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401760361",
+          "date": "2025-08-31T01:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "FS1"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "FS1"
+              ]
+            }
+          ],
+          "broadcast": "FS1",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "278",
+                "displayName": "Fresno State Bulldogs",
+                "shortDisplayName": "Fresno St",
+                "abbreviation": "FRES",
+                "location": "Fresno State",
+                "name": "Bulldogs"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "290",
+                "displayName": "Georgia Southern Eagles",
+                "shortDisplayName": "GA Southern",
+                "abbreviation": "GASO",
+                "location": "Georgia Southern",
+                "name": "Eagles"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

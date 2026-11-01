@@ -1,0 +1,928 @@
+{
+  "events": [
+    {
+      "id": "401754522",
+      "date": "2025-08-31T23:30Z",
+      "name": "Notre Dame Fighting Irish at Miami Hurricanes",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754522",
+          "date": "2025-08-31T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2390",
+                "displayName": "Miami Hurricanes",
+                "shortDisplayName": "Miami",
+                "abbreviation": "MIA",
+                "location": "Miami"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752707",
+      "date": "2025-09-13T23:30Z",
+      "name": "Texas A&M Aggies at Notre Dame Fighting Irish",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752707",
+          "date": "2025-09-13T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "NBC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Peacock"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "245",
+                "displayName": "Texas A&M Aggies",
+                "shortDisplayName": "Texas A&M",
+                "abbreviation": "TA&M",
+                "location": "Texas A&M"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752848",
+      "date": "2025-09-20T19:30Z",
+      "name": "Purdue Boilermakers at Notre Dame Fighting Irish",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752848",
+          "date": "2025-09-20T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "NBC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Peacock"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2509",
+                "displayName": "Purdue Boilermakers",
+                "shortDisplayName": "Purdue",
+                "abbreviation": "PUR",
+                "location": "Purdue"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752717",
+      "date": "2025-09-27T16:00Z",
+      "name": "Notre Dame Fighting Irish at Arkansas Razorbacks",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752717",
+          "date": "2025-09-27T16:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "8",
+                "displayName": "Arkansas Razorbacks",
+                "shortDisplayName": "Arkansas",
+                "abbreviation": "ARK",
+                "location": "Arkansas"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757165",
+      "date": "2025-10-04T19:30Z",
+      "name": "Boise State Broncos at Notre Dame Fighting Irish",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757165",
+          "date": "2025-10-04T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "NBC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Peacock"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "68",
+                "displayName": "Boise State Broncos",
+                "shortDisplayName": "Boise St",
+                "abbreviation": "BOIS",
+                "location": "Boise State"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754562",
+      "date": "2025-10-11T19:30Z",
+      "name": "NC State Wolfpack at Notre Dame Fighting Irish",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754562",
+          "date": "2025-10-11T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Peacock"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "152",
+                "displayName": "NC State Wolfpack",
+                "shortDisplayName": "NC State",
+                "abbreviation": "NCSU",
+                "location": "NC State"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401752871",
+      "date": "2025-10-18T23:30Z",
+      "name": "USC Trojans at Notre Dame Fighting Irish",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401752871",
+          "date": "2025-10-18T23:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "NBC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Peacock"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "30",
+                "displayName": "USC Trojans",
+                "shortDisplayName": "USC",
+                "abbreviation": "USC",
+                "location": "USC"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754583",
+      "date": "2025-11-01T19:30Z",
+      "name": "Notre Dame Fighting Irish at Boston College Eagles",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754583",
+          "date": "2025-11-01T19:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "103",
+                "displayName": "Boston College Eagles",
+                "shortDisplayName": "Boston College",
+                "abbreviation": "BC",
+                "location": "Boston College"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401757166",
+      "date": "2025-11-09T00:30Z",
+      "name": "Navy Midshipmen at Notre Dame Fighting Irish",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401757166",
+          "date": "2025-11-09T00:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "NBC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Peacock"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2426",
+                "displayName": "Navy Midshipmen",
+                "shortDisplayName": "Navy",
+                "abbreviation": "NAVY",
+                "location": "Navy"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754597",
+      "date": "2025-11-15T17:00Z",
+      "name": "Notre Dame Fighting Irish at Pittsburgh Panthers",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754597",
+          "date": "2025-11-15T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ABC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "221",
+                "displayName": "Pittsburgh Panthers",
+                "shortDisplayName": "Pitt",
+                "abbreviation": "PITT",
+                "location": "Pittsburgh"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754604",
+      "date": "2025-11-22T20:30Z",
+      "name": "Syracuse Orange at Notre Dame Fighting Irish",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754604",
+          "date": "2025-11-22T20:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "NBC"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            },
+            {
+              "type": {
+                "id": "4",
+                "shortName": "Streaming"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Peacock"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "183",
+                "displayName": "Syracuse Orange",
+                "shortDisplayName": "Syracuse",
+                "abbreviation": "SYR",
+                "location": "Syracuse"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401754614",
+      "date": "2025-11-30T03:30Z",
+      "name": "Notre Dame Fighting Irish at Stanford Cardinal",
+      "season": {
+        "year": 2025,
+        "displayName": "2025"
+      },
+      "competitions": [
+        {
+          "id": "401754614",
+          "date": "2025-11-30T03:30Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "broadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "ESPN"
+              },
+              "lang": "en",
+              "region": "us",
+              "partnered": false
+            }
+          ],
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "24",
+                "displayName": "Stanford Cardinal",
+                "shortDisplayName": "Stanford",
+                "abbreviation": "STAN",
+                "location": "Stanford"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "87",
+                "displayName": "Notre Dame Fighting Irish",
+                "shortDisplayName": "Notre Dame",
+                "abbreviation": "ND",
+                "location": "Notre Dame"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Loader } from 'lucide-react';
 import AdminLayout from './AdminLayout';
 import { AdminSection } from './AdminLayout';
+import GameMatchingAdmin from './GameMatchingAdmin';
 import ChannelManager from './ChannelManager';
 import SettingsEditor from './SettingsEditor';
 import { useAdminSettings } from './useAdminSettings';
@@ -45,7 +46,7 @@ function AdminPage() {
         validationMessage={adminSettings.validationMessage}
         onSave={adminSettings.saveSettings}
         onUpdate={adminSettings.updateSetting}
-      /> : <ChannelManager />}
+      /> : activeSection === 'matching' ? <GameMatchingAdmin /> : <ChannelManager />}
     </AdminLayout>
   );
 }

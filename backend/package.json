@@ -26,6 +26,7 @@
     "iptv-playlist-parser": "^0.13.0",
     "node-cron": "^3.0.3",
     "request": "^2.88.2",
+    "sax": "1.6.1",
     "socket.io": "^4.8.1"
   }
 }

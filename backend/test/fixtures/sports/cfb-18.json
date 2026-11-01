@@ -1,0 +1,75 @@
+{
+  "events": [
+    {
+      "id": "401757167",
+      "date": "2025-08-30T18:00Z",
+      "name": "Central Connecticut Blue Devils at UConn Huskies",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401757167",
+          "date": "2025-08-30T18:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "geoBroadcasts": [],
+          "broadcasts": [],
+          "broadcast": "",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "41",
+                "displayName": "UConn Huskies",
+                "shortDisplayName": "UConn",
+                "abbreviation": "CONN",
+                "location": "UConn",
+                "name": "Huskies"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "2115",
+                "displayName": "Central Connecticut Blue Devils",
+                "shortDisplayName": "C Connecticut",
+                "abbreviation": "CCSU",
+                "location": "Central Connecticut",
+                "name": "Blue Devils"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

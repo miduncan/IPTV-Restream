@@ -1,0 +1,1239 @@
+{
+  "events": [
+    {
+      "id": "401772830",
+      "date": "2025-09-07T17:00Z",
+      "name": "Tampa Bay Buccaneers at Atlanta Falcons",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772830",
+          "date": "2025-09-07T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "1",
+                "displayName": "Atlanta Falcons",
+                "shortDisplayName": "Falcons",
+                "abbreviation": "ATL",
+                "location": "Atlanta",
+                "name": "Falcons"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "27",
+                "displayName": "Tampa Bay Buccaneers",
+                "shortDisplayName": "Buccaneers",
+                "abbreviation": "TB",
+                "location": "Tampa Bay",
+                "name": "Buccaneers"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772829",
+      "date": "2025-09-07T17:00Z",
+      "name": "Cincinnati Bengals at Cleveland Browns",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772829",
+          "date": "2025-09-07T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Browns",
+                "shortDisplayName": "Browns",
+                "abbreviation": "CLE",
+                "location": "Cleveland",
+                "name": "Browns"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "4",
+                "displayName": "Cincinnati Bengals",
+                "shortDisplayName": "Bengals",
+                "abbreviation": "CIN",
+                "location": "Cincinnati",
+                "name": "Bengals"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772719",
+      "date": "2025-09-07T17:00Z",
+      "name": "Miami Dolphins at Indianapolis Colts",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772719",
+          "date": "2025-09-07T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBS"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "CBS"
+              ]
+            }
+          ],
+          "broadcast": "CBS",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "11",
+                "displayName": "Indianapolis Colts",
+                "shortDisplayName": "Colts",
+                "abbreviation": "IND",
+                "location": "Indianapolis",
+                "name": "Colts"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "15",
+                "displayName": "Miami Dolphins",
+                "shortDisplayName": "Dolphins",
+                "abbreviation": "MIA",
+                "location": "Miami",
+                "name": "Dolphins"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772720",
+      "date": "2025-09-07T17:00Z",
+      "name": "Las Vegas Raiders at New England Patriots",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772720",
+          "date": "2025-09-07T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBS"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "CBS"
+              ]
+            }
+          ],
+          "broadcast": "CBS",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "17",
+                "displayName": "New England Patriots",
+                "shortDisplayName": "Patriots",
+                "abbreviation": "NE",
+                "location": "New England",
+                "name": "Patriots"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "13",
+                "displayName": "Las Vegas Raiders",
+                "shortDisplayName": "Raiders",
+                "abbreviation": "LV",
+                "location": "Las Vegas",
+                "name": "Raiders"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772718",
+      "date": "2025-09-07T17:00Z",
+      "name": "Arizona Cardinals at New Orleans Saints",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772718",
+          "date": "2025-09-07T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBS"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "CBS"
+              ]
+            }
+          ],
+          "broadcast": "CBS",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "18",
+                "displayName": "New Orleans Saints",
+                "shortDisplayName": "Saints",
+                "abbreviation": "NO",
+                "location": "New Orleans",
+                "name": "Saints"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "22",
+                "displayName": "Arizona Cardinals",
+                "shortDisplayName": "Cardinals",
+                "abbreviation": "ARI",
+                "location": "Arizona",
+                "name": "Cardinals"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772721",
+      "date": "2025-09-07T17:00Z",
+      "name": "Pittsburgh Steelers at New York Jets",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772721",
+          "date": "2025-09-07T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBS"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "CBS"
+              ]
+            }
+          ],
+          "broadcast": "CBS",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "20",
+                "displayName": "New York Jets",
+                "shortDisplayName": "Jets",
+                "abbreviation": "NYJ",
+                "location": "New York",
+                "name": "Jets"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "23",
+                "displayName": "Pittsburgh Steelers",
+                "shortDisplayName": "Steelers",
+                "abbreviation": "PIT",
+                "location": "Pittsburgh",
+                "name": "Steelers"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772827",
+      "date": "2025-09-07T17:00Z",
+      "name": "New York Giants at Washington Commanders",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772827",
+          "date": "2025-09-07T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "28",
+                "displayName": "Washington Commanders",
+                "shortDisplayName": "Commanders",
+                "abbreviation": "WSH",
+                "location": "Washington",
+                "name": "Commanders"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "19",
+                "displayName": "New York Giants",
+                "shortDisplayName": "Giants",
+                "abbreviation": "NYG",
+                "location": "New York",
+                "name": "Giants"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772828",
+      "date": "2025-09-07T17:00Z",
+      "name": "Carolina Panthers at Jacksonville Jaguars",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772828",
+          "date": "2025-09-07T17:00Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "30",
+                "displayName": "Jacksonville Jaguars",
+                "shortDisplayName": "Jaguars",
+                "abbreviation": "JAX",
+                "location": "Jacksonville",
+                "name": "Jaguars"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "29",
+                "displayName": "Carolina Panthers",
+                "shortDisplayName": "Panthers",
+                "abbreviation": "CAR",
+                "location": "Carolina",
+                "name": "Panthers"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772832",
+      "date": "2025-09-07T20:05Z",
+      "name": "Tennessee Titans at Denver Broncos",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772832",
+          "date": "2025-09-07T20:05Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "7",
+                "displayName": "Denver Broncos",
+                "shortDisplayName": "Broncos",
+                "abbreviation": "DEN",
+                "location": "Denver",
+                "name": "Broncos"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "10",
+                "displayName": "Tennessee Titans",
+                "shortDisplayName": "Titans",
+                "abbreviation": "TEN",
+                "location": "Tennessee",
+                "name": "Titans"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772831",
+      "date": "2025-09-07T20:05Z",
+      "name": "San Francisco 49ers at Seattle Seahawks",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772831",
+          "date": "2025-09-07T20:05Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "Fox"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "Fox"
+              ]
+            }
+          ],
+          "broadcast": "Fox",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "26",
+                "displayName": "Seattle Seahawks",
+                "shortDisplayName": "Seahawks",
+                "abbreviation": "SEA",
+                "location": "Seattle",
+                "name": "Seahawks"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "25",
+                "displayName": "San Francisco 49ers",
+                "shortDisplayName": "49ers",
+                "abbreviation": "SF",
+                "location": "San Francisco",
+                "name": "49ers"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772722",
+      "date": "2025-09-07T20:25Z",
+      "name": "Detroit Lions at Green Bay Packers",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772722",
+          "date": "2025-09-07T20:25Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBS"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "CBS"
+              ]
+            }
+          ],
+          "broadcast": "CBS",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "9",
+                "displayName": "Green Bay Packers",
+                "shortDisplayName": "Packers",
+                "abbreviation": "GB",
+                "location": "Green Bay",
+                "name": "Packers"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "8",
+                "displayName": "Detroit Lions",
+                "shortDisplayName": "Lions",
+                "abbreviation": "DET",
+                "location": "Detroit",
+                "name": "Lions"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772723",
+      "date": "2025-09-07T20:25Z",
+      "name": "Houston Texans at Los Angeles Rams",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772723",
+          "date": "2025-09-07T20:25Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "CBS"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "CBS"
+              ]
+            }
+          ],
+          "broadcast": "CBS",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "14",
+                "displayName": "Los Angeles Rams",
+                "shortDisplayName": "Rams",
+                "abbreviation": "LAR",
+                "location": "Los Angeles",
+                "name": "Rams"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "34",
+                "displayName": "Houston Texans",
+                "shortDisplayName": "Texans",
+                "abbreviation": "HOU",
+                "location": "Houston",
+                "name": "Texans"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "401772918",
+      "date": "2025-09-08T00:20Z",
+      "name": "Baltimore Ravens at Buffalo Bills",
+      "status": {
+        "clock": 0.0,
+        "displayClock": "0:00",
+        "period": 4,
+        "type": {
+          "id": "3",
+          "name": "STATUS_FINAL",
+          "state": "post",
+          "completed": true,
+          "description": "Final",
+          "detail": "Final",
+          "shortDetail": "Final"
+        }
+      },
+      "season": {
+        "year": 2025,
+        "type": 2,
+        "slug": "regular-season"
+      },
+      "competitions": [
+        {
+          "id": "401772918",
+          "date": "2025-09-08T00:20Z",
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0:00",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            },
+            "isTBDFlex": false
+          },
+          "geoBroadcasts": [
+            {
+              "type": {
+                "id": "1",
+                "shortName": "TV"
+              },
+              "market": {
+                "id": "1",
+                "type": "National"
+              },
+              "media": {
+                "shortName": "NBC"
+              },
+              "lang": "en",
+              "region": "us"
+            }
+          ],
+          "broadcasts": [
+            {
+              "market": "national",
+              "names": [
+                "NBC"
+              ]
+            }
+          ],
+          "broadcast": "NBC",
+          "competitors": [
+            {
+              "homeAway": "home",
+              "team": {
+                "id": "2",
+                "displayName": "Buffalo Bills",
+                "shortDisplayName": "Bills",
+                "abbreviation": "BUF",
+                "location": "Buffalo",
+                "name": "Bills"
+              }
+            },
+            {
+              "homeAway": "away",
+              "team": {
+                "id": "33",
+                "displayName": "Baltimore Ravens",
+                "shortDisplayName": "Ravens",
+                "abbreviation": "BAL",
+                "location": "Baltimore",
+                "name": "Ravens"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

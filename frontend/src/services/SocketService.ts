@@ -206,6 +206,14 @@ class SocketService {
 
   // Set current channel
   async setCurrentChannel(id: number): Promise<void> {
+    return this.selectChannel('set-current-channel', id);
+  }
+
+  async setCurrentProviderChannel(streamId: string): Promise<void> {
+    return this.selectChannel('set-current-provider-channel', streamId);
+  }
+
+  private async selectChannel(event: string, identity: number | string): Promise<void> {
     let socket: Socket;
     try {
       socket = await this.waitUntilConnected();
@@ -219,8 +227,8 @@ class SocketService {
       // A make-before-break restream switch may intentionally wait for the new
       // channel to build its startup buffer before the server acknowledges it.
       socket.timeout(40_000).emit(
-        'set-current-channel',
-        id,
+        event,
+        identity,
         (timeoutError: Error | null, response?: { ok: boolean; error?: string }) => {
           if (timeoutError) {
             const error = new Error('The channel change timed out. Try again.');
