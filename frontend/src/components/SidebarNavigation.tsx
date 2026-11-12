@@ -54,7 +54,11 @@ export default function SidebarNavigation({ activeView, onChange, channelCount }
         <MoreVertical className="h-5 w-5" />
       </button>
       {menuOpen && <div id="sidebar-overflow-menu" role="menu" aria-label="More sidebar options" className="absolute right-0 top-full z-30 mt-2 w-52 rounded-lg border border-[#304254] bg-[#101B26] p-1 shadow-xl">
-        <button ref={channelItem} type="button" role="menuitemradio" aria-checked={activeView === 'channels'} aria-controls="channels-panel" onClick={() => {
+        <button ref={channelItem} type="button" role="menuitemradio" aria-checked={activeView === 'channels'} aria-controls="channels-panel" onMouseDown={event => {
+          // Safari touch taps blur even this already-focused button on mousedown.
+          // Keep focus so onBlur cannot unmount the item before its click fires.
+          event.preventDefault();
+        }} onClick={() => {
           onChange('channels');
           setMenuOpen(false);
           trigger.current?.focus();

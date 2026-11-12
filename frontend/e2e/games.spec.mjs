@@ -22,6 +22,25 @@ async function mockPlayer(page, gamesResponse) {
   await page.route('**/socket.io/**', route => route.abort());
 }
 
+for (const browserName of ['chromium', 'webkit']) {
+  test(`${browserName}: tapping Channels opens the saved channels panel`, async ({ playwright, baseURL }) => {
+    const browser = await playwright[browserName].launch({ channel: browserName === 'chromium' ? 'chrome' : undefined });
+    try {
+      const context = await browser.newContext({ baseURL, viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+      const page = await context.newPage();
+      await mockPlayer(page, () => ({ games: [], freshness: { stale: false, error: null }, coverage: {} }));
+      await page.goto('/');
+      await page.getByRole('tab', { name: 'Games', exact: true }).tap();
+      await page.getByRole('button', { name: 'More sidebar options' }).tap();
+      await page.getByRole('menuitemradio', { name: /Channels/ }).tap();
+      await expect(page.getByRole('region', { name: 'Channels', exact: true })).toBeVisible();
+      await expect(page.getByText('Saved news')).toBeVisible();
+    } finally {
+      await browser.close();
+    }
+  });
+}
+
 test('upcoming named events sort first when sharing kickoff time with games', async ({ page }) => {
   const event = { id: 'named:nfl-redzone:2026-11-01', name: 'NFL RedZone', league: 'NFL',
     logo: 'nfl-redzone', startsAt: game.startsAt, endsAt: '2026-10-29T03:00:00Z',
