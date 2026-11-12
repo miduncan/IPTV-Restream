@@ -221,8 +221,7 @@ for (const rememberAt of ['games', 'channels']) test(`confirmation preference se
       await page.getByRole('button', { name: /Seattle Seahawks vs Buffalo Bills/ }).click();
       await page.getByRole('button', { name: 'Watch Seahawks vs Bills', exact: true }).click();
     } else {
-      await page.getByRole('button', { name: 'More sidebar options' }).click();
-      await page.getByRole('menuitemradio', { name: /Channels/ }).click();
+      await page.getByRole('tab', { name: 'Channels', exact: true }).click();
       await page.getByRole('button', { name: /Saved news/ }).click();
     }
   };

@@ -433,7 +433,7 @@
 
 .sidebar-tabs {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.25rem;
   border-bottom: 1px solid #233242;
   padding: 0.5rem;

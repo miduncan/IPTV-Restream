@@ -280,7 +280,7 @@ function AppContent() {
         </section>
 
         <ResizableSidebar>
-          <SidebarNavigation activeView={sidebarView} onChange={setSidebarView} channelCount={filteredChannels.length} />
+          <SidebarNavigation activeView={sidebarView} onChange={setSidebarView} />
 
           <div
             id="channels-panel"

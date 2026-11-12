@@ -31,8 +31,7 @@ for (const browserName of ['chromium', 'webkit']) {
       await mockPlayer(page, () => ({ games: [], freshness: { stale: false, error: null }, coverage: {} }));
       await page.goto('/');
       await page.getByRole('tab', { name: 'Games', exact: true }).tap();
-      await page.getByRole('button', { name: 'More sidebar options' }).tap();
-      await page.getByRole('menuitemradio', { name: /Channels/ }).tap();
+      await page.getByRole('tab', { name: 'Channels', exact: true }).tap();
       await expect(page.getByRole('region', { name: 'Channels', exact: true })).toBeVisible();
       await expect(page.getByText('Saved news')).toBeVisible();
     } finally {
@@ -179,8 +178,7 @@ test('browse Games, retain selection through status refresh, and keep Channels a
   await page.clock.fastForward(30_000);
   await expect(page.getByText(/Sports data is temporarily unavailable/)).toBeVisible();
   await expect(page.getByText(/Last reported live.*stale/i)).toBeVisible();
-  await page.getByRole('button', { name: 'More sidebar options' }).click();
-  await page.getByRole('menuitemradio', { name: /Channels/ }).click();
+  await page.getByRole('tab', { name: 'Channels', exact: true }).click();
   await expect(page.getByText('Saved news')).toBeVisible();
   await page.getByRole('tab', { name: 'Live chat' }).click();
   await expect(page.getByRole('tab', { name: 'Live chat' })).toHaveAttribute('aria-selected', 'true');
@@ -263,39 +261,27 @@ test('team scores show zero, update in place, and remain available when stale', 
 });
 
 
-test('sidebar overflow supports keyboard dismissal, Channels selection and mobile navigation', async ({ page }, testInfo) => {
+test('icon tabs keep all sidebar views accessible on desktop and mobile', async ({ page }, testInfo) => {
   await mockPlayer(page, () => ({ games: [game], freshness: { stale: false, lastSuccessfulStatusAt: game.startsAt, error: null }, coverage: {} }));
   await page.goto('/');
-  const more = page.getByRole('button', { name: 'More sidebar options' });
-  await expect(page.getByRole('tab', { name: /Channels/ })).toHaveCount(0);
-  await more.focus();
-  await page.keyboard.press('ArrowDown');
-  const channels = page.getByRole('menuitemradio', { name: /Channels/ });
-  await expect(channels).toBeFocused();
-  await page.screenshot({ path: testInfo.outputPath('sidebar-overflow-desktop.png') });
-  await page.keyboard.press('Escape');
-  await expect(more).toBeFocused();
-  await expect(more).toHaveAttribute('aria-expanded', 'false');
-  await more.click();
-  await page.getByRole('tab', { name: 'Games', exact: true }).click();
-  await expect(more).toHaveAttribute('aria-expanded', 'false');
-  await more.click();
-  await channels.click();
-  await expect(page.getByRole('region', { name: 'Channels', exact: true })).toBeVisible();
-  await expect(page.getByText('Saved news')).toBeVisible();
-  await expect(more).toHaveAttribute('aria-expanded', 'false');
-  await more.click();
-  await expect(channels).toHaveAttribute('aria-checked', 'true');
-  await page.keyboard.press('Tab');
-  await expect(more).toHaveAttribute('aria-expanded', 'false');
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole('tab', { name: 'Games', exact: true }).click();
-  await more.click();
-  await expect(channels).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath('sidebar-overflow-mobile.png') });
-  await channels.click();
-  await expect(page.getByText('Saved news')).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  const tabs = page.getByRole('tablist', { name: 'Player sidebar' });
+  await expect(tabs.getByRole('tab')).toHaveCount(3);
+  for (const width of [1280, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    for (const label of ['Live chat', 'Games', 'Channels']) {
+      const tab = tabs.getByRole('tab', { name: label, exact: true });
+      await expect(tab).toBeVisible();
+      await expect(tab).toHaveAttribute('title', label);
+      await expect(tab).toHaveText('');
+      await tab.focus();
+      await page.keyboard.press('Enter');
+      await expect(tab).toHaveAttribute('aria-selected', 'true');
+    }
+    await expect(page.getByRole('region', { name: 'Channels', exact: true })).toBeVisible();
+    await expect(page.getByText('Saved news')).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath(`sidebar-icon-tabs-${width}.png`) });
+  }
 });
 
 test('sidebar resizes by dragging or keyboard, remembers its width and keeps the mobile layout', async ({ page }, testInfo) => {
